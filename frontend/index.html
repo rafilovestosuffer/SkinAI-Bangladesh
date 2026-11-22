@@ -21,18 +21,19 @@
         <span><strong>SkinAI</strong> Bangladesh</span>
       </a>
       <nav class="nav-links" aria-label="Main navigation">
-        <button class="nav-link active" data-tab="home">Home</button>
-        <button class="nav-link" data-scroll="how-it-works">How it works</button>
-        <button class="nav-link" data-tab="insights">Skin Guide</button>
-        <button class="nav-link" data-scroll="features-grid">Features</button>
-        <button class="nav-link" data-tab="impact">About</button>
-        <button class="nav-link" data-tab="ask">Ask AI</button>
-        <button class="nav-link" data-tab="doctime">Hospitals</button>
+        <button class="nav-link active" data-tab="home"><span class="material-symbols-outlined ic-nav">home</span><span data-i18n="nav_home">Home</span></button>
+        <button class="nav-link" data-tab="diagnosis"><span class="material-symbols-outlined ic-nav">stethoscope</span><span data-i18n="nav_dx">Diagnosis</span></button>
+        <button class="nav-link" data-tab="ask"><span class="material-symbols-outlined ic-nav">forum</span><span data-i18n="nav_ask">Ask AI</span></button>
+        <button class="nav-link" data-tab="referral"><span class="material-symbols-outlined ic-nav">description</span><span data-i18n="nav_ref">Referral</span></button>
+        <button class="nav-link" data-tab="insights"><span class="material-symbols-outlined ic-nav">biotech</span><span data-i18n="nav_ins">Insights</span></button>
+        <button class="nav-link" data-tab="doctime"><span class="material-symbols-outlined ic-nav">local_hospital</span><span data-i18n="nav_doc">DocTime</span></button>
+        <button class="nav-link" data-tab="phase2"><span class="material-symbols-outlined ic-nav">public</span><span data-i18n="nav_p2">Phase 2</span></button>
+        <button class="nav-link" data-tab="impact"><span class="material-symbols-outlined ic-nav">analytics</span><span data-i18n="nav_imp">Impact</span></button>
       </nav>
       <div class="nav-right">
         <span id="apiStatus" class="status-dot checking" title="Backend status">●</span>
-        <button type="button" id="langToggle" class="lang-pill">বাংলা</button>
-        <button type="button" class="btn-teal-sm" data-tab="diagnosis">Start Screening</button>
+        <button type="button" id="langToggle" class="lang-pill">BN / EN</button>
+        <button type="button" class="btn-teal-sm" data-tab="diagnosis" data-i18n="cta_start">Start Screening</button>
       </div>
     </div>
   </header>
@@ -43,15 +44,15 @@
       <!-- Hero Card -->
       <div class="landing-hero">
         <div class="hero-left">
-          <span class="hero-pill">AI-Powered Skin Screening &amp; Smart Triage</span>
-          <h1 class="landing-h1">AI Skin Screening<br />for <span class="teal-text">Everyone</span></h1>
-          <p class="landing-lead">
+          <span class="hero-pill" data-i18n="hero_pill">AI-Powered Skin Screening &amp; Smart Triage</span>
+          <h1 class="landing-h1" data-i18n="hero_h1">AI Skin Screening<br />for <span class="teal-text">Everyone</span></h1>
+          <p class="landing-lead" data-i18n="hero_lead">
             AI-powered dermatological screening and smart triage for rural Bangladesh.
             Identify potential skin conditions early, get clinical guidance, and know when to see a doctor.
           </p>
           <div class="hero-ctas">
-            <button type="button" class="btn-teal" data-tab="diagnosis">Start Skin Screening →</button>
-            <button type="button" class="btn-white" data-tab="insights">Explore Skin Guide</button>
+            <button type="button" class="btn-teal" data-tab="diagnosis" data-i18n="hero_cta1">Start Skin Screening →</button>
+            <button type="button" class="btn-white" data-tab="insights" data-i18n="hero_cta2">Explore Skin Guide</button>
           </div>
           <div class="hero-trust-row">
             <span><span class="material-symbols-outlined ic-sm">offline_pin</span> Works offline</span>
@@ -193,17 +194,8 @@
       </div>
     </section>
 
-    <!-- Secondary Workspace Tabs (shown when inside app tools) -->
-    <div id="workspaceBar" class="workspace-bar hidden">
-      <button class="tab-btn" data-tab="home">← Home</button>
-      <button class="tab-btn" data-tab="diagnosis">🩺 Diagnosis · রোগ নির্ণয়</button>
-      <button class="tab-btn" data-tab="ask">💬 Ask AI · প্রশ্ন করুন</button>
-      <button class="tab-btn" data-tab="referral">📄 Referral · রেফারেল পত্র</button>
-      <button class="tab-btn" data-tab="insights">🔬 Insights · রোগ-পরিচিতি</button>
-      <button class="tab-btn" data-tab="doctime">🩺 DocTime · পরামর্শ</button>
-      <button class="tab-btn" data-tab="phase2">🌐 Phase 2 · নেটওয়ার্ক</button>
-      <button class="tab-btn" data-tab="impact">📊 Impact · প্রভাব ও নীতি</button>
-    </div>
+    <!-- Secondary Workspace Tabs (removed; unified in top navbar) -->
+    <div id="workspaceBar" class="hidden"></div>
 
     <!-- ==================== TAB 1: DIAGNOSIS (3-Step Wizard) ==================== -->
     <section id="tab-diagnosis" class="tab-panel">

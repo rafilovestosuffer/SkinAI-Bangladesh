@@ -162,12 +162,50 @@ document.querySelectorAll("[data-insight]").forEach((btn) => {
   });
 });
 
+const I18N = {
+  en: {
+    nav_home: "Home",
+    nav_dx: "Diagnosis",
+    nav_ask: "Ask AI",
+    nav_ref: "Referral",
+    nav_ins: "Insights",
+    nav_doc: "DocTime",
+    nav_p2: "Phase 2",
+    nav_imp: "Impact",
+    cta_start: "Start Screening",
+    hero_pill: "AI-Powered Skin Screening & Smart Triage",
+    hero_h1: 'AI Skin Screening<br />for <span class="teal-text">Everyone</span>',
+    hero_lead: "AI-powered dermatological screening and smart triage for rural Bangladesh. Identify potential skin conditions early, get clinical guidance, and know when to see a doctor.",
+    hero_cta1: "Start Skin Screening →",
+    hero_cta2: "Explore Skin Guide",
+  },
+  bn: {
+    nav_home: "হোম",
+    nav_dx: "রোগ নির্ণয়",
+    nav_ask: "প্রশ্ন করুন",
+    nav_ref: "রেফারেল পত্র",
+    nav_ins: "রোগ-পরিচিতি",
+    nav_doc: "পরামর্শ",
+    nav_p2: "নেটওয়ার্ক",
+    nav_imp: "প্রভাব ও নীতি",
+    cta_start: "স্ক্রিনিং শুরু করুন",
+    hero_pill: "এআই-চালিত ত্বকের রোগ নির্ণয় ও স্মার্ট ট্রায়াজ",
+    hero_h1: 'সবার জন্য <span class="teal-text">এআই</span><br />ত্বকের রোগ নির্ণয়',
+    hero_lead: "গ্রামীণ বাংলাদেশের জন্য এআই-চালিত চর্মরোগ স্ক্রিনিং ও স্মার্ট ট্রায়াজ। আপনার ত্বকের সমস্যা দ্রুত বুঝুন, পরামর্শ নিন এবং কখন ডাক্তার দেখাবেন তা জানুন।",
+    hero_cta1: "স্ক্রিনিং শুরু করুন →",
+    hero_cta2: "রোগ-পরিচিতি দেখুন",
+  },
+};
+let currentLang = "en";
+
 $("langToggle").addEventListener("click", () => {
-  const isBn = $("langToggle").textContent.trim() === "বাংলা";
-  $("langToggle").textContent = isBn ? "English" : "বাংলা";
-  document.querySelector(".landing-lead").textContent = isBn
-    ? "গ্রামীণ বাংলাদেশের জন্য এআই-চালিত চর্মরোগ স্ক্রিনিং ও স্মার্ট ট্রায়াজ। আপনার ত্বকের সমস্যা বুঝুন, পরামর্শ নিন এবং কখন ডাক্তার দেখাবেন তা জানুন।"
-    : "AI-assisted skin screening and smart triage for rural Bangladesh. Understand your skin problem, get guidance, and know when to seek care.";
+  currentLang = currentLang === "en" ? "bn" : "en";
+  const dict = I18N[currentLang];
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n;
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+  $("langToggle").textContent = currentLang === "en" ? "BN / EN" : "EN / বাংলা";
 });
 
 /* ---------- Backend health ---------- */
