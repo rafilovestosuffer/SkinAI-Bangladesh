@@ -51,46 +51,66 @@ const PREVALENCE = {
   Tinea: {
     tips: "<strong>প্রতিরোধ টিপস:</strong> ত্বক পরিষ্কার ও শুষ্ক রাখুন, তোয়ালে ও কাপড় আলাদা রাখুন, ঢিলেঢালা সুতি কাপড় পরুন।<br><strong>Prevention:</strong> Keep skin dry, avoid sharing towels/clothing, wear breathable cotton.",
     points: [
-      { name: "Chattogram", lat: 22.3569, lon: 91.7832, sev: "High" },
-      { name: "Rajshahi", lat: 24.3745, lon: 88.6042, sev: "High" },
-      { name: "Sylhet", lat: 24.8949, lon: 91.8687, sev: "High" },
-      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
-      { name: "Khulna", lat: 22.8456, lon: 89.5403, sev: "Medium" },
-      { name: "Barishal", lat: 22.7010, lon: 90.3535, sev: "Medium" },
-      { name: "Rangpur", lat: 25.7439, lon: 89.2752, sev: "Medium" },
-      { name: "Mymensingh", lat: 24.7471, lon: 90.4203, sev: "Medium" },
+      { name: "Chattogram", sev: "High" },
+      { name: "Rajshahi", sev: "High" },
+      { name: "Sylhet", sev: "High" },
+      { name: "Dhaka", sev: "Medium" },
+      { name: "Khulna", sev: "Medium" },
+      { name: "Barishal", sev: "Medium" },
+      { name: "Rangpur", sev: "Medium" },
+      { name: "Mymensingh", sev: "Medium" },
     ],
   },
   Eczema: {
     tips: "<strong>প্রতিরোধ টিপস:</strong> সুগন্ধিহীন ময়েশ্চারাইজার ব্যবহার করুন, কড়া সাবান এড়িয়ে চলুন।<br><strong>Prevention:</strong> Moisturize daily and avoid harsh soaps or triggers.",
     points: [
-      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "High" },
-      { name: "Chattogram", lat: 22.3569, lon: 91.7832, sev: "High" },
-      { name: "Sylhet", lat: 24.8949, lon: 91.8687, sev: "Medium" },
-      { name: "Khulna", lat: 22.8456, lon: 89.5403, sev: "Medium" },
+      { name: "Dhaka", sev: "High" },
+      { name: "Chattogram", sev: "High" },
+      { name: "Sylhet", sev: "Medium" },
+      { name: "Khulna", sev: "Medium" },
+      { name: "Rajshahi", sev: "Medium" },
+      { name: "Barishal", sev: "Low" },
+      { name: "Rangpur", sev: "Low" },
+      { name: "Mymensingh", sev: "Low" },
     ],
   },
   Scabies: {
     tips: "<strong>প্রতিরোধ টিপস:</strong> পরিবারের সবার একসাথে চিকিৎসা প্রয়োজন, বিছানার চাদর গরম পানিতে ধুয়ে রোদে শুকান।",
     points: [
-      { name: "Cox's Bazar", lat: 21.4272, lon: 92.0058, sev: "High" },
-      { name: "Rangpur", lat: 25.7439, lon: 89.2752, sev: "High" },
-      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
+      { name: "Chattogram", sev: "High" },
+      { name: "Rangpur", sev: "High" },
+      { name: "Sylhet", sev: "High" },
+      { name: "Dhaka", sev: "Medium" },
+      { name: "Khulna", sev: "Medium" },
+      { name: "Barishal", sev: "Medium" },
+      { name: "Rajshahi", sev: "Medium" },
+      { name: "Mymensingh", sev: "Medium" },
     ],
   },
   Bacterial: {
     tips: "<strong>প্রতিরোধ টিপস:</strong> কাটা বা ক্ষত পরিষ্কার রাখুন; জ্বর বা লালচে ভাব দ্রুত ছড়ালে আজই ডাক্তার দেখান।",
     points: [
-      { name: "Barishal", lat: 22.7010, lon: 90.3535, sev: "High" },
-      { name: "Khulna", lat: 22.8456, lon: 89.5403, sev: "Medium" },
-      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
+      { name: "Barishal", sev: "High" },
+      { name: "Chattogram", sev: "High" },
+      { name: "Khulna", sev: "Medium" },
+      { name: "Dhaka", sev: "Medium" },
+      { name: "Rajshahi", sev: "Medium" },
+      { name: "Sylhet", sev: "Medium" },
+      { name: "Rangpur", sev: "Low" },
+      { name: "Mymensingh", sev: "Low" },
     ],
   },
   Psoriasis: {
     tips: "<strong>প্রতিরোধ টিপস:</strong> ত্বক আর্দ্র রাখুন, মানসিক চাপ কমান এবং চর্মরোগ বিশেষজ্ঞের পরামর্শ নিন।",
     points: [
-      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
-      { name: "Rajshahi", lat: 24.3745, lon: 88.6042, sev: "Medium" },
+      { name: "Dhaka", sev: "Medium" },
+      { name: "Rajshahi", sev: "Medium" },
+      { name: "Chattogram", sev: "Medium" },
+      { name: "Sylhet", sev: "Low" },
+      { name: "Khulna", sev: "Low" },
+      { name: "Barishal", sev: "Low" },
+      { name: "Rangpur", sev: "Low" },
+      { name: "Mymensingh", sev: "Low" },
     ],
   },
 };
@@ -418,33 +438,26 @@ async function renderInsights() {
     if (geo) {
       geoLayer = L.geoJSON(geo, {
         style: (feature) => {
+          const div = (feature.properties?.division || "").toLowerCase();
           const name = (feature.properties?.name || "").toLowerCase();
-          const sev = sevMap[name] || (name === "chittagong" ? sevMap["chattogram"] : null);
+          const sev = sevMap[div] || sevMap[name] || (div === "chittagong" ? sevMap["chattogram"] : null);
           const fillColor = sev === "High" ? MAP_COLORS.alert : sev === "Medium" ? MAP_COLORS.watch : MAP_COLORS.low;
           return {
             color: MAP_COLORS.edge,
             weight: 1,
             fillColor,
-            fillOpacity: sev ? 0.62 : 0.35,
+            fillOpacity: sev === "High" ? 0.62 : sev === "Medium" ? 0.55 : 0.42,
           };
         },
         onEachFeature: (feature, layer) => {
           const name = feature.properties?.name || "District";
-          const sev = sevMap[name.toLowerCase()] || (name.toLowerCase() === "chittagong" ? sevMap["chattogram"] : "Low");
-          layer.bindTooltip(`<strong>${name}</strong><br>${disease}: ${sev}`, { sticky: true });
+          const divName = feature.properties?.division || "";
+          const div = divName.toLowerCase();
+          const sev = sevMap[div] || sevMap[name.toLowerCase()] || (div === "chittagong" ? sevMap["chattogram"] : "Low");
+          layer.bindTooltip(`<strong>${name}</strong> (${divName})<br>${disease}: ${sev}`, { sticky: true });
         },
       }).addTo(bdMap);
     }
-
-    info.points.forEach((p) => {
-      const color = p.sev === "High" ? MAP_COLORS.alert : MAP_COLORS.watch;
-      L.circleMarker([p.lat, p.lon], {
-        radius: p.sev === "High" ? 10 : 7,
-        color,
-        fillColor: color,
-        fillOpacity: 0.7,
-      }).bindPopup(`<strong>${p.name}</strong><br>${disease}: ${p.sev}`).addTo(mapLayer);
-    });
   }
 }
 $("insightDisease").addEventListener("change", renderInsights);
