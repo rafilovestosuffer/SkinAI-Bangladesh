@@ -169,7 +169,7 @@ body {
 .scan-pct { font-size: 0.78rem; font-weight: 700; color: var(--teal); }
 
 /* Bento Feature Grid */
-.bento-section { margin-top: 24px; }
+.bento-section { margin-top: 48px; }
 .bento-head { text-align: center; max-width: 620px; margin: 0 auto 16px; }
 .bento-eyebrow { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; color: var(--teal); margin-bottom: 4px; }
 .bento-title { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px; }
@@ -213,7 +213,7 @@ body {
 
 /* Mission Strip after Bento */
 .mission-strip {
-  margin: 22px auto 0;
+  margin: 40px auto 0;
   max-width: 680px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -241,7 +241,7 @@ body {
 @media (max-width: 640px) { .mission-arrow { display: none; } }
 
 /* Landing Sections */
-.landing-section { margin-top: 26px; }
+.landing-section { margin-top: 48px; }
 .section-h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 14px; }
 .features-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
 @media (max-width: 1024px) { .features-6 { grid-template-columns: repeat(3, 1fr); } }
@@ -261,7 +261,7 @@ body {
 .feat-card span { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
 
 /* How it works + Trusted */
-.landing-split { display: grid; grid-template-columns: 1.75fr 1fr; gap: 16px; margin-top: 22px; }
+.landing-split { display: grid; grid-template-columns: 1.75fr 1fr; gap: 18px; margin-top: 44px; }
 @media (max-width: 860px) { .landing-split { grid-template-columns: 1fr; } }
 .split-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
 .steps-4 { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
