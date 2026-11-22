@@ -516,6 +516,10 @@ async function downloadReferralPdf(useSample = false) {
     alert(err.message);
   }
 }
+$("dxGenSampleBtn").addEventListener("click", () => {
+  window.open("/assets/sample-referral.pdf", "_blank", "noopener");
+});
+
 $("downloadPdfBtn").addEventListener("click", () => downloadReferralPdf(false));
 $("referralTabPdfBtn").addEventListener("click", () => downloadReferralPdf(false));
 $("samplePdfBtn").addEventListener("click", () => downloadReferralPdf(true));

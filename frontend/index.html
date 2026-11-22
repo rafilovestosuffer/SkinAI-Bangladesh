@@ -24,7 +24,6 @@
         <button class="nav-link active" data-tab="home"><span class="material-symbols-outlined ic-nav">home</span><span data-i18n="nav_home">Home</span></button>
         <button class="nav-link" data-tab="diagnosis"><span class="material-symbols-outlined ic-nav">stethoscope</span><span data-i18n="nav_dx">Diagnosis</span></button>
         <button class="nav-link" data-tab="ask"><span class="material-symbols-outlined ic-nav">forum</span><span data-i18n="nav_ask">Ask AI</span></button>
-        <button class="nav-link" data-tab="referral"><span class="material-symbols-outlined ic-nav">description</span><span data-i18n="nav_ref">Referral</span></button>
         <button class="nav-link" data-tab="insights"><span class="material-symbols-outlined ic-nav">biotech</span><span data-i18n="nav_ins">Insights</span></button>
         <button class="nav-link" data-tab="doctime"><span class="material-symbols-outlined ic-nav">local_hospital</span><span data-i18n="nav_doc">DocTime</span></button>
         <button class="nav-link" data-tab="phase2"><span class="material-symbols-outlined ic-nav">public</span><span data-i18n="nav_p2">Phase 2</span></button>
@@ -486,6 +485,18 @@
           </div>
         </div>
       </div>
+
+      <!-- Sample Referral Letter Card (Bottom of Diagnosis) -->
+      <details class="sample-ref-card mt" open>
+        <summary>Download a sample referral letter (no diagnosis needed)</summary>
+        <div class="sample-ref-body">
+          <p class="muted small">Fully-populated example: Rahim · Scabies Tier 3 · with doctor booking. Generates instantly so judges can see the format.</p>
+          <div class="sample-ref-btns">
+            <button type="button" id="dxGenSampleBtn" class="btn-white">Generate sample PDF</button>
+            <a href="/assets/sample-referral.pdf" download="skinai_demo_consultation.pdf" class="btn-teal sample-dl-link">Download sample</a>
+          </div>
+        </div>
+      </details>
     </section>
 
     <!-- ==================== TAB 2: ASK AI (ChatGPT-style Sidebar + Thread) ==================== -->
