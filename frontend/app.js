@@ -256,7 +256,9 @@ document.querySelectorAll(".pm-tab").forEach((tab) => {
     else $("photoInput").removeAttribute("capture");
     $("camTitle").textContent = isCam ? "Camera is ready" : "Choose from gallery";
     $("camSub").textContent = isCam ? "Position the affected area in the frame" : "Select a clear skin photo from your device";
-    $("camBtnLabel").textContent = isCam ? "Capture Photo" : "Browse Files";
+    $("camBtnLabel").innerHTML = isCam
+      ? '<span class="material-symbols-outlined ic-btn">photo_camera</span> Capture Photo'
+      : '<span class="material-symbols-outlined ic-btn">folder_open</span> Browse Files';
   });
 });
 

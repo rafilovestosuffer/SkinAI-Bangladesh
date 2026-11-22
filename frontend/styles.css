@@ -500,6 +500,8 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
   line-height: 1;
 }
 .ic-sm { font-size: 20px !important; color: #0E7C6B !important; }
+.ic-btn { font-size: 18px !important; color: #FFFFFF !important; }
+.inline-ic { display: inline-flex; align-items: center; gap: 6px; }
 .feat-icon, .hiw-icon, .cam-circle, .mic-circle {
   color: #0E7C6B !important;
   background: #F0FAF8;
