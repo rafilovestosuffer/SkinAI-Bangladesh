@@ -751,24 +751,48 @@ $("gpsBtn").addEventListener("click", () => {
 });
 
 /* ---------- Phase 2 Doctors ---------- */
+const DOC_AVATAR_SVG = `<svg class="doc-avatar-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M21 20C21 13.5 26 9 32 9C38 9 43 13.5 43 20" stroke="#0F172A" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M22 19C26 19 29 17 32 15C35 17 38 19 42 19" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round"/>
+  <rect x="23" y="21" width="7.5" height="6" rx="1.8" fill="#10B981" stroke="#0F172A" stroke-width="2.2"/>
+  <rect x="33.5" y="21" width="7.5" height="6" rx="1.8" fill="#10B981" stroke="#0F172A" stroke-width="2.2"/>
+  <path d="M30.5 23.5H33.5" stroke="#0F172A" stroke-width="2.2"/>
+  <circle cx="20.5" cy="24" r="2" fill="#10B981" stroke="#0F172A" stroke-width="1.8"/>
+  <circle cx="43.5" cy="24" r="2" fill="#10B981" stroke="#0F172A" stroke-width="1.8"/>
+  <path d="M23 27C23 32 27 36 32 36C37 36 41 32 41 27" stroke="#0F172A" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M16 53V45C16 41 20 38 25 38H39C44 38 48 41 48 45V53" stroke="#0F172A" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M25 38L32 47L39 38" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M32 41L30 48L32 51L34 48L32 41Z" fill="#10B981" stroke="#0F172A" stroke-width="1.8" stroke-linejoin="round"/>
+</svg>`;
+
+const STARS_HTML = '<span class="doc-stars">' + '<span class="material-symbols-outlined ic-star">star</span>'.repeat(5) + "</span>";
+
 let selectedDocIdx = 0;
 function renderDoctors() {
   const grid = $("doctorsGrid");
   grid.innerHTML = "";
   DOCTORS.forEach((d, idx) => {
+    const isSel = idx === selectedDocIdx;
     const card = document.createElement("div");
-    card.className = "doc-card" + (idx === selectedDocIdx ? " selected" : "");
+    card.className = "doc-card" + (isSel ? " selected" : "");
     card.innerHTML = `
-      <div class="small">⭐⭐⭐⭐⭐ <span class="g-pill">BMDC</span></div>
-      <strong>${d.name}</strong>
-      <span class="muted small">${d.en} · ${d.cred}</span>
-      <span class="muted small">${d.hosp} · ${d.fee}</span>
-      <button type="button" class="btn-secondary mt" data-doc="${idx}">${idx === selectedDocIdx ? "✓ Selected · নির্বাচিত" : "বেছে নিন · Select"}</button>
+      <div class="doc-card-head">
+        <div class="doc-avatar-box">${DOC_AVATAR_SVG}</div>
+        <div class="doc-card-meta">
+          <div class="doc-rating-row">${STARS_HTML} <span class="g-pill">BMDC</span></div>
+          <strong>${d.name}</strong>
+          <span class="muted small">${d.en} · ${d.cred}</span>
+        </div>
+      </div>
+      <span class="muted small">${d.hosp} · <strong>${d.fee}</strong></span>
+      <button type="button" class="btn-secondary mt inline-ic" style="justify-content:center;" data-doc="${idx}">
+        ${isSel ? '<span class="material-symbols-outlined ic-sm">check</span> Selected · নির্বাচিত' : "বেছে নিন · Select"}
+      </button>
     `;
     grid.appendChild(card);
   });
   const sel = DOCTORS[selectedDocIdx];
-  $("selectedDoctorCard").innerHTML = `<strong>${sel.name} (${sel.en})</strong> — ${sel.cred} · ${sel.hosp} · Consultation fee: <strong>${sel.fee}</strong>`;
+  $("selectedDoctorCard").innerHTML = `<div class="doc-card-head"><div class="doc-avatar-box">${DOC_AVATAR_SVG}</div><div><strong>${sel.name} (${sel.en})</strong><div class="muted small">${sel.cred} · ${sel.hosp} · Consultation fee: <strong>${sel.fee}</strong></div></div></div>`;
   grid.querySelectorAll("[data-doc]").forEach((b) => {
     b.addEventListener("click", () => { selectedDocIdx = Number(b.dataset.doc); renderDoctors(); });
   });

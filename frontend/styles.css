@@ -651,6 +651,17 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
 .shadcn-opt:hover { background: var(--surface-alt); }
 .shadcn-opt.selected { background: var(--teal-soft); color: var(--teal-dark); font-weight: 600; }
 
+.doc-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.doc-avatar-box {
+  width: 50px; height: 50px; border-radius: 12px; background: #fff; border: 1px solid var(--line);
+  display: grid; place-items: center; flex: none; box-shadow: var(--shadow-sm);
+}
+.doc-avatar-svg { width: 40px; height: 40px; display: block; }
+.doc-card-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.doc-rating-row { display: flex; align-items: center; gap: 6px; }
+.doc-stars { display: inline-flex; align-items: center; }
+.ic-star { font-size: 15px !important; color: #F59E0B !important; font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20 !important; }
+
 .sk-footer { text-align: center; margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
 .footer-brand { font-size: 0.92rem; margin-bottom: 6px; }
 .footer-pills { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 0.72rem; color: var(--teal); }
