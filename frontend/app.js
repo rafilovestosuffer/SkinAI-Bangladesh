@@ -6,14 +6,52 @@ const MAX_SIDE = 800;
 let selectedBlob = null;
 let lastResult = null;
 
+const DEMO_CASES = {
+  tinea: {
+    disease: "Tinea / Ringworm (Fungal)",
+    disease_bn: "দাদ / ছত্রাক সংক্রমণ",
+    confidence: 0.88,
+    tier: 2,
+    urgency_label: "Routine — within 48 hours",
+    action_bn: "পরিষ্কার ও শুষ্ক রাখুন এবং ৪৮ ঘণ্টার মধ্যে চিকিৎসকের পরামর্শ নিন।",
+    action_en: "Keep the area clean and dry; see a clinician within 48 hours for antifungal evaluation.",
+    facility: "Upazila Health Complex / Community Clinic",
+    reasons: ["Circular scaly border pattern", "Demo Quick Start scenario"],
+    top2: [{ disease: "Tinea / Ringworm", confidence: 0.88 }, { disease: "Eczema", confidence: 0.08 }],
+  },
+  cellulitis: {
+    disease: "Bacterial Skin Infection",
+    disease_bn: "ব্যাকটেরিয়াজনিত ত্বকের সংক্রমণ",
+    confidence: 0.84,
+    tier: 3,
+    urgency_label: "Urgent — Today",
+    action_bn: "সতর্ক লক্ষণ (জ্বর/দ্রুত ছড়ানো) থাকায় আজই নিকটস্থ স্বাস্থ্যকেন্দ্রে যান।",
+    action_en: "Warning signs present — visit the nearest health facility today for urgent evaluation.",
+    facility: "District Hospital Emergency / Upazila Health Complex",
+    reasons: ["Red-flag safety floor triggered (fever / spreading)", "Demo Quick Start scenario"],
+    top2: [{ disease: "Bacterial Infection", confidence: 0.84 }, { disease: "Eczema", confidence: 0.11 }],
+  },
+  eczema: {
+    disease: "Eczema (Dermatitis)",
+    disease_bn: "একজিমা",
+    confidence: 0.82,
+    tier: 1,
+    urgency_label: "Non-urgent",
+    action_bn: "ত্বক আর্দ্র রাখুন এবং সুযোগমতো চিকিৎসকের পরামর্শ নিন।",
+    action_en: "Keep skin moisturized and consult a doctor at your convenience.",
+    facility: "Community Clinic / Telemedicine",
+    reasons: ["Dry erythematous patch", "Demo Quick Start scenario"],
+    top2: [{ disease: "Eczema", confidence: 0.82 }, { disease: "Psoriasis", confidence: 0.12 }],
+  },
+};
+
 /* ---------- Tabs ---------- */
+function switchTab(tabId) {
+  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === tabId));
+  document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === "tab-" + tabId));
+}
 document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-    document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
-    btn.classList.add("active");
-    $("tab-" + btn.dataset.tab).classList.add("active");
-  });
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
 });
 
 /* ---------- Backend health check ---------- */
@@ -30,6 +68,19 @@ async function checkBackend() {
     pill.className = "status-pill err";
   }
 }
+
+/* ---------- Quick Start Demos ---------- */
+document.querySelectorAll("[data-demo]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const demo = DEMO_CASES[btn.dataset.demo];
+    if (!demo) return;
+    lastResult = demo;
+    $("resultWrap").classList.remove("hidden");
+    $("resultError").classList.add("hidden");
+    $("resultLoading").classList.add("hidden");
+    renderResult(demo);
+  });
+});
 
 /* ---------- Image resize & preview ---------- */
 function shrinkImage(file) {
@@ -69,7 +120,7 @@ $("photoInput").addEventListener("change", async (e) => {
 /* ---------- Analyze Skin ---------- */
 $("analyzeBtn").addEventListener("click", async () => {
   if (!selectedBlob) return;
-  $("resultEmpty").classList.add("hidden");
+  $("resultWrap").classList.remove("hidden");
   $("resultBody").classList.add("hidden");
   $("resultError").classList.add("hidden");
   $("resultLoading").classList.remove("hidden");
@@ -86,7 +137,6 @@ $("analyzeBtn").addEventListener("click", async () => {
   try {
     let res = await fetch("/api/analyze", { method: "POST", body: form });
     if (res.status === 404) {
-      // Fallback to /api/cases if HF Space hasn't synced /api/analyze yet
       const fallbackForm = new FormData();
       fallbackForm.append("image", selectedBlob, "skin.jpg");
       flags.forEach((f) => fallbackForm.append("red_flags", f));
@@ -142,13 +192,14 @@ function renderResult(r) {
   if (r.disease) {
     $("chatContextBadge").textContent = `Context: ${r.disease}`;
     $("chatContextBadge").classList.remove("hidden");
+    $("referralSummary").innerHTML = `<strong>${r.disease}</strong> (${r.disease_bn || ""}) · Tier ${tier} — ${r.action_en || ""}`;
   }
   $("resultBody").classList.remove("hidden");
 }
 
 /* ---------- Referral PDF ---------- */
-$("downloadPdfBtn").addEventListener("click", async () => {
-  if (!lastResult) return;
+async function downloadReferralPdf() {
+  if (!lastResult) return alert("Please run a screening or Quick Start demo first.");
   try {
     const res = await fetch("/api/referral-pdf", {
       method: "POST",
@@ -163,7 +214,7 @@ $("downloadPdfBtn").addEventListener("click", async () => {
         action_bn: lastResult.action_bn || "",
       }),
     });
-    if (!res.ok) throw new Error("PDF endpoint unavailable (update HF Space backend)");
+    if (!res.ok) throw new Error("PDF endpoint unavailable (push webhook/api.py to HF Space)");
     const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -174,13 +225,20 @@ $("downloadPdfBtn").addEventListener("click", async () => {
   } catch (err) {
     alert(err.message);
   }
-});
+}
+$("downloadPdfBtn").addEventListener("click", downloadReferralPdf);
+$("referralTabPdfBtn").addEventListener("click", downloadReferralPdf);
 
 $("askAboutBtn").addEventListener("click", () => {
-  document.querySelector('.tab-btn[data-tab="assistant"]').click();
+  switchTab("ask");
   if (lastResult && lastResult.disease) {
     $("chatInput").value = `${lastResult.disease} সম্পর্কে বিস্তারিত ও করণীয় কী?`;
   }
+});
+
+$("findHospitalQuickBtn").addEventListener("click", () => {
+  switchTab("hospitals");
+  loadHospitals({ district: $("districtSelect").value });
 });
 
 /* ---------- AI Assistant ---------- */
@@ -206,7 +264,7 @@ async function sendChat(question) {
       }),
     });
     if (res.status === 404) {
-      pending.textContent = "Backend /api/chat not yet deployed on Hugging Face Space. Push the updated webhook/api.py to HF Space to enable RAG chat.";
+      pending.textContent = "Backend /api/chat not yet deployed on Hugging Face Space. Push webhook/api.py to HF Space to enable RAG chat.";
       return;
     }
     const data = await res.json();
@@ -224,7 +282,7 @@ $("chatForm").addEventListener("submit", (e) => {
   sendChat(q);
 });
 
-document.querySelectorAll(".chip").forEach((c) => {
+document.querySelectorAll(".chat-chip").forEach((c) => {
   c.addEventListener("click", () => sendChat(c.dataset.q));
 });
 

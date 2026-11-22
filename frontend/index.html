@@ -3,54 +3,87 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0F62FE" />
-  <title>SkinAI Bangladesh — চর্মরোগ স্ক্রিনিং ও ট্রায়াজ</title>
+  <meta name="theme-color" content="#1668A4" />
+  <title>SkinAI Bangladesh</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">🩺</div>
-        <div>
-          <h1>SkinAI Bangladesh</h1>
-          <p class="subtitle">এআই চর্মরোগ স্ক্রিনিং ও ট্রায়াজ · AI Skin Screening &amp; Triage</p>
-        </div>
-      </div>
-      <div class="topbar-actions">
+  <div class="page-shell">
+    <!-- Hero Banner (matches HF Space design) -->
+    <header class="hero-banner">
+      <div class="hero-glow"></div>
+      <div class="hero-glow-2"></div>
+      <div class="hero-status-wrap">
         <span id="apiStatus" class="status-pill checking">Checking backend…</span>
       </div>
-    </div>
-  </header>
+      <div class="hero-title">SkinAI Bangladesh</div>
+      <div class="hero-subtitle">
+        AI-powered dermatological screening &amp; smart triage for rural Bangladesh
+      </div>
+      <div class="hero-tagline-row">
+        <div class="hero-step">সঠিক রোগী<small>Right Patient</small></div>
+        <div class="hero-arrow">→</div>
+        <div class="hero-step">সঠিক ডাক্তার<small>Right Doctor</small></div>
+        <div class="hero-arrow">→</div>
+        <div class="hero-step">সঠিক সময়<small>Right Time</small></div>
+      </div>
+      <div class="stat-bar">
+        <span class="stat-chip stat-chip-blue">Swin Transformer + CBAM</span>
+        <span class="stat-chip stat-chip-green">INT8 · free CPU</span>
+        <span class="stat-chip stat-chip-teal">Bangladesh clinical data</span>
+        <span class="stat-chip stat-chip-dark">6 conditions</span>
+      </div>
+    </header>
 
-  <nav class="tabbar" aria-label="Primary">
-    <div class="container tabbar-inner">
-      <button class="tab-btn active" data-tab="screening">🔬 স্ক্রিনিং · Screening</button>
-      <button class="tab-btn" data-tab="assistant">💬 এআই সহায়তা · AI Assistant</button>
-      <button class="tab-btn" data-tab="hospitals">🏥 হাসপাতাল · Hospitals</button>
+    <!-- Notice strip -->
+    <div class="info-strip">
+      📴 <a href="https://rafilovestosuffer-skinai-bd.hf.space/lite/" target="_blank" rel="noopener"><strong>SkinAI Lite</strong></a> —
+      ইন্টারনেট ছাড়াও চলে · works offline, sends when signal returns
+      &nbsp;·&nbsp; 👩‍⚕️ <a href="https://rafilovestosuffer-skinai-bd.hf.space/doctor" target="_blank" rel="noopener"><strong>Doctor Queue</strong></a> —
+      clinician review (PIN)
     </div>
-  </nav>
 
-  <main class="container main-content">
-    <!-- TAB 1: SCREENING -->
-    <section id="tab-screening" class="tab-panel active">
+    <!-- 7-Tab Navigation Bar -->
+    <nav class="tabs-nav" aria-label="Primary sections">
+      <button class="tab-btn active" data-tab="diagnosis">🩺 Diagnosis · রোগ নির্ণয়</button>
+      <button class="tab-btn" data-tab="ask">💬 Ask AI · প্রশ্ন করুন</button>
+      <button class="tab-btn" data-tab="referral">📄 Referral · রেফারেল পত্র</button>
+      <button class="tab-btn" data-tab="insights">🔬 Insights · রোগ-পরিচিতি</button>
+      <button class="tab-btn" data-tab="hospitals">🏥 Hospitals · হাসপাতাল</button>
+      <button class="tab-btn" data-tab="phase2">🌐 Phase 2 · নেটওয়ার্ক</button>
+      <button class="tab-btn" data-tab="impact">📊 Impact · প্রভাব ও নীতি</button>
+    </nav>
+
+    <!-- TAB 1: DIAGNOSIS -->
+    <section id="tab-diagnosis" class="tab-panel active">
+      <details class="quick-start">
+        <summary>⚡ &nbsp;Quick Start — try a pre-filled demo case</summary>
+        <div class="quick-start-body">
+          <span class="muted small">Skip photo upload — preview a sample clinical triage scenario:</span>
+          <div class="quick-btns">
+            <button type="button" class="btn-chip" data-demo="tinea">Tinea / দাদ (Routine)</button>
+            <button type="button" class="btn-chip" data-demo="cellulitis">Urgent Infection + Fever (Tier 3)</button>
+            <button type="button" class="btn-chip" data-demo="eczema">Eczema / একজিমা (Non-urgent)</button>
+          </div>
+        </div>
+      </details>
+
       <div class="grid-2">
-        <div class="card">
-          <h2>১. আক্রান্ত স্থানের ছবি · Skin Photo</h2>
-          <label id="dropzone" class="dropzone">
-            <input id="photoInput" type="file" accept="image/*" capture="environment" />
-            <div class="dropzone-copy">
-              <strong>ছবি তুলুন বা আপলোড করুন</strong>
-              <span>Take a well-lit close-up photo or drag &amp; drop (JPG/PNG)</span>
+        <!-- Left Column: Voice / Symptoms Input -->
+        <div class="sk-card">
+          <div class="sk-card-head">
+            <div class="sk-step-badge">1</div>
+            <div class="sk-card-title">
+              <strong>🎙️ Symptoms &amp; History</strong>
+              <span>লক্ষণ ও রোগের ইতিহাস</span>
             </div>
-            <img id="photoPreview" class="preview hidden" alt="Selected skin lesion preview" />
-          </label>
-          <p id="photoMeta" class="muted small"></p>
+            <span class="badge-opt">OPTIONAL</span>
+          </div>
+          <p class="muted small">Select any warning signs and describe symptoms in Bengali or English.</p>
 
-          <h2 class="mt">২. সতর্ক লক্ষণ · Warning Signs</h2>
           <div class="flags-grid">
             <label class="flag-item"><input type="checkbox" name="flag" value="fever" /> <span>জ্বর আছে · Fever</span></label>
             <label class="flag-item"><input type="checkbox" name="flag" value="spreading" /> <span>দ্রুত ছড়াচ্ছে · Spreading fast</span></label>
@@ -59,115 +92,175 @@
           </div>
 
           <label class="field mt">
-            <span>অতিরিক্ত বিবরণ · Additional symptoms (optional)</span>
-            <textarea id="symptomsText" rows="2" placeholder="যেমন: ৩ দিন ধরে চুলকানি ও লাল দাগ · e.g. itchy red rash for 3 days"></textarea>
+            <span>SYMPTOM NOTES (BENGALI OR ENGLISH)</span>
+            <textarea id="symptomsText" rows="3" placeholder="যেমন: ৩ দিন ধরে হাতে লাল গোল দাগ ও চুলকানি · e.g. 3 days itchy circular rash on arm"></textarea>
           </label>
 
-          <div class="row mt">
-            <label class="field">
-              <span>জেলা · District</span>
-              <select id="districtSelect">
-                <option value="Dhaka">Dhaka (ঢাকা)</option>
-                <option value="Chattogram">Chattogram (চট্টগ্রাম)</option>
-                <option value="Rajshahi">Rajshahi (রাজশাহী)</option>
-                <option value="Khulna">Khulna (খুলনা)</option>
-                <option value="Sylhet">Sylhet (সিলেট)</option>
-                <option value="Rangpur">Rangpur (রংপুর)</option>
-                <option value="Barishal">Barishal (বরিশাল)</option>
-                <option value="Mymensingh">Mymensingh (ময়মনসিংহ)</option>
-                <option value="Cumilla">Cumilla (কুমিল্লা)</option>
-                <option value="Bogura">Bogura (বগুড়া)</option>
-              </select>
-            </label>
+          <label class="field mt">
+            <span>DISTRICT / জেলা</span>
+            <select id="districtSelect">
+              <option value="Dhaka">Dhaka (ঢাকা)</option>
+              <option value="Chattogram">Chattogram (চট্টগ্রাম)</option>
+              <option value="Rajshahi">Rajshahi (রাজশাহী)</option>
+              <option value="Khulna">Khulna (খুলনা)</option>
+              <option value="Sylhet">Sylhet (সিলেট)</option>
+              <option value="Rangpur">Rangpur (রংপুর)</option>
+              <option value="Barishal">Barishal (বরিশাল)</option>
+              <option value="Mymensingh">Mymensingh (ময়মনসিংহ)</option>
+              <option value="Cumilla">Cumilla (কুমিল্লা)</option>
+              <option value="Bogura">Bogura (বগুড়া)</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Right Column: Skin Photo + Privacy by Design -->
+        <div class="sk-card">
+          <div class="sk-card-head">
+            <div class="sk-step-badge green">📷</div>
+            <div class="sk-card-title">
+              <strong>Skin Photo</strong>
+              <span>ছবি আপলোড করুন</span>
+            </div>
+            <span class="badge-req">* REQUIRED</span>
           </div>
+          <p class="muted small">Upload a clear, well-lit close-up of the affected area. BD-SkinNet (Swin+CBAM, INT8) analyses the image on the Hugging Face CPU backend.</p>
+
+          <div class="privacy-box">
+            <div class="privacy-head">
+              🔒 <strong>Privacy by design —</strong>
+              <span class="p-pill">NOT SAVED BY DEFAULT</span>
+              <span class="p-pill">NO TRACKING</span>
+              <span class="p-pill">NO ACCOUNT</span>
+            </div>
+            <p class="small">
+              Your photo is analysed for this session and never saved — unless you choose to share it with a doctor (a small copy, no name or phone, deleted after 7 days).
+            </p>
+            <p class="small bn-muted">
+              আপনার ছবি শুধু এই বিশ্লেষণের জন্য ব্যবহৃত হয়, সংরক্ষণ করা হয় না — যদি না আপনি ডাক্তারকে দেখাতে সম্মতি দেন।
+            </p>
+          </div>
+
+          <label id="dropzone" class="dropzone mt">
+            <input id="photoInput" type="file" accept="image/*" capture="environment" />
+            <div class="dropzone-copy">
+              <strong>ছবি তুলুন বা আপলোড করুন · Upload Skin Photo</strong>
+              <span>Drag &amp; drop or click to choose JPG / PNG</span>
+            </div>
+            <img id="photoPreview" class="preview hidden" alt="Selected skin lesion preview" />
+          </label>
+          <p id="photoMeta" class="muted small"></p>
 
           <label class="consent-box mt">
             <input id="consentCheck" type="checkbox" />
-            <span>চিকিৎসক রিভিউয়ের জন্য সম্মতি দিচ্ছি (নাম/ফোন ছাড়া; ৭ দিন পর মুছে যাবে) · Consent for doctor review (anonymous, 7-day retention)</span>
+            <span>চিকিৎসক রিভিউয়ের জন্য সম্মতি দিচ্ছি (নাম/ফোন ছাড়া; ৭ দিন পর মুছে যাবে) · Consent for doctor second opinion</span>
           </label>
 
-          <button id="analyzeBtn" class="btn-primary mt" disabled>বিশ্লেষণ করুন · Analyze Skin</button>
+          <button id="analyzeBtn" class="btn-primary mt" disabled>🔬 Analyze &amp; Triage · বিশ্লেষণ করুন</button>
         </div>
+      </div>
 
-        <div class="card result-card">
-          <h2>ফলাফল ও ট্রায়াজ · Screening Result</h2>
-          <div id="resultEmpty" class="empty-state">
-            <p>বাম পাশে একটি ছবি আপলোড করে <strong>Analyze Skin</strong> চাপুন।</p>
-            <p class="muted small">Upload a skin photo on the left to get AI classification, urgency tier, and referral guidance.</p>
-          </div>
-          <div id="resultLoading" class="empty-state hidden">
-            <div class="spinner"></div>
-            <p>বিশ্লেষণ চলছে… · Running BD-SkinNet &amp; triage engine…</p>
-          </div>
-          <div id="resultError" class="alert error hidden"></div>
-          <div id="resultBody" class="hidden">
-            <div id="tierBanner" class="tier-banner"></div>
-            <div class="diagnosis-box">
-              <div>
-                <div class="muted small">সম্ভাব্য রোগ · Predicted Condition</div>
-                <div id="diseaseName" class="disease-title"></div>
-                <div id="diseaseBn" class="disease-bn"></div>
-              </div>
-              <div class="conf-box">
-                <div class="muted small">Confidence</div>
-                <div id="confidenceVal" class="conf-num"></div>
-              </div>
+      <!-- Result Section -->
+      <div id="resultWrap" class="sk-card mt hidden">
+        <div id="resultLoading" class="empty-state hidden">
+          <div class="spinner"></div>
+          <p>BD-SkinNet &amp; Triage Engine চলছে… · Running analysis on Hugging Face backend…</p>
+        </div>
+        <div id="resultError" class="alert error hidden"></div>
+        <div id="resultBody" class="hidden">
+          <div id="tierBanner" class="tier-banner"></div>
+          <div class="diagnosis-box">
+            <div>
+              <div class="muted small">সম্ভাব্য রোগ · Predicted Condition</div>
+              <div id="diseaseName" class="disease-title"></div>
+              <div id="diseaseBn" class="disease-bn"></div>
             </div>
-            <div id="top2Wrap" class="top2-wrap"></div>
-            <div class="action-box">
-              <strong>পরামর্শ · Recommended Action</strong>
-              <p id="actionBn"></p>
-              <p id="actionEn" class="muted"></p>
-              <p id="facilityText" class="small muted"></p>
+            <div class="conf-box">
+              <div class="muted small">Confidence</div>
+              <div id="confidenceVal" class="conf-num"></div>
             </div>
-            <ul id="reasonsList" class="reasons-list"></ul>
-            <div class="row mt">
-              <button id="downloadPdfBtn" class="btn-secondary">📄 রেফারেল PDF ডাউনলোড · Referral PDF</button>
-              <button id="askAboutBtn" class="btn-secondary">💬 এআই-কে জিজ্ঞাসা করুন · Ask AI</button>
-            </div>
-            <p id="caseIdNote" class="muted small mt"></p>
           </div>
+          <div id="top2Wrap" class="top2-wrap"></div>
+          <div class="action-box">
+            <strong>পরামর্শ · Recommended Action</strong>
+            <p id="actionBn"></p>
+            <p id="actionEn" class="muted"></p>
+            <p id="facilityText" class="small muted"></p>
+          </div>
+          <ul id="reasonsList" class="reasons-list"></ul>
+          <div class="row mt">
+            <button id="downloadPdfBtn" class="btn-secondary">📄 রেফারেল PDF ডাউনলোড · Download Referral PDF</button>
+            <button id="askAboutBtn" class="btn-secondary">💬 Ask AI · এআই-কে জিজ্ঞাসা করুন</button>
+            <button id="findHospitalQuickBtn" class="btn-secondary">🏥 Find Nearest Hospital</button>
+          </div>
+          <p id="caseIdNote" class="muted small mt"></p>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: AI ASSISTANT -->
-    <section id="tab-assistant" class="tab-panel">
-      <div class="card chat-card">
-        <div class="chat-header">
-          <div>
-            <h2>এআই চর্মরোগ সহায়তা · AI Skin Health Assistant</h2>
-            <p class="muted small">বাংলা বা ইংরেজিতে প্রশ্ন করুন (RAG + Gemini) · Ask in Bengali or English</p>
-          </div>
+    <!-- TAB 2: ASK AI -->
+    <section id="tab-ask" class="tab-panel">
+      <div class="sk-card">
+        <div class="ask-hero">
+          <div class="ask-orb">AI</div>
+          <h2>Ask about skin conditions · ত্বকের রোগ সম্পর্কে প্রশ্ন করুন</h2>
+          <p class="muted small">Powered by Multilingual-E5 RAG + Gemini on the Hugging Face backend</p>
           <span id="chatContextBadge" class="context-badge hidden"></span>
         </div>
 
-        <div class="quick-chips">
-          <button class="chip" data-q="দাদ বা ছত্রাক সংক্রমণ হলে কী করণীয়?">দাদ / ফাঙ্গাল সংক্রমণ</button>
-          <button class="chip" data-q="একজিমা হলে ত্বকের যত্ন কীভাবে নেব?">একজিমা যত্ন</button>
-          <button class="chip" data-q="When should a skin rash be seen urgently by a doctor?">Urgent warning signs</button>
+        <div class="quick-btns mt">
+          <button type="button" class="btn-chip chat-chip" data-q="দাদ বা ছত্রাক সংক্রমণ হলে কী করণীয়?">দাদ / ফাঙ্গাল সংক্রমণ</button>
+          <button type="button" class="btn-chip chat-chip" data-q="একজিমা হলে ত্বকের যত্ন কীভাবে নেব?">একজিমা যত্ন</button>
+          <button type="button" class="btn-chip chat-chip" data-q="When should a skin rash be seen urgently by a doctor?">Urgent warning signs</button>
         </div>
 
-        <div id="chatLog" class="chat-log">
+        <div id="chatLog" class="chat-log mt">
           <div class="msg bot">
             নমস্কার / আসসালামু আলাইকুম! ত্বকের যেকোনো সমস্যা সম্পর্কে বাংলা বা ইংরেজিতে প্রশ্ন করতে পারেন।
           </div>
         </div>
 
-        <form id="chatForm" class="chat-input-row">
+        <form id="chatForm" class="chat-input-row mt">
           <input id="chatInput" type="text" placeholder="আপনার প্রশ্ন লিখুন… · Type your question…" required />
           <button type="submit" class="btn-primary" style="width:auto;">পাঠান · Send</button>
         </form>
       </div>
     </section>
 
-    <!-- TAB 3: HOSPITALS -->
+    <!-- TAB 3: REFERRAL -->
+    <section id="tab-referral" class="tab-panel">
+      <div class="sk-card">
+        <h2>📄 Referral Letter · রেফারেল পত্র</h2>
+        <p class="muted small">Generate a 4-section bilingual (Bengali + English) clinical referral PDF after running a diagnosis in Tab 1.</p>
+        <div id="referralSummary" class="action-box mt">
+          Run a screening in <strong>Diagnosis · রোগ নির্ণয়</strong> first, or click below to generate a referral PDF.
+        </div>
+        <button id="referralTabPdfBtn" class="btn-primary mt" style="max-width:320px;">📄 Download Referral PDF</button>
+      </div>
+    </section>
+
+    <!-- TAB 4: INSIGHTS -->
+    <section id="tab-insights" class="tab-panel">
+      <div class="sk-card">
+        <h2>🔬 Model &amp; Condition Insights · রোগ-পরিচিতি</h2>
+        <p class="muted small">BD-SkinNet (Swin Transformer Base + CBAM, INT8 quantized) screens 6 dermatological conditions common in Bangladesh:</p>
+        <div class="insights-grid mt">
+          <div class="insight-item"><strong>Eczema / একজিমা</strong><span>Chronic itchy, inflamed dry skin patches; routine care unless secondarily infected.</span></div>
+          <div class="insight-item"><strong>Tinea / দাদ (Fungal)</strong><span>Ring-shaped scaly rash; common in humid monsoon weather.</span></div>
+          <div class="insight-item"><strong>Scabies / খোস-পাঁচড়া</strong><span>Intensely itchy burrows; spreads in households, requires family treatment.</span></div>
+          <div class="insight-item"><strong>Bacterial / ব্যাকটেরিয়াজনিত</strong><span>Cellulitis, impetigo, or infected wounds; urgent if accompanied by fever.</span></div>
+          <div class="insight-item"><strong>Psoriasis / সোরিয়াসিস</strong><span>Silvery scaly plaques; requires dermatologist management.</span></div>
+          <div class="insight-item"><strong>Healthy / সুস্থ ত্বক</strong><span>No acute dermatological lesion detected.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: HOSPITALS -->
     <section id="tab-hospitals" class="tab-panel">
-      <div class="card">
+      <div class="sk-card">
         <div class="hospital-toolbar">
           <div>
-            <h2>নিকটস্থ হাসপাতাল ও ক্লিনিক · Nearest Hospitals</h2>
-            <p class="muted small">জেলা নির্বাচন করুন অথবা GPS ব্যবহার করুন · Select a district or use GPS</p>
+            <h2>🏥 Nearest Hospitals &amp; Clinics · নিকটস্থ হাসপাতাল</h2>
+            <p class="muted small">Find dermatology &amp; district hospitals across Bangladesh via OpenStreetMap + DGHS directory.</p>
           </div>
           <div class="row" style="max-width:440px;">
             <select id="hospitalDistrict">
@@ -188,11 +281,31 @@
         <div id="hospitalsGrid" class="hospitals-grid mt"></div>
       </div>
     </section>
-  </main>
 
-  <footer class="container footer">
-    <p>⚠️ এটি একটি এআই স্ক্রিনিং টুল, চিকিৎসকের বিকল্প নয় · AI screening tool, not a medical diagnosis. Backend powered by Hugging Face Spaces.</p>
-  </footer>
+    <!-- TAB 6: PHASE 2 -->
+    <section id="tab-phase2" class="tab-panel">
+      <div class="sk-card">
+        <h2>🌐 Phase 2 · Rural CHW &amp; Telemedicine Network</h2>
+        <p class="muted small">Community Health Workers (CHWs) capture cases offline with <a href="https://rafilovestosuffer-skinai-bd.hf.space/lite/" target="_blank" rel="noopener">SkinAI Lite</a>, sync to BD-SkinNet when signal returns, and escalate Tier 2–3 cases to the <a href="https://rafilovestosuffer-skinai-bd.hf.space/doctor" target="_blank" rel="noopener">Doctor Queue</a> and WhatsApp/Telegram bots.</p>
+      </div>
+    </section>
+
+    <!-- TAB 7: IMPACT -->
+    <section id="tab-impact" class="tab-panel">
+      <div class="sk-card">
+        <h2>📊 Impact &amp; Safety Policy · প্রভাব ও নীতি</h2>
+        <ul class="reasons-list">
+          <li><strong>Safety floor:</strong> Red-flag symptoms (fever, rapid spread, severe pain, bleeding) automatically enforce urgent Tier 3 referral regardless of image confidence.</li>
+          <li><strong>Zero-PII default:</strong> Photos are processed in memory and discarded unless explicit anonymous 7-day clinician review consent is given.</li>
+          <li><strong>Split architecture:</strong> Static frontend on Vercel + ML/RAG/PDF FastAPI backend on Hugging Face Spaces.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      ⚠️ এটি এআই স্ক্রিনিং, চিকিৎসকের বিকল্প নয় · AI screening, not a medical diagnosis.
+    </footer>
+  </div>
 
   <script src="/app.js"></script>
 </body>
