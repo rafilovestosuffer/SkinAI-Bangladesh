@@ -223,7 +223,7 @@ async function checkBackend() {
   }
 }
 
-/* ---------- 3-Step Screening Wizard ---------- */
+/* ---------- 3-Step Screening Wizard (Voice -> Patient Data -> Skin Photo) ---------- */
 function setWizardStep(step) {
   [1, 2, 3].forEach((n) => {
     const panel = $("wiz-step-" + n);
@@ -237,33 +237,42 @@ function setWizardStep(step) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-document.querySelectorAll("#areaChips .sel-chip, #symptomChips .sel-chip").forEach((chip) => {
+document.querySelectorAll("#symptomChips .sel-chip").forEach((chip) => {
   chip.addEventListener("click", () => chip.classList.toggle("active"));
 });
-document.querySelectorAll("#progChips .sel-chip").forEach((chip) => {
-  chip.addEventListener("click", () => {
-    document.querySelectorAll("#progChips .sel-chip").forEach((c) => c.classList.remove("active"));
-    chip.classList.add("active");
+
+document.querySelectorAll("[data-vtab]").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-vtab]").forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    const isAudio = tab.dataset.vtab === "audio";
+    $("vtab-audio").classList.toggle("hidden", !isAudio);
+    $("vtab-type").classList.toggle("hidden", isAudio);
   });
 });
 
-document.querySelectorAll(".pm-tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".pm-tab").forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
-    const isCam = tab.dataset.pm === "camera";
-    if (isCam) $("photoInput").setAttribute("capture", "environment");
-    else $("photoInput").removeAttribute("capture");
-    $("camTitle").textContent = isCam ? "Camera is ready" : "Choose from gallery";
-    $("camSub").textContent = isCam ? "Position the affected area in the frame" : "Select a clear skin photo from your device";
-    $("camBtnLabel").innerHTML = isCam
-      ? '<span class="material-symbols-outlined ic-btn">photo_camera</span> Capture Photo'
-      : '<span class="material-symbols-outlined ic-btn">folder_open</span> Browse Files';
-  });
+$("demoClipBtn").addEventListener("click", () => {
+  $("pName").value = "Rahim";
+  $("pAge").value = "35";
+  $("pComplaint").value = "Itchy circular rash";
+  $("pSymptoms").value = "itching, redness, scaling";
+  $("pArea").value = "Arm";
+  $("pProg").value = "spreading";
+  $("pDur").value = "5 days";
+  $("pPrev").value = "None";
+  $("micStatus").textContent = "Demo clip loaded: Rahim, 35, itchy rash for 5 days.";
+  setWizardStep(2);
+});
+
+$("audioFileInput").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (f) $("audioFileStatus").textContent = `Selected audio: ${f.name}`;
 });
 
 $("toStep2Btn").addEventListener("click", () => setWizardStep(2));
 $("backToStep1Btn").addEventListener("click", () => setWizardStep(1));
+$("toStep3Btn").addEventListener("click", () => setWizardStep(3));
+$("backToStep2Btn").addEventListener("click", () => setWizardStep(2));
 $("newScreeningBtn").addEventListener("click", () => setWizardStep(1));
 $("retakeBtn").addEventListener("click", () => $("photoInput").click());
 
@@ -271,11 +280,11 @@ $("retakeBtn").addEventListener("click", () => $("photoInput").click());
 $("micBtn").addEventListener("click", () => {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    $("micStatus").textContent = "Browser speech recognition not supported — type details above.";
+    $("micStatus").textContent = "Browser speech recognition not supported — use Type the history or Demo clip.";
     return;
   }
   const rec = new SR();
-  rec.lang = "bn-BD";
+  rec.lang = $("audioLang").value === "bn" ? "bn-BD" : "en-US";
   $("micStatus").textContent = "Listening… speak now";
   rec.onresult = (ev) => {
     const text = ev.results[0][0].transcript;
@@ -313,11 +322,9 @@ $("photoInput").addEventListener("change", async (e) => {
   try {
     selectedBlob = await shrinkImage(file);
     $("photoPreview").src = URL.createObjectURL(selectedBlob);
-    $("photoPreview").classList.remove("hidden");
-    $("previewPlaceholder").classList.add("hidden");
-    $("retakeBtn").classList.remove("hidden");
+    $("waitingCard").classList.add("hidden");
+    $("photoPreviewWrap").classList.remove("hidden");
     $("photoMeta").textContent = `Prepared: ${(selectedBlob.size / 1024).toFixed(0)} KB JPEG`;
-    $("analyzeBtn").disabled = false;
   } catch (err) {
     $("photoMeta").textContent = err.message;
   }
@@ -326,22 +333,19 @@ $("photoInput").addEventListener("change", async (e) => {
 /* ---------- Analyze Skin ---------- */
 $("analyzeBtn").addEventListener("click", async () => {
   if (!selectedBlob) return;
-  setWizardStep(3);
+  $("resultWrap").classList.remove("hidden");
   $("resultBody").classList.add("hidden");
   $("resultError").classList.add("hidden");
   $("resultLoading").classList.remove("hidden");
   $("analyzeBtn").disabled = true;
 
   const flags = Array.from(document.querySelectorAll(".sel-chip.active[data-flag]")).map((el) => el.dataset.flag);
-  const areas = Array.from(document.querySelectorAll("#areaChips .sel-chip.active")).map((el) => el.dataset.val);
-  const syms = Array.from(document.querySelectorAll("#symptomChips .sel-chip.active")).map((el) => el.dataset.val);
-  const prog = document.querySelector("#progChips .sel-chip.active")?.dataset.val || "";
   const extra = [
     $("pComplaint").value,
+    $("pSymptoms").value,
+    $("pArea").value ? `area: ${$("pArea").value}` : "",
+    $("pProg").value ? `progression: ${$("pProg").value}` : "",
     $("pDur").value ? `duration: ${$("pDur").value}` : "",
-    areas.length ? `areas: ${areas.join(", ")}` : "",
-    syms.length ? `symptoms: ${syms.join(", ")}` : "",
-    prog ? `progression: ${prog}` : "",
     $("pPrev").value ? `previous: ${$("pPrev").value}` : "",
     $("symptomsText").value,
   ].filter(Boolean).join("; ");
@@ -368,7 +372,7 @@ $("analyzeBtn").addEventListener("click", async () => {
     lastResult = data;
     renderResult(data);
   } catch (err) {
-    $("resultError").textContent = "ত্রুটি · Error: " + err.message;
+    $("resultError").textContent = "Error: " + err.message;
     $("resultError").classList.remove("hidden");
   } finally {
     $("resultLoading").classList.add("hidden");
