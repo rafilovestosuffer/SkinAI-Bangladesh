@@ -98,7 +98,7 @@ def render_prevalence_map(disease: str = "Tinea"):
     m = folium.Map(
         location=[23.7, 90.3],
         zoom_start=7,
-        tiles="CartoDB positron",
+        tiles="OpenStreetMap",
     )
 
     disease_bn = DISEASE_LABELS_BN.get(disease, disease.replace("_", " "))
