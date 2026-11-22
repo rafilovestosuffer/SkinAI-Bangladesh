@@ -681,7 +681,7 @@
             <h3><span class="material-symbols-outlined ic-sm">local_hospital</span> Nearest Hospitals &amp; Clinics · নিকটস্থ হাসপাতাল</h3>
             <p class="muted small">Live OpenStreetMap + DGHS directory via Hugging Face backend</p>
           </div>
-          <div class="row" style="max-width:420px;">
+          <div class="hosp-controls">
             <select id="hospitalDistrict">
               <option value="Dhaka">Dhaka</option>
               <option value="Chattogram">Chattogram</option>
@@ -690,8 +690,8 @@
               <option value="Sylhet">Sylhet</option>
               <option value="Rangpur">Rangpur</option>
             </select>
-            <button type="button" id="findHospitalsBtn" class="btn-teal" style="width:auto;">Search</button>
-            <button type="button" id="gpsBtn" class="btn-secondary" style="width:auto;"><span class="material-symbols-outlined ic-sm">my_location</span> GPS</button>
+            <button type="button" id="findHospitalsBtn" class="btn-teal btn-hosp">Search</button>
+            <button type="button" id="gpsBtn" class="btn-secondary btn-hosp"><span class="material-symbols-outlined ic-sm">my_location</span> GPS</button>
           </div>
         </div>
         <div id="hospitalsStatus" class="muted small mt"></div>
