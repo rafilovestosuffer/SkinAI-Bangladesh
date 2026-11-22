@@ -347,8 +347,18 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
   vertical-align: middle;
   line-height: 1;
 }
-.ic-sm { font-size: 20px !important; color: var(--teal); }
-.feat-icon, .hiw-icon, .cam-circle, .mic-circle { color: var(--teal); }
+.ic-sm { font-size: 20px !important; color: #0E7C6B !important; }
+.feat-icon, .hiw-icon, .cam-circle, .mic-circle {
+  color: #0E7C6B !important;
+  background: #F0FAF8;
+  border: 1px solid #D2ECE6;
+}
+.feat-icon .material-symbols-outlined,
+.hiw-icon .material-symbols-outlined,
+.cam-circle .material-symbols-outlined,
+.mic-circle .material-symbols-outlined {
+  color: #0E7C6B !important;
+}
 .feat-icon { width: 46px; height: 46px; }
 .feat-icon .material-symbols-outlined { font-size: 28px; }
 .hiw-icon { width: 56px; height: 56px; }
