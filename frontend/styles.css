@@ -623,6 +623,34 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
 .lf-links-col button { border: 0; background: transparent; padding: 3px 0; font: inherit; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
 .lf-links-col button:hover { color: var(--teal); }
 
+/* shadcn/ui Custom Select */
+.shadcn-select { position: relative; width: 100%; }
+.shadcn-trigger {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line); background: #fff;
+  color: var(--text); font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer;
+  box-shadow: var(--shadow-sm); transition: border-color .15s, box-shadow .15s;
+}
+.shadcn-trigger:hover { background: var(--surface-alt); }
+.shadcn-trigger:focus-visible, .shadcn-select.open .shadcn-trigger {
+  outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px var(--ring);
+}
+.shadcn-chev { font-size: 18px !important; color: var(--muted); transition: transform .15s; }
+.shadcn-select.open .shadcn-chev { transform: rotate(180deg); }
+.shadcn-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 200;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 4px;
+  box-shadow: var(--shadow-md); display: none; max-height: 240px; overflow-y: auto;
+}
+.shadcn-select.open .shadcn-menu { display: block; }
+.shadcn-opt {
+  width: 100%; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 0.85rem;
+  padding: 7px 10px; border-radius: 6px; cursor: pointer; text-align: left;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.shadcn-opt:hover { background: var(--surface-alt); }
+.shadcn-opt.selected { background: var(--teal-soft); color: var(--teal-dark); font-weight: 600; }
+
 .sk-footer { text-align: center; margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
 .footer-brand { font-size: 0.92rem; margin-bottom: 6px; }
 .footer-pills { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 0.72rem; color: var(--teal); }

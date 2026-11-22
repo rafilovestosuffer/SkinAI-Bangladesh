@@ -787,5 +787,77 @@ $("confirmBookingBtn").addEventListener("click", () => {
   $("bookingConfirmMsg").classList.remove("hidden");
 });
 
+/* ---------- shadcn/ui Select Enhancer ---------- */
+function initShadcnSelects() {
+  document.querySelectorAll("select").forEach((sel) => {
+    if (sel.dataset.shadcnInit) return;
+    sel.dataset.shadcnInit = "1";
+    sel.classList.add("hidden");
+
+    const wrap = document.createElement("div");
+    wrap.className = "shadcn-select";
+
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "shadcn-trigger";
+    const labelSpan = document.createElement("span");
+    const chev = document.createElement("span");
+    chev.className = "material-symbols-outlined shadcn-chev";
+    chev.textContent = "expand_more";
+    trigger.append(labelSpan, chev);
+
+    const menu = document.createElement("div");
+    menu.className = "shadcn-menu";
+
+    const sync = () => {
+      const cur = sel.options[sel.selectedIndex];
+      labelSpan.textContent = cur ? cur.textContent : "";
+      menu.querySelectorAll(".shadcn-opt").forEach((btn) => {
+        const isSel = btn.dataset.val === sel.value;
+        btn.classList.toggle("selected", isSel);
+        btn.querySelector(".opt-check").textContent = isSel ? "check" : "";
+      });
+    };
+
+    Array.from(sel.options).forEach((opt) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "shadcn-opt";
+      btn.dataset.val = opt.value;
+      const txt = document.createElement("span");
+      txt.textContent = opt.textContent;
+      const chk = document.createElement("span");
+      chk.className = "material-symbols-outlined ic-sm opt-check";
+      btn.append(txt, chk);
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        sel.value = opt.value;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+        wrap.classList.remove("open");
+        sync();
+      });
+      menu.appendChild(btn);
+    });
+
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const wasOpen = wrap.classList.contains("open");
+      document.querySelectorAll(".shadcn-select.open").forEach((s) => s.classList.remove("open"));
+      if (!wasOpen) wrap.classList.add("open");
+    });
+
+    sel.addEventListener("change", sync);
+    sync();
+
+    wrap.append(trigger, menu);
+    sel.parentNode.insertBefore(wrap, sel.nextSibling);
+  });
+
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".shadcn-select.open").forEach((s) => s.classList.remove("open"));
+  });
+}
+
+initShadcnSelects();
 renderDoctors();
 checkBackend();
