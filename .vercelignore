@@ -9,7 +9,7 @@ Dockerfile
 packages.txt
 rag/
 model/
-assets/
+/assets/
 results/
 cases/
 analytics/
