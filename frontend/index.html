@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0F62FE" />
+  <title>SkinAI Bangladesh — চর্মরোগ স্ক্রিনিং ও ট্রায়াজ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">🩺</div>
+        <div>
+          <h1>SkinAI Bangladesh</h1>
+          <p class="subtitle">এআই চর্মরোগ স্ক্রিনিং ও ট্রায়াজ · AI Skin Screening &amp; Triage</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="apiStatus" class="status-pill checking">Checking backend…</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabbar" aria-label="Primary">
+    <div class="container tabbar-inner">
+      <button class="tab-btn active" data-tab="screening">🔬 স্ক্রিনিং · Screening</button>
+      <button class="tab-btn" data-tab="assistant">💬 এআই সহায়তা · AI Assistant</button>
+      <button class="tab-btn" data-tab="hospitals">🏥 হাসপাতাল · Hospitals</button>
+    </div>
+  </nav>
+
+  <main class="container main-content">
+    <!-- TAB 1: SCREENING -->
+    <section id="tab-screening" class="tab-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>১. আক্রান্ত স্থানের ছবি · Skin Photo</h2>
+          <label id="dropzone" class="dropzone">
+            <input id="photoInput" type="file" accept="image/*" capture="environment" />
+            <div class="dropzone-copy">
+              <strong>ছবি তুলুন বা আপলোড করুন</strong>
+              <span>Take a well-lit close-up photo or drag &amp; drop (JPG/PNG)</span>
+            </div>
+            <img id="photoPreview" class="preview hidden" alt="Selected skin lesion preview" />
+          </label>
+          <p id="photoMeta" class="muted small"></p>
+
+          <h2 class="mt">২. সতর্ক লক্ষণ · Warning Signs</h2>
+          <div class="flags-grid">
+            <label class="flag-item"><input type="checkbox" name="flag" value="fever" /> <span>জ্বর আছে · Fever</span></label>
+            <label class="flag-item"><input type="checkbox" name="flag" value="spreading" /> <span>দ্রুত ছড়াচ্ছে · Spreading fast</span></label>
+            <label class="flag-item"><input type="checkbox" name="flag" value="pain" /> <span>তীব্র ব্যথা · Severe pain</span></label>
+            <label class="flag-item"><input type="checkbox" name="flag" value="bleeding" /> <span>রক্ত পড়ছে · Bleeding</span></label>
+          </div>
+
+          <label class="field mt">
+            <span>অতিরিক্ত বিবরণ · Additional symptoms (optional)</span>
+            <textarea id="symptomsText" rows="2" placeholder="যেমন: ৩ দিন ধরে চুলকানি ও লাল দাগ · e.g. itchy red rash for 3 days"></textarea>
+          </label>
+
+          <div class="row mt">
+            <label class="field">
+              <span>জেলা · District</span>
+              <select id="districtSelect">
+                <option value="Dhaka">Dhaka (ঢাকা)</option>
+                <option value="Chattogram">Chattogram (চট্টগ্রাম)</option>
+                <option value="Rajshahi">Rajshahi (রাজশাহী)</option>
+                <option value="Khulna">Khulna (খুলনা)</option>
+                <option value="Sylhet">Sylhet (সিলেট)</option>
+                <option value="Rangpur">Rangpur (রংপুর)</option>
+                <option value="Barishal">Barishal (বরিশাল)</option>
+                <option value="Mymensingh">Mymensingh (ময়মনসিংহ)</option>
+                <option value="Cumilla">Cumilla (কুমিল্লা)</option>
+                <option value="Bogura">Bogura (বগুড়া)</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="consent-box mt">
+            <input id="consentCheck" type="checkbox" />
+            <span>চিকিৎসক রিভিউয়ের জন্য সম্মতি দিচ্ছি (নাম/ফোন ছাড়া; ৭ দিন পর মুছে যাবে) · Consent for doctor review (anonymous, 7-day retention)</span>
+          </label>
+
+          <button id="analyzeBtn" class="btn-primary mt" disabled>বিশ্লেষণ করুন · Analyze Skin</button>
+        </div>
+
+        <div class="card result-card">
+          <h2>ফলাফল ও ট্রায়াজ · Screening Result</h2>
+          <div id="resultEmpty" class="empty-state">
+            <p>বাম পাশে একটি ছবি আপলোড করে <strong>Analyze Skin</strong> চাপুন।</p>
+            <p class="muted small">Upload a skin photo on the left to get AI classification, urgency tier, and referral guidance.</p>
+          </div>
+          <div id="resultLoading" class="empty-state hidden">
+            <div class="spinner"></div>
+            <p>বিশ্লেষণ চলছে… · Running BD-SkinNet &amp; triage engine…</p>
+          </div>
+          <div id="resultError" class="alert error hidden"></div>
+          <div id="resultBody" class="hidden">
+            <div id="tierBanner" class="tier-banner"></div>
+            <div class="diagnosis-box">
+              <div>
+                <div class="muted small">সম্ভাব্য রোগ · Predicted Condition</div>
+                <div id="diseaseName" class="disease-title"></div>
+                <div id="diseaseBn" class="disease-bn"></div>
+              </div>
+              <div class="conf-box">
+                <div class="muted small">Confidence</div>
+                <div id="confidenceVal" class="conf-num"></div>
+              </div>
+            </div>
+            <div id="top2Wrap" class="top2-wrap"></div>
+            <div class="action-box">
+              <strong>পরামর্শ · Recommended Action</strong>
+              <p id="actionBn"></p>
+              <p id="actionEn" class="muted"></p>
+              <p id="facilityText" class="small muted"></p>
+            </div>
+            <ul id="reasonsList" class="reasons-list"></ul>
+            <div class="row mt">
+              <button id="downloadPdfBtn" class="btn-secondary">📄 রেফারেল PDF ডাউনলোড · Referral PDF</button>
+              <button id="askAboutBtn" class="btn-secondary">💬 এআই-কে জিজ্ঞাসা করুন · Ask AI</button>
+            </div>
+            <p id="caseIdNote" class="muted small mt"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: AI ASSISTANT -->
+    <section id="tab-assistant" class="tab-panel">
+      <div class="card chat-card">
+        <div class="chat-header">
+          <div>
+            <h2>এআই চর্মরোগ সহায়তা · AI Skin Health Assistant</h2>
+            <p class="muted small">বাংলা বা ইংরেজিতে প্রশ্ন করুন (RAG + Gemini) · Ask in Bengali or English</p>
+          </div>
+          <span id="chatContextBadge" class="context-badge hidden"></span>
+        </div>
+
+        <div class="quick-chips">
+          <button class="chip" data-q="দাদ বা ছত্রাক সংক্রমণ হলে কী করণীয়?">দাদ / ফাঙ্গাল সংক্রমণ</button>
+          <button class="chip" data-q="একজিমা হলে ত্বকের যত্ন কীভাবে নেব?">একজিমা যত্ন</button>
+          <button class="chip" data-q="When should a skin rash be seen urgently by a doctor?">Urgent warning signs</button>
+        </div>
+
+        <div id="chatLog" class="chat-log">
+          <div class="msg bot">
+            নমস্কার / আসসালামু আলাইকুম! ত্বকের যেকোনো সমস্যা সম্পর্কে বাংলা বা ইংরেজিতে প্রশ্ন করতে পারেন।
+          </div>
+        </div>
+
+        <form id="chatForm" class="chat-input-row">
+          <input id="chatInput" type="text" placeholder="আপনার প্রশ্ন লিখুন… · Type your question…" required />
+          <button type="submit" class="btn-primary" style="width:auto;">পাঠান · Send</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 3: HOSPITALS -->
+    <section id="tab-hospitals" class="tab-panel">
+      <div class="card">
+        <div class="hospital-toolbar">
+          <div>
+            <h2>নিকটস্থ হাসপাতাল ও ক্লিনিক · Nearest Hospitals</h2>
+            <p class="muted small">জেলা নির্বাচন করুন অথবা GPS ব্যবহার করুন · Select a district or use GPS</p>
+          </div>
+          <div class="row" style="max-width:440px;">
+            <select id="hospitalDistrict">
+              <option value="Dhaka">Dhaka</option>
+              <option value="Chattogram">Chattogram</option>
+              <option value="Rajshahi">Rajshahi</option>
+              <option value="Khulna">Khulna</option>
+              <option value="Sylhet">Sylhet</option>
+              <option value="Rangpur">Rangpur</option>
+              <option value="Barishal">Barishal</option>
+              <option value="Mymensingh">Mymensingh</option>
+            </select>
+            <button id="findHospitalsBtn" class="btn-primary" style="width:auto;">খুঁজুন · Search</button>
+            <button id="gpsBtn" class="btn-secondary" style="width:auto;">📍 GPS</button>
+          </div>
+        </div>
+        <div id="hospitalsStatus" class="muted small mt"></div>
+        <div id="hospitalsGrid" class="hospitals-grid mt"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <p>⚠️ এটি একটি এআই স্ক্রিনিং টুল, চিকিৎসকের বিকল্প নয় · AI screening tool, not a medical diagnosis. Backend powered by Hugging Face Spaces.</p>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

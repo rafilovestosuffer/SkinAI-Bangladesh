@@ -1,0 +1,15 @@
+{
+  "framework": null,
+  "buildCommand": "",
+  "outputDirectory": "frontend",
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "https://rafilovestosuffer-skinai-bd.hf.space/health"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://rafilovestosuffer-skinai-bd.hf.space/api/:path*"
+    }
+  ]
+}

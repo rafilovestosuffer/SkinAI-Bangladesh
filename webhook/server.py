@@ -27,8 +27,10 @@ except ImportError:
     pass
 
 from fastapi import FastAPI, File, Form, Header, HTTPException, Request, Response, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse
 
+from webhook.api import router as api_router
 from whatsapp import meta_client, telegram_client, router
 from whatsapp.state import store
 
@@ -39,6 +41,13 @@ logging.basicConfig(
 logger = logging.getLogger("webhook")
 
 app = FastAPI(title="SkinAI Bangladesh — WhatsApp + Telegram Webhook")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.include_router(api_router)
 _BOOT_TS = time.time()
 
 
