@@ -124,28 +124,64 @@ const DOCTORS = [
   { name: "ডা. তানভীর চৌধুরী", en: "Dr. Tanvir Chowdhury", cred: "MBBS, MD", hosp: "Mymensingh Medical College", fee: "৳500" },
 ];
 
-/* ---------- Tabs ---------- */
+/* ---------- Tabs & Navigation ---------- */
 function switchTab(tabId) {
-  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === tabId));
-  document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === "tab-" + tabId));
+  const isHome = tabId === "home";
+  $("workspaceBar").classList.toggle("hidden", isHome);
+  document.querySelectorAll(".tab-btn, .nav-link[data-tab]").forEach((b) => {
+    b.classList.toggle("active", b.dataset.tab === tabId);
+  });
+  document.querySelectorAll(".tab-panel").forEach((p) => {
+    p.classList.toggle("active", p.id === "tab-" + tabId);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
   if (tabId === "insights") setTimeout(renderInsights, 60);
 }
-document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+
+document.querySelectorAll("[data-tab]").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    switchTab(btn.dataset.tab);
+  });
+});
+
+document.querySelectorAll("[data-scroll]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    switchTab("home");
+    setTimeout(() => {
+      const target = document.getElementById(btn.dataset.scroll);
+      if (target) target.scrollIntoView({ behavior: "smooth" });
+    }, 60);
+  });
+});
+
+document.querySelectorAll("[data-insight]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    $("insightDisease").value = btn.dataset.insight;
+    switchTab("insights");
+  });
+});
+
+$("langToggle").addEventListener("click", () => {
+  const isBn = $("langToggle").textContent.trim() === "বাংলা";
+  $("langToggle").textContent = isBn ? "English" : "বাংলা";
+  document.querySelector(".landing-lead").textContent = isBn
+    ? "গ্রামীণ বাংলাদেশের জন্য এআই-চালিত চর্মরোগ স্ক্রিনিং ও স্মার্ট ট্রায়াজ। আপনার ত্বকের সমস্যা বুঝুন, পরামর্শ নিন এবং কখন ডাক্তার দেখাবেন তা জানুন।"
+    : "AI-assisted skin screening and smart triage for rural Bangladesh. Understand your skin problem, get guidance, and know when to seek care.";
 });
 
 /* ---------- Backend health ---------- */
 async function checkBackend() {
-  const pill = $("apiStatus");
+  const dot = $("apiStatus");
   try {
     const res = await fetch("/health");
     if (!res.ok) throw new Error();
     const data = await res.json();
-    pill.textContent = data.model_loaded ? "Backend Ready (HF)" : "Backend Online";
-    pill.className = "status-pill ok";
+    dot.className = "status-dot ok";
+    dot.title = data.model_loaded ? "Backend Ready (HF)" : "Backend Online";
   } catch {
-    pill.textContent = "Backend Unreachable";
-    pill.className = "status-pill err";
+    dot.className = "status-dot err";
+    dot.title = "Backend Unreachable";
   }
 }
 

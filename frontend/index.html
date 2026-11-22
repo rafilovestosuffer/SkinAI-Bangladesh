@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1668A4" />
-  <title>SkinAI Bangladesh</title>
+  <meta name="theme-color" content="#0E7C6B" />
+  <title>SkinAI Bangladesh — Smart Skin Care for Everyone</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,54 +12,199 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+  <!-- Clean White Top Navbar (matches landing design) -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-brand" data-go="home">
+        <span class="nav-logo" aria-hidden="true">🩺</span>
+        <span><strong>SkinAI</strong> Bangladesh</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <button class="nav-link active" data-tab="home">Home</button>
+        <button class="nav-link" data-scroll="how-it-works">How it works</button>
+        <button class="nav-link" data-tab="insights">Skin Guide</button>
+        <button class="nav-link" data-scroll="features-grid">Features</button>
+        <button class="nav-link" data-tab="impact">About</button>
+        <button class="nav-link" data-tab="ask">Ask AI</button>
+        <button class="nav-link" data-tab="doctime">Hospitals</button>
+      </nav>
+      <div class="nav-right">
+        <span id="apiStatus" class="status-dot checking" title="Backend status">●</span>
+        <button type="button" id="langToggle" class="lang-pill">বাংলা</button>
+        <button type="button" class="btn-teal-sm" data-tab="diagnosis">Start Screening</button>
+      </div>
+    </div>
+  </header>
+
   <div class="page-shell">
-    <!-- 7-Tab Navigation Bar on Top -->
-    <nav class="tabs-nav" aria-label="Primary sections">
-      <button class="tab-btn active" data-tab="diagnosis">🩺 Diagnosis · রোগ নির্ণয়</button>
+    <!-- ==================== LANDING / HOME VIEW ==================== -->
+    <section id="tab-home" class="tab-panel active">
+      <!-- Hero Card -->
+      <div class="landing-hero">
+        <div class="hero-left">
+          <span class="hero-pill">AI-Powered Skin Screening &amp; Smart Triage</span>
+          <h1 class="landing-h1">Smart Skin Care<br />for <span class="teal-text">Everyone</span></h1>
+          <p class="landing-lead">
+            AI-assisted skin screening and smart triage for rural Bangladesh.
+            Understand your skin problem, get guidance, and know when to seek care.
+          </p>
+          <div class="hero-ctas">
+            <button type="button" class="btn-teal" data-tab="diagnosis">Start Skin Screening →</button>
+            <button type="button" class="btn-white" data-tab="insights">Explore Skin Guide</button>
+          </div>
+          <div class="hero-trust-row">
+            <span>🕒 Works offline</span>
+            <span>🌐 Bangla &amp; English</span>
+            <span>👩‍⚕️ Doctor referral</span>
+            <span>🔒 Secure &amp; Private</span>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-photo-frame">
+            <img src="/assets/hero-skin.jpg" alt="AI Skin Screening analysis preview" class="hero-photo" />
+            <div class="scan-reticle" aria-hidden="true">
+              <span class="scan-dot"></span>
+            </div>
+            <div class="scan-card">
+              <div class="scan-card-title">AI Screening</div>
+              <div class="scan-card-sub">Analyzing skin image…</div>
+              <div class="scan-bar-row">
+                <div class="scan-bar"><div class="scan-bar-fill"></div></div>
+                <span class="scan-pct">92%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Everything you need in one place -->
+      <div id="features-grid" class="landing-section">
+        <h2 class="section-h2">Everything you need in one place</h2>
+        <div class="features-6">
+          <button type="button" class="feat-card" data-tab="diagnosis">
+            <div class="feat-icon">🔬</div>
+            <strong>AI Skin Screening</strong>
+            <span>Upload or capture skin image and get AI-powered results instantly.</span>
+          </button>
+          <button type="button" class="feat-card" data-tab="diagnosis">
+            <div class="feat-icon">🎙️</div>
+            <strong>Voice Input</strong>
+            <span>Speak in Bangla or English. Our AI understands and transcribes for you.</span>
+          </button>
+          <button type="button" class="feat-card" data-tab="referral">
+            <div class="feat-icon">📋</div>
+            <strong>Doctor Referral</strong>
+            <span>Get referred to verified doctors for online or in-person consultation.</span>
+          </button>
+          <button type="button" class="feat-card" data-tab="insights">
+            <div class="feat-icon">📊</div>
+            <strong>Health Insights</strong>
+            <span>Explore prevalence across Bangladesh and understand your skin better.</span>
+          </button>
+          <a href="https://rafilovestosuffer-skinai-bd.hf.space/lite/" target="_blank" rel="noopener" class="feat-card">
+            <div class="feat-icon">📶</div>
+            <strong>Offline Support</strong>
+            <span>Works in low-connectivity areas. Data syncs when you're online.</span>
+          </a>
+          <button type="button" class="feat-card" data-tab="ask">
+            <div class="feat-icon">💬</div>
+            <strong>Ask AI Assistant</strong>
+            <span>Ask questions and get answers about skin health and care.</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- How it works + Trusted by communities -->
+      <div id="how-it-works" class="landing-split">
+        <div class="split-card">
+          <h2 class="section-h2">How it works</h2>
+          <div class="steps-4">
+            <div class="hiw-step">
+              <div class="hiw-icon">☁️</div>
+              <strong>Patient Information</strong>
+              <span>Share your symptoms and skin history</span>
+            </div>
+            <div class="hiw-arrow">→</div>
+            <div class="hiw-step">
+              <div class="hiw-icon">📷</div>
+              <strong>Skin Photo</strong>
+              <span>Take or upload a clear photo of the affected area</span>
+            </div>
+            <div class="hiw-arrow">→</div>
+            <div class="hiw-step">
+              <div class="hiw-icon">🔍</div>
+              <strong>AI Screening</strong>
+              <span>Our AI analyzes and screens the image</span>
+            </div>
+            <div class="hiw-arrow">→</div>
+            <div class="hiw-step">
+              <div class="hiw-icon">🩺</div>
+              <strong>Guidance / Referral</strong>
+              <span>Get results and next steps or doctor referral</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-card">
+          <h2 class="section-h2">Trusted by communities</h2>
+          <ul class="trust-list">
+            <li>Powered by clinical data from Bangladesh</li>
+            <li>Developed for rural and low-resource settings</li>
+            <li>Built with privacy, safety and transparency</li>
+          </ul>
+          <div class="encrypt-note">
+            🛡️ Your data is encrypted and never shared without consent.
+          </div>
+        </div>
+      </div>
+
+      <!-- Learn about common skin conditions -->
+      <div class="landing-section">
+        <h2 class="section-h2">Learn about common skin conditions</h2>
+        <div class="conditions-6">
+          <button type="button" class="cond-card" data-insight="Bacterial">
+            <div class="cond-img cond-acne"></div>
+            <span>Acne / Bacterial</span>
+          </button>
+          <button type="button" class="cond-card" data-insight="Eczema">
+            <img src="/assets/eczema.jpg" alt="Eczema" class="cond-img" />
+            <span>Eczema</span>
+          </button>
+          <button type="button" class="cond-card" data-insight="Tinea">
+            <img src="/assets/tinea.jpg" alt="Fungal Infection" class="cond-img" />
+            <span>Fungal Infection</span>
+          </button>
+          <button type="button" class="cond-card" data-insight="Scabies">
+            <img src="/assets/scabies.jpg" alt="Rash and Scabies" class="cond-img" />
+            <span>Rash / Scabies</span>
+          </button>
+          <button type="button" class="cond-card" data-insight="Psoriasis">
+            <div class="cond-img cond-psoriasis"></div>
+            <span>Psoriasis</span>
+          </button>
+          <button type="button" class="cond-card cond-more" data-tab="insights">
+            <div class="more-plus">+</div>
+            <span>More</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Secondary Workspace Tabs (shown when inside app tools) -->
+    <div id="workspaceBar" class="workspace-bar hidden">
+      <button class="tab-btn" data-tab="home">← Home</button>
+      <button class="tab-btn" data-tab="diagnosis">🩺 Diagnosis · রোগ নির্ণয়</button>
       <button class="tab-btn" data-tab="ask">💬 Ask AI · প্রশ্ন করুন</button>
       <button class="tab-btn" data-tab="referral">📄 Referral · রেফারেল পত্র</button>
       <button class="tab-btn" data-tab="insights">🔬 Insights · রোগ-পরিচিতি</button>
       <button class="tab-btn" data-tab="doctime">🩺 DocTime · পরামর্শ</button>
       <button class="tab-btn" data-tab="phase2">🌐 Phase 2 · নেটওয়ার্ক</button>
       <button class="tab-btn" data-tab="impact">📊 Impact · প্রভাব ও নীতি</button>
-    </nav>
-
-    <!-- Hero Banner -->
-    <header class="hero-banner">
-      <div class="hero-glow"></div>
-      <div class="hero-glow-2"></div>
-      <div class="hero-status-wrap">
-        <span id="apiStatus" class="status-pill checking">Checking backend…</span>
-      </div>
-      <div class="hero-title">SkinAI Bangladesh</div>
-      <div class="hero-subtitle">
-        AI-powered dermatological screening &amp; smart triage for rural Bangladesh
-      </div>
-      <div class="hero-tagline-row">
-        <div class="hero-step">সঠিক রোগী<small>Right Patient</small></div>
-        <div class="hero-arrow">→</div>
-        <div class="hero-step">সঠিক ডাক্তার<small>Right Doctor</small></div>
-        <div class="hero-arrow">→</div>
-        <div class="hero-step">সঠিক সময়<small>Right Time</small></div>
-      </div>
-      <div class="stat-bar">
-        <span class="stat-chip stat-chip-blue">Swin Transformer + CBAM</span>
-        <span class="stat-chip stat-chip-green">INT8 · free CPU</span>
-        <span class="stat-chip stat-chip-teal">Bangladesh clinical data</span>
-        <span class="stat-chip stat-chip-dark">6 conditions</span>
-      </div>
-    </header>
-
-    <!-- Notice strip -->
-    <div class="info-strip">
-      📴 <a href="https://rafilovestosuffer-skinai-bd.hf.space/lite/" target="_blank" rel="noopener"><strong>SkinAI Lite</strong></a> —
-      ইন্টারনেট ছাড়াও চলে · works offline, sends when signal returns
-      &nbsp;·&nbsp; 👩‍⚕️ <a href="https://rafilovestosuffer-skinai-bd.hf.space/doctor" target="_blank" rel="noopener"><strong>Doctor Queue</strong></a> —
-      clinician review (PIN)
     </div>
 
-    <!-- TAB 1: DIAGNOSIS -->
-    <section id="tab-diagnosis" class="tab-panel active">
+    <!-- ==================== TAB 1: DIAGNOSIS ==================== -->
+    <section id="tab-diagnosis" class="tab-panel">
       <details class="quick-start">
         <summary>⚡ &nbsp;Quick Start — try a pre-filled demo case</summary>
         <div class="quick-start-body">
@@ -73,7 +218,6 @@
       </details>
 
       <div class="grid-2">
-        <!-- Left Column: Step 1 Voice + Step 2 Patient Data -->
         <div class="col-stack">
           <div class="sk-card">
             <div class="sk-card-head">
@@ -135,7 +279,6 @@
           </div>
         </div>
 
-        <!-- Right Column: Skin Photo + Privacy + Waiting/Result -->
         <div class="col-stack">
           <div class="sk-card">
             <div class="sk-card-head">
@@ -172,10 +315,9 @@
             <img id="photoPreview" class="preview hidden" alt="Selected skin lesion preview" />
             <p id="photoMeta" class="muted small"></p>
 
-            <button id="analyzeBtn" class="btn-primary mt" disabled>🔬 Analyze Skin · বিশ্লেষণ করুন</button>
+            <button id="analyzeBtn" class="btn-teal mt" style="width:100%;" disabled>🔬 Analyze Skin · বিশ্লেষণ করুন</button>
           </div>
 
-          <!-- Waiting / Result box -->
           <div id="waitingCard" class="waiting-card">
             <div class="waiting-icon">🖼️</div>
             <strong>Waiting for a skin photo</strong>
@@ -224,7 +366,7 @@
       </div>
     </section>
 
-    <!-- TAB 2: ASK AI -->
+    <!-- ==================== TAB 2: ASK AI ==================== -->
     <section id="tab-ask" class="tab-panel">
       <div class="sk-card">
         <div class="grounded-bar">
@@ -256,12 +398,12 @@
 
         <form id="chatForm" class="chat-input-row mt">
           <input id="chatInput" type="text" placeholder="বাংলায় প্রশ্ন লিখুন বা Type your question... (Bengali or English)" required />
-          <button type="submit" class="btn-primary" style="width:auto;">↑</button>
+          <button type="submit" class="btn-teal" style="width:auto;">↑</button>
         </form>
       </div>
     </section>
 
-    <!-- TAB 3: REFERRAL -->
+    <!-- ==================== TAB 3: REFERRAL ==================== -->
     <section id="tab-referral" class="tab-panel">
       <details class="quick-start">
         <summary>▸ &nbsp;Download a sample referral letter (no diagnosis needed)</summary>
@@ -285,11 +427,11 @@
       <div id="referralReadyBox" class="sk-card hidden">
         <h3>📄 Ready: 4-Section Bilingual Referral Letter</h3>
         <div id="referralSummary" class="action-box mt"></div>
-        <button type="button" id="referralTabPdfBtn" class="btn-primary mt" style="max-width:300px;">📄 Download Referral PDF</button>
+        <button type="button" id="referralTabPdfBtn" class="btn-teal mt" style="max-width:300px;">📄 Download Referral PDF</button>
       </div>
     </section>
 
-    <!-- TAB 4: INSIGHTS -->
+    <!-- ==================== TAB 4: INSIGHTS ==================== -->
     <section id="tab-insights" class="tab-panel">
       <div class="sk-card">
         <h2>Bangladesh Skin Disease Prevalence</h2>
@@ -311,7 +453,7 @@
             <div id="bdMap" class="bd-map"></div>
           </div>
           <div>
-            <div class="muted small mb-1">📊 Highest-Severity Districts</div>
+            <div class="muted small mb-1">📊 Burden Level by Division</div>
             <div id="districtRanks" class="rank-list"></div>
           </div>
         </div>
@@ -323,7 +465,7 @@
       </div>
     </section>
 
-    <!-- TAB 5: DOCTIME -->
+    <!-- ==================== TAB 5: DOCTIME ==================== -->
     <section id="tab-doctime" class="tab-panel">
       <div class="doctime-banner">
         <strong>Hand off to a real doctor — via DocTime</strong>
@@ -334,7 +476,7 @@
         <div class="waiting-icon">🩺</div>
         <strong>Complete diagnosis first</strong>
         <span>প্রথমে Tab 1-এ রোগ নির্ণয় সম্পন্ন করুন</span>
-        <span class="muted small">Run a skin + triage diagnosis in Tab 1 — Diagnosis, then return here to hand the case off to a DocTime BMDC-registered dermatologist.</span>
+        <span class="muted small">Run a skin + triage diagnosis in Diagnosis, then return here to hand the case off to a DocTime BMDC-registered dermatologist.</span>
       </div>
 
       <div id="doctimeReady" class="sk-card mt hidden">
@@ -357,7 +499,7 @@
               <option value="Sylhet">Sylhet</option>
               <option value="Rangpur">Rangpur</option>
             </select>
-            <button type="button" id="findHospitalsBtn" class="btn-primary" style="width:auto;">Search</button>
+            <button type="button" id="findHospitalsBtn" class="btn-teal" style="width:auto;">Search</button>
             <button type="button" id="gpsBtn" class="btn-secondary" style="width:auto;">📍 GPS</button>
           </div>
         </div>
@@ -366,21 +508,19 @@
       </div>
     </section>
 
-    <!-- TAB 6: PHASE 2 -->
+    <!-- ==================== TAB 6: PHASE 2 ==================== -->
     <section id="tab-phase2" class="tab-panel">
       <div class="phase2-banner">
         <span class="p2-badge">PHASE 2 · ROADMAP</span>
         <strong>Our own dermatologist network</strong>
-        <p>Private network (Faridpur Medical College Hospital &amp; Rangpur Medical College Hospital). For live consultations today, use Tab 5 · DocTime (Phase 1 launch partner).</p>
+        <p>Private network (Faridpur Medical College Hospital &amp; Rangpur Medical College Hospital). For live consultations today, use DocTime (Phase 1 launch partner).</p>
       </div>
 
       <div class="sk-card mt">
         <h3>Doctor Booking · অ্যাপয়েন্টমেন্ট</h3>
         <p class="muted small">Choose a Dermatologist (Available across Chittagong, Dhaka, Rajshahi, Sylhet, Mymensingh):</p>
         <div id="doctorsGrid" class="doctors-grid mt"></div>
-
         <div id="selectedDoctorCard" class="selected-doc-box mt"></div>
-
         <h4 class="mt">Select Date</h4>
         <div class="date-strip">
           <button type="button" class="date-pill active">23 Nov</button>
@@ -389,21 +529,20 @@
           <button type="button" class="date-pill">26 Nov</button>
           <button type="button" class="date-pill">27 Nov</button>
         </div>
-
         <div class="form-grid-2 mt">
           <label class="field"><span>আপনার নাম · YOUR NAME</span><input id="bkName" type="text" placeholder="যেমন: রহিম / Rahim" /></label>
           <label class="field"><span>মোবাইল নম্বর · MOBILE NUMBER</span><input id="bkPhone" type="text" placeholder="01XXXXXXXXX" /></label>
         </div>
-        <button type="button" id="confirmBookingBtn" class="btn-primary mt">📅 অ্যাপয়েন্টমেন্ট নিশ্চিত করুন · Confirm Appointment</button>
+        <button type="button" id="confirmBookingBtn" class="btn-teal mt" style="width:100%;">📅 অ্যাপয়েন্টমেন্ট নিশ্চিত করুন · Confirm Appointment</button>
         <div id="bookingConfirmMsg" class="alert ok hidden mt"></div>
       </div>
     </section>
 
-    <!-- TAB 7: IMPACT -->
+    <!-- ==================== TAB 7: IMPACT ==================== -->
     <section id="tab-impact" class="tab-panel">
       <div class="impact-banner">
         <strong>Impact, Ethics &amp; Roadmap</strong>
-        <span>How SkinAI Bangladesh sustains itself, the safeguards behind every prediction, the communities we serve, and how the diaspora can fund it.</span>
+        <span>How SkinAI Bangladesh sustains itself, the safeguards behind every prediction, and how the diaspora can fund it.</span>
       </div>
 
       <div class="sk-card mt">
@@ -412,7 +551,7 @@
           <div class="freemium-head">
             <div>
               <strong>Patient subscription · Freemium</strong>
-              <p class="small">Every user gets 50 free screenings — enough to evaluate the system on real lesions and walk a family member through it. Thereafter, ৳300/month (~$2.50).</p>
+              <p class="small">Every user gets 50 free screenings. Thereafter, ৳300/month (~$2.50).</p>
             </div>
             <span class="badge-opt">PATIENT CHOICE</span>
           </div>
@@ -427,24 +566,13 @@
         <h4 class="mt">Unit Economics</h4>
         <table class="econ-table">
           <tr><td>Marginal inference cost</td><td>~ $0.0002 per screening (INT8 CPU, HF Spaces tier)</td></tr>
-          <tr><td>Hosting baseline</td><td>~ $0 / month on HF Spaces CPU Basic (or ~$48/mo dedicated)</td></tr>
-          <tr><td>Subscription ARPU</td><td>৳300 / mo (~$2.50) · gross margin > 90%</td></tr>
+          <tr><td>Hosting baseline</td><td>~ $0 / month on HF Spaces CPU Basic</td></tr>
+          <tr><td>Subscription ARPU</td><td>৳300 / mo (~$2.50) · gross margin &gt; 90%</td></tr>
           <tr><td>Emergency &amp; free tier</td><td>Tier 3 + first 50 screenings — operationally cross-subsidised</td></tr>
-        </table>
-
-        <h4 class="mt">Telemedicine Integration Roadmap</h4>
-        <table class="econ-table">
-          <thead><tr><th>Phase</th><th>Status</th><th>Partner</th><th>Mechanism</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td><span class="g-pill">LIVE</span></td><td>DocTime</td><td>Deep link + QR + WhatsApp + referral PDF handoff</td></tr>
-            <tr><td>2</td><td><span class="p-pill">BETA</span></td><td>Faridpur MCH + Rangpur MCH</td><td>In-app booking with own dermatologists</td></tr>
-            <tr><td>3</td><td><span class="badge-opt">PLANNED</span></td><td>Praava Health · MedCar · Maya</td><td>Same handoff layer — pluggable provider interface</td></tr>
-          </tbody>
         </table>
       </div>
     </section>
 
-    <!-- Footer matching all 7 screenshots -->
     <footer class="sk-footer">
       <div class="footer-brand">🩺 <strong>SkinAI</strong> Bangladesh</div>
       <div class="footer-pills">
