@@ -5,6 +5,8 @@ const MAX_SIDE = 800;
 
 let selectedBlob = null;
 let lastResult = null;
+let bdMap = null;
+let mapLayer = null;
 
 const DEMO_CASES = {
   tinea: {
@@ -14,7 +16,7 @@ const DEMO_CASES = {
     tier: 2,
     urgency_label: "Routine — within 48 hours",
     action_bn: "পরিষ্কার ও শুষ্ক রাখুন এবং ৪৮ ঘণ্টার মধ্যে চিকিৎসকের পরামর্শ নিন।",
-    action_en: "Keep the area clean and dry; see a clinician within 48 hours for antifungal evaluation.",
+    action_en: "Keep the area clean and dry; see a clinician within 48 hours.",
     facility: "Upazila Health Complex / Community Clinic",
     reasons: ["Circular scaly border pattern", "Demo Quick Start scenario"],
     top2: [{ disease: "Tinea / Ringworm", confidence: 0.88 }, { disease: "Eczema", confidence: 0.08 }],
@@ -26,8 +28,8 @@ const DEMO_CASES = {
     tier: 3,
     urgency_label: "Urgent — Today",
     action_bn: "সতর্ক লক্ষণ (জ্বর/দ্রুত ছড়ানো) থাকায় আজই নিকটস্থ স্বাস্থ্যকেন্দ্রে যান।",
-    action_en: "Warning signs present — visit the nearest health facility today for urgent evaluation.",
-    facility: "District Hospital Emergency / Upazila Health Complex",
+    action_en: "Warning signs present — visit the nearest health facility today.",
+    facility: "District Hospital Emergency",
     reasons: ["Red-flag safety floor triggered (fever / spreading)", "Demo Quick Start scenario"],
     top2: [{ disease: "Bacterial Infection", confidence: 0.84 }, { disease: "Eczema", confidence: 0.11 }],
   },
@@ -45,23 +47,81 @@ const DEMO_CASES = {
   },
 };
 
+const PREVALENCE = {
+  Tinea: {
+    tips: "<strong>প্রতিরোধ টিপস:</strong> ত্বক পরিষ্কার ও শুষ্ক রাখুন, তোয়ালে ও কাপড় আলাদা রাখুন, ঢিলেঢালা সুতি কাপড় পরুন।<br><strong>Prevention:</strong> Keep skin dry, avoid sharing towels/clothing, wear breathable cotton.",
+    points: [
+      { name: "Chattogram", lat: 22.3569, lon: 91.7832, sev: "High" },
+      { name: "Rajshahi", lat: 24.3745, lon: 88.6042, sev: "High" },
+      { name: "Sylhet", lat: 24.8949, lon: 91.8687, sev: "High" },
+      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
+      { name: "Khulna", lat: 22.8456, lon: 89.5403, sev: "Medium" },
+      { name: "Barishal", lat: 22.7010, lon: 90.3535, sev: "Medium" },
+      { name: "Rangpur", lat: 25.7439, lon: 89.2752, sev: "Medium" },
+      { name: "Mymensingh", lat: 24.7471, lon: 90.4203, sev: "Medium" },
+    ],
+  },
+  Eczema: {
+    tips: "<strong>প্রতিরোধ টিপস:</strong> সুগন্ধিহীন ময়েশ্চারাইজার ব্যবহার করুন, কড়া সাবান এড়িয়ে চলুন।<br><strong>Prevention:</strong> Moisturize daily and avoid harsh soaps or triggers.",
+    points: [
+      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "High" },
+      { name: "Chattogram", lat: 22.3569, lon: 91.7832, sev: "High" },
+      { name: "Sylhet", lat: 24.8949, lon: 91.8687, sev: "Medium" },
+      { name: "Khulna", lat: 22.8456, lon: 89.5403, sev: "Medium" },
+    ],
+  },
+  Scabies: {
+    tips: "<strong>প্রতিরোধ টিপস:</strong> পরিবারের সবার একসাথে চিকিৎসা প্রয়োজন, বিছানার চাদর গরম পানিতে ধুয়ে রোদে শুকান।",
+    points: [
+      { name: "Cox's Bazar", lat: 21.4272, lon: 92.0058, sev: "High" },
+      { name: "Rangpur", lat: 25.7439, lon: 89.2752, sev: "High" },
+      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
+    ],
+  },
+  Bacterial: {
+    tips: "<strong>প্রতিরোধ টিপস:</strong> কাটা বা ক্ষত পরিষ্কার রাখুন; জ্বর বা লালচে ভাব দ্রুত ছড়ালে আজই ডাক্তার দেখান।",
+    points: [
+      { name: "Barishal", lat: 22.7010, lon: 90.3535, sev: "High" },
+      { name: "Khulna", lat: 22.8456, lon: 89.5403, sev: "Medium" },
+      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
+    ],
+  },
+  Psoriasis: {
+    tips: "<strong>প্রতিরোধ টিপস:</strong> ত্বক আর্দ্র রাখুন, মানসিক চাপ কমান এবং চর্মরোগ বিশেষজ্ঞের পরামর্শ নিন।",
+    points: [
+      { name: "Dhaka", lat: 23.8103, lon: 90.4125, sev: "Medium" },
+      { name: "Rajshahi", lat: 24.3745, lon: 88.6042, sev: "Medium" },
+    ],
+  },
+};
+
+const DOCTORS = [
+  { name: "ডা. নুসরাত জাহান", en: "Dr. Nusrat Jahan", cred: "MBBS, DDV (Dermatology)", hosp: "Chattogram Medical College", fee: "৳500" },
+  { name: "ডা. ফারহান আহমেদ", en: "Dr. Farhan Ahmed", cred: "MBBS, FCPS (Dermatology)", hosp: "Dhaka Medical College", fee: "৳700" },
+  { name: "ডা. তাসনিম রহমান", en: "Dr. Tasnim Rahman", cred: "MBBS, MD (Skin & VD)", hosp: "Rajshahi Medical College", fee: "৳500" },
+  { name: "ডা. কামাল হোসেন", en: "Dr. Kamal Hossain", cred: "MBBS, DDV", hosp: "Khulna Medical College", fee: "৳450" },
+  { name: "ডা. সাদিয়া আফরিন", en: "Dr. Sadia Afrin", cred: "MBBS, FCPS", hosp: "Sylhet MAG Osmani MCH", fee: "৳550" },
+  { name: "ডা. তানভীর চৌধুরী", en: "Dr. Tanvir Chowdhury", cred: "MBBS, MD", hosp: "Mymensingh Medical College", fee: "৳500" },
+];
+
 /* ---------- Tabs ---------- */
 function switchTab(tabId) {
   document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === tabId));
   document.querySelectorAll(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === "tab-" + tabId));
+  if (tabId === "insights") setTimeout(renderInsights, 60);
 }
 document.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => switchTab(btn.dataset.tab));
 });
 
-/* ---------- Backend health check ---------- */
+/* ---------- Backend health ---------- */
 async function checkBackend() {
   const pill = $("apiStatus");
   try {
     const res = await fetch("/health");
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    if (!res.ok) throw new Error();
     const data = await res.json();
-    pill.textContent = data.model_loaded ? "Backend Ready (HF)" : "Backend Online (Warming)";
+    pill.textContent = data.model_loaded ? "Backend Ready (HF)" : "Backend Online";
     pill.className = "status-pill ok";
   } catch {
     pill.textContent = "Backend Unreachable";
@@ -69,12 +129,32 @@ async function checkBackend() {
   }
 }
 
+/* ---------- Voice / Mic ---------- */
+$("micBtn").addEventListener("click", () => {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    $("micStatus").textContent = "Browser speech recognition not supported — type symptoms below.";
+    return;
+  }
+  const rec = new SR();
+  rec.lang = $("audioLang").value === "bn" ? "bn-BD" : "en-US";
+  $("micStatus").textContent = "🎙️ Listening… speak now";
+  rec.onresult = (ev) => {
+    const text = ev.results[0][0].transcript;
+    $("symptomsText").value = ($("symptomsText").value ? $("symptomsText").value + ", " : "") + text;
+    $("micStatus").textContent = "Captured: " + text;
+  };
+  rec.onerror = (ev) => { $("micStatus").textContent = "Mic error: " + ev.error; };
+  rec.start();
+});
+
 /* ---------- Quick Start Demos ---------- */
 document.querySelectorAll("[data-demo]").forEach((btn) => {
   btn.addEventListener("click", () => {
     const demo = DEMO_CASES[btn.dataset.demo];
     if (!demo) return;
     lastResult = demo;
+    $("waitingCard").classList.add("hidden");
     $("resultWrap").classList.remove("hidden");
     $("resultError").classList.add("hidden");
     $("resultLoading").classList.add("hidden");
@@ -96,7 +176,7 @@ function shrinkImage(file) {
       canvas.height = h;
       canvas.getContext("2d").drawImage(img, 0, 0, w, h);
       URL.revokeObjectURL(url);
-      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Image encode failed"))), "image/jpeg", 0.85);
+      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("Encode failed"))), "image/jpeg", 0.85);
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Invalid image")); };
     img.src = url;
@@ -120,6 +200,7 @@ $("photoInput").addEventListener("change", async (e) => {
 /* ---------- Analyze Skin ---------- */
 $("analyzeBtn").addEventListener("click", async () => {
   if (!selectedBlob) return;
+  $("waitingCard").classList.add("hidden");
   $("resultWrap").classList.remove("hidden");
   $("resultBody").classList.add("hidden");
   $("resultError").classList.add("hidden");
@@ -137,12 +218,12 @@ $("analyzeBtn").addEventListener("click", async () => {
   try {
     let res = await fetch("/api/analyze", { method: "POST", body: form });
     if (res.status === 404) {
-      const fallbackForm = new FormData();
-      fallbackForm.append("image", selectedBlob, "skin.jpg");
-      flags.forEach((f) => fallbackForm.append("red_flags", f));
-      fallbackForm.append("district", $("districtSelect").value);
-      fallbackForm.append("consent", $("consentCheck").checked ? "true" : "false");
-      res = await fetch("/api/cases", { method: "POST", body: fallbackForm });
+      const fb = new FormData();
+      fb.append("image", selectedBlob, "skin.jpg");
+      flags.forEach((f) => fb.append("red_flags", f));
+      fb.append("district", $("districtSelect").value);
+      fb.append("consent", $("consentCheck").checked ? "true" : "false");
+      res = await fetch("/api/cases", { method: "POST", body: fb });
     }
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Analysis failed");
@@ -162,7 +243,6 @@ function renderResult(r) {
   const banner = $("tierBanner");
   banner.className = `tier-banner t${tier}`;
   banner.textContent = `Tier ${tier} — ${r.urgency_label || ""}`;
-
   $("diseaseName").textContent = r.disease || "Unknown";
   $("diseaseBn").textContent = r.disease_bn || "";
   $("confidenceVal").textContent = r.confidence != null ? `${Math.round(r.confidence * 100)}%` : "—";
@@ -192,26 +272,34 @@ function renderResult(r) {
   if (r.disease) {
     $("chatContextBadge").textContent = `Context: ${r.disease}`;
     $("chatContextBadge").classList.remove("hidden");
-    $("referralSummary").innerHTML = `<strong>${r.disease}</strong> (${r.disease_bn || ""}) · Tier ${tier} — ${r.action_en || ""}`;
+    $("referralEmptyBox").classList.add("hidden");
+    $("referralReadyBox").classList.remove("hidden");
+    $("referralSummary").innerHTML = `<strong>${r.disease}</strong> (${r.disease_bn || ""}) · Tier ${tier}<br><span class="muted small">${r.action_en || ""}</span>`;
+    $("doctimeEmpty").classList.add("hidden");
+    $("doctimeReady").classList.remove("hidden");
+    $("doctimeSummary").innerHTML = `<strong>${r.disease}</strong> · Tier ${tier} — Ready to attach referral PDF for DocTime dermatologist.`;
   }
   $("resultBody").classList.remove("hidden");
 }
 
 /* ---------- Referral PDF ---------- */
-async function downloadReferralPdf() {
-  if (!lastResult) return alert("Please run a screening or Quick Start demo first.");
+async function downloadReferralPdf(useSample = false) {
+  const data = useSample ? DEMO_CASES.tinea : lastResult;
+  if (!data) return alert("Complete a diagnosis first.");
   try {
     const res = await fetch("/api/referral-pdf", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        patient_name: $("pName").value || "Sample Patient",
+        age: $("pAge").value || "30",
         district: $("districtSelect").value,
         symptoms: Array.from(document.querySelectorAll('input[name="flag"]:checked')).map((el) => el.value),
-        disease: lastResult.disease || "",
-        confidence: lastResult.confidence || 0,
-        tier: lastResult.tier ?? 1,
-        action_en: lastResult.action_en || "",
-        action_bn: lastResult.action_bn || "",
+        disease: data.disease || "",
+        confidence: data.confidence || 0,
+        tier: data.tier ?? 1,
+        action_en: data.action_en || "",
+        action_bn: data.action_bn || "",
       }),
     });
     if (!res.ok) throw new Error("PDF endpoint unavailable (push webhook/api.py to HF Space)");
@@ -226,22 +314,17 @@ async function downloadReferralPdf() {
     alert(err.message);
   }
 }
-$("downloadPdfBtn").addEventListener("click", downloadReferralPdf);
-$("referralTabPdfBtn").addEventListener("click", downloadReferralPdf);
+$("downloadPdfBtn").addEventListener("click", () => downloadReferralPdf(false));
+$("referralTabPdfBtn").addEventListener("click", () => downloadReferralPdf(false));
+$("samplePdfBtn").addEventListener("click", () => downloadReferralPdf(true));
 
 $("askAboutBtn").addEventListener("click", () => {
   switchTab("ask");
-  if (lastResult && lastResult.disease) {
-    $("chatInput").value = `${lastResult.disease} সম্পর্কে বিস্তারিত ও করণীয় কী?`;
-  }
+  if (lastResult && lastResult.disease) $("chatInput").value = `${lastResult.disease} সম্পর্কে বিস্তারিত ও করণীয় কী?`;
 });
+$("goDoctimeBtn").addEventListener("click", () => switchTab("doctime"));
 
-$("findHospitalQuickBtn").addEventListener("click", () => {
-  switchTab("hospitals");
-  loadHospitals({ district: $("districtSelect").value });
-});
-
-/* ---------- AI Assistant ---------- */
+/* ---------- Ask AI ---------- */
 function appendMsg(role, text) {
   const div = document.createElement("div");
   div.className = "msg " + role;
@@ -258,10 +341,7 @@ async function sendChat(question) {
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        question,
-        disease_context: lastResult ? lastResult.disease : null,
-      }),
+      body: JSON.stringify({ question, disease_context: lastResult ? lastResult.disease : null }),
     });
     if (res.status === 404) {
       pending.textContent = "Backend /api/chat not yet deployed on Hugging Face Space. Push webhook/api.py to HF Space to enable RAG chat.";
@@ -281,42 +361,70 @@ $("chatForm").addEventListener("submit", (e) => {
   $("chatInput").value = "";
   sendChat(q);
 });
+document.querySelectorAll(".chat-chip").forEach((c) => c.addEventListener("click", () => sendChat(c.dataset.q)));
 
-document.querySelectorAll(".chat-chip").forEach((c) => {
-  c.addEventListener("click", () => sendChat(c.dataset.q));
-});
+/* ---------- Insights Map & Ranks ---------- */
+function renderInsights() {
+  const disease = $("insightDisease").value;
+  const info = PREVALENCE[disease] || PREVALENCE.Tinea;
+  $("tipsContent").innerHTML = info.tips;
 
-/* ---------- Hospitals ---------- */
+  const ranks = $("districtRanks");
+  ranks.innerHTML = "";
+  info.points.forEach((p) => {
+    const row = document.createElement("div");
+    row.className = "rank-item";
+    row.innerHTML = `<span>${p.name}</span><span class="sev-pill ${p.sev === "High" ? "high" : "med"}">${p.sev}</span>`;
+    ranks.appendChild(row);
+  });
+
+  if (window.L) {
+    if (!bdMap) {
+      bdMap = L.map("bdMap").setView([23.685, 90.356], 7);
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        attribution: "© OpenStreetMap © CARTO",
+      }).addTo(bdMap);
+      mapLayer = L.layerGroup().addTo(bdMap);
+    }
+    bdMap.invalidateSize();
+    mapLayer.clearLayers();
+    info.points.forEach((p) => {
+      const color = p.sev === "High" ? "#DC2626" : "#D97706";
+      L.circleMarker([p.lat, p.lon], {
+        radius: p.sev === "High" ? 13 : 9,
+        color,
+        fillColor: color,
+        fillOpacity: 0.45,
+      }).bindPopup(`<strong>${p.name}</strong><br>${disease}: ${p.sev}`).addTo(mapLayer);
+    });
+  }
+}
+$("insightDisease").addEventListener("change", renderInsights);
+
+/* ---------- Hospitals (DocTime Tab) ---------- */
 async function loadHospitals(params) {
-  $("hospitalsStatus").textContent = "হাসপাতাল খোঁজা হচ্ছে… · Searching nearby hospitals…";
+  $("hospitalsStatus").textContent = "Searching nearby hospitals…";
   $("hospitalsGrid").innerHTML = "";
   try {
-    const qs = new URLSearchParams(params).toString();
-    const res = await fetch("/api/hospitals?" + qs);
+    const res = await fetch("/api/hospitals?" + new URLSearchParams(params).toString());
     if (res.status === 404) {
-      $("hospitalsStatus").textContent = "Backend /api/hospitals not yet deployed on Hugging Face Space. Push webhook/api.py to HF Space to enable hospital lookup.";
+      $("hospitalsStatus").textContent = "Backend /api/hospitals not yet deployed on Hugging Face Space.";
       return;
     }
     const data = await res.json();
     const list = data.hospitals || [];
-    $("hospitalsStatus").textContent = `${list.length}টি হাসপাতাল পাওয়া গেছে · Found ${list.length} facilities`;
+    $("hospitalsStatus").textContent = `Found ${list.length} facilities`;
     list.forEach((h) => {
       const card = document.createElement("div");
       card.className = "hospital-card";
       const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.lat + "," + h.lon)}`;
-      card.innerHTML = `
-        <h3>${h.name || "Hospital"}</h3>
-        <div class="muted small">${h.address || ""}</div>
-        <div class="small mt"><strong>${h.dist_km != null ? h.dist_km + " km" : ""}</strong> ${h.phone ? " · 📞 " + h.phone : ""}</div>
-        <div class="mt"><a href="${mapUrl}" target="_blank" rel="noopener">Google Maps →</a></div>
-      `;
+      card.innerHTML = `<strong>${h.name || "Hospital"}</strong><div class="muted small">${h.address || ""}</div><div class="small mt">${h.dist_km != null ? h.dist_km + " km" : ""} ${h.phone ? "· 📞 " + h.phone : ""}</div><a href="${mapUrl}" target="_blank" rel="noopener">Google Maps →</a>`;
       $("hospitalsGrid").appendChild(card);
     });
   } catch (err) {
     $("hospitalsStatus").textContent = "Error: " + err.message;
   }
 }
-
 $("findHospitalsBtn").addEventListener("click", () => loadHospitals({ district: $("hospitalDistrict").value }));
 $("gpsBtn").addEventListener("click", () => {
   if (!navigator.geolocation) return alert("Geolocation not supported");
@@ -326,4 +434,42 @@ $("gpsBtn").addEventListener("click", () => {
   );
 });
 
+/* ---------- Phase 2 Doctors ---------- */
+let selectedDocIdx = 0;
+function renderDoctors() {
+  const grid = $("doctorsGrid");
+  grid.innerHTML = "";
+  DOCTORS.forEach((d, idx) => {
+    const card = document.createElement("div");
+    card.className = "doc-card" + (idx === selectedDocIdx ? " selected" : "");
+    card.innerHTML = `
+      <div class="small">⭐⭐⭐⭐⭐ <span class="g-pill">BMDC</span></div>
+      <strong>${d.name}</strong>
+      <span class="muted small">${d.en} · ${d.cred}</span>
+      <span class="muted small">${d.hosp} · ${d.fee}</span>
+      <button type="button" class="btn-secondary mt" data-doc="${idx}">${idx === selectedDocIdx ? "✓ Selected · নির্বাচিত" : "বেছে নিন · Select"}</button>
+    `;
+    grid.appendChild(card);
+  });
+  const sel = DOCTORS[selectedDocIdx];
+  $("selectedDoctorCard").innerHTML = `<strong>${sel.name} (${sel.en})</strong> — ${sel.cred} · ${sel.hosp} · Consultation fee: <strong>${sel.fee}</strong>`;
+  grid.querySelectorAll("[data-doc]").forEach((b) => {
+    b.addEventListener("click", () => { selectedDocIdx = Number(b.dataset.doc); renderDoctors(); });
+  });
+}
+document.querySelectorAll(".date-pill").forEach((p) => {
+  p.addEventListener("click", () => {
+    document.querySelectorAll(".date-pill").forEach((x) => x.classList.remove("active"));
+    p.classList.add("active");
+  });
+});
+$("confirmBookingBtn").addEventListener("click", () => {
+  const name = $("bkName").value.trim() || "Patient";
+  const doc = DOCTORS[selectedDocIdx];
+  const date = document.querySelector(".date-pill.active")?.textContent || "23 Nov";
+  $("bookingConfirmMsg").textContent = `✓ Appointment requested for ${name} with ${doc.en} on ${date}. (Phase 2 preview)`;
+  $("bookingConfirmMsg").classList.remove("hidden");
+});
+
+renderDoctors();
 checkBackend();
