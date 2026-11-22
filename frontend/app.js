@@ -637,18 +637,37 @@ document.querySelectorAll(".chat-chip").forEach((c) => c.addEventListener("click
 
 appendMsg("bot", "নমস্কার / আসসালামু আলাইকুম! ত্বকের যেকোনো সমস্যা সম্পর্কে বাংলা বা ইংরেজিতে প্রশ্ন করতে পারেন।");
 
-/* ---------- Insights Map & Ranks (Rokkha OSM + 64-district GeoJSON) ---------- */
+/* ---------- Insights Map & Ranks (Rokkha Mask + 64-district + 8-division click-to-zoom) ---------- */
 const BD_BOUNDS = [[20.55, 88.0], [26.65, 92.7]];
 const MAP_COLORS = { low: "#CFD9CC", watch: "#E9B949", alert: "#B3392D", edge: "#6F7F73" };
 let districtsGeo = null;
+let divisionsGeo = null;
+let maskGeo = null;
 let geoLayer = null;
+let divLayer = null;
+let maskLayer = null;
 
-async function ensureDistrictsGeo() {
-  if (districtsGeo) return districtsGeo;
-  const res = await fetch("/geo/districts.json");
-  if (res.ok) districtsGeo = await res.json();
-  return districtsGeo;
+async function ensureGeoLayers() {
+  if (!districtsGeo) {
+    const [dRes, vRes, mRes] = await Promise.all([
+      fetch("/geo/districts.json"),
+      fetch("/geo/divisions.json"),
+      fetch("/geo/mask.json"),
+    ]);
+    if (dRes.ok) districtsGeo = await dRes.json();
+    if (vRes.ok) divisionsGeo = await vRes.json();
+    if (mRes.ok) maskGeo = await mRes.json();
+  }
+  return { districtsGeo, divisionsGeo, maskGeo };
 }
+
+function zoomToFullBangladesh() {
+  if (bdMap && geoLayer) {
+    bdMap.fitBounds(geoLayer.getBounds(), { padding: [14, 14] });
+  }
+}
+
+$("resetMapBtn").addEventListener("click", zoomToFullBangladesh);
 
 async function renderInsights() {
   const disease = $("insightDisease").value;
@@ -660,9 +679,19 @@ async function renderInsights() {
   const sevMap = {};
   info.points.forEach((p) => {
     sevMap[p.name.toLowerCase()] = p.sev;
-    const row = document.createElement("div");
+    const row = document.createElement("button");
+    row.type = "button";
     row.className = "rank-item";
     row.innerHTML = `<span>${p.name}</span><span class="sev-pill ${p.sev === "High" ? "high" : "med"}">${p.sev}</span>`;
+    row.addEventListener("click", () => {
+      if (!divLayer || !bdMap) return;
+      divLayer.eachLayer((layer) => {
+        const dn = (layer.feature?.properties?.name || "").toLowerCase();
+        if (dn === p.name.toLowerCase() || (p.name === "Chattogram" && dn === "chittagong")) {
+          bdMap.fitBounds(layer.getBounds(), { padding: [24, 24], maxZoom: 9 });
+        }
+      });
+    });
     ranks.appendChild(row);
   });
 
@@ -674,6 +703,7 @@ async function renderInsights() {
         minZoom: 6,
         maxZoom: 16,
         maxBounds: BD_BOUNDS,
+        maxBoundsViscosity: 1.0,
       });
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
@@ -683,12 +713,12 @@ async function renderInsights() {
     }
     bdMap.invalidateSize();
     mapLayer.clearLayers();
-    if (geoLayer) {
-      bdMap.removeLayer(geoLayer);
-      geoLayer = null;
-    }
+    if (geoLayer) { bdMap.removeLayer(geoLayer); geoLayer = null; }
+    if (divLayer) { bdMap.removeLayer(divLayer); divLayer = null; }
+    if (maskLayer) { bdMap.removeLayer(maskLayer); maskLayer = null; }
 
-    const geo = await ensureDistrictsGeo();
+    const { districtsGeo: geo, divisionsGeo: divs, maskGeo: mask } = await ensureGeoLayers();
+
     if (geo) {
       geoLayer = L.geoJSON(geo, {
         style: (feature) => {
@@ -698,9 +728,9 @@ async function renderInsights() {
           const fillColor = sev === "High" ? MAP_COLORS.alert : sev === "Medium" ? MAP_COLORS.watch : MAP_COLORS.low;
           return {
             color: MAP_COLORS.edge,
-            weight: 1,
+            weight: 0.9,
             fillColor,
-            fillOpacity: sev === "High" ? 0.62 : sev === "Medium" ? 0.55 : 0.42,
+            fillOpacity: sev === "High" ? 0.65 : sev === "Medium" ? 0.58 : 0.45,
           };
         },
         onEachFeature: (feature, layer) => {
@@ -708,10 +738,31 @@ async function renderInsights() {
           const divName = feature.properties?.division || "";
           const div = divName.toLowerCase();
           const sev = sevMap[div] || sevMap[name.toLowerCase()] || (div === "chittagong" ? sevMap["chattogram"] : "Low");
-          layer.bindTooltip(`<strong>${name}</strong> (${divName})<br>${disease}: ${sev}`, { sticky: true });
+          layer.bindTooltip(`<strong>${name}</strong> (${divName})<br>${disease}: ${sev} · Click to zoom`, { sticky: true });
+          layer.on("click", () => {
+            bdMap.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 10 });
+          });
         },
       }).addTo(bdMap);
       bdMap.fitBounds(geoLayer.getBounds(), { padding: [14, 14] });
+    }
+
+    if (divs) {
+      divLayer = L.geoJSON(divs, {
+        style: { color: "#1E293B", weight: 1.8, fillOpacity: 0, interactive: false },
+        onEachFeature: (feature, layer) => {
+          const name = (feature.properties?.name || "").toUpperCase();
+          if (name) {
+            layer.bindTooltip(name, { permanent: true, direction: "center", className: "div-map-label" });
+          }
+        },
+      }).addTo(bdMap);
+    }
+
+    if (mask) {
+      maskLayer = L.geoJSON(mask, {
+        style: { color: "transparent", weight: 0, fillColor: "#F5F3EE", fillOpacity: 0.88, interactive: false },
+      }).addTo(bdMap);
     }
   }
 }

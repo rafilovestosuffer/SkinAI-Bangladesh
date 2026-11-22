@@ -640,11 +640,16 @@
 
         <div class="grid-insights mt">
           <div>
-            <div class="muted small mb-1"><span class="material-symbols-outlined ic-sm">map</span> Geographic Distribution · ভৌগোলিক বিস্তৃতি</div>
-            <div id="bdMap" class="bd-map"></div>
+            <div class="muted small mb-1"><span class="material-symbols-outlined ic-sm">map</span> Geographic Distribution · Click any district or division to zoom</div>
+            <div class="map-wrap">
+              <div id="bdMap" class="bd-map"></div>
+              <button type="button" id="resetMapBtn" class="map-reset-btn" title="Reset to Full Bangladesh">
+                <span class="material-symbols-outlined ic-sm">home</span> Full Bangladesh
+              </button>
+            </div>
           </div>
           <div>
-            <div class="muted small mb-1"><span class="material-symbols-outlined ic-sm">bar_chart</span> Burden Level by Division</div>
+            <div class="muted small mb-1"><span class="material-symbols-outlined ic-sm">bar_chart</span> Burden Level by Division (Click to zoom)</div>
             <div id="districtRanks" class="rank-list"></div>
           </div>
         </div>
