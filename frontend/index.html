@@ -203,67 +203,169 @@
       <button class="tab-btn" data-tab="impact">📊 Impact · প্রভাব ও নীতি</button>
     </div>
 
-    <!-- ==================== TAB 1: DIAGNOSIS ==================== -->
+    <!-- ==================== TAB 1: DIAGNOSIS (3-Step Wizard) ==================== -->
     <section id="tab-diagnosis" class="tab-panel">
-      <details class="quick-start">
-        <summary>⚡ &nbsp;Quick Start — try a pre-filled demo case</summary>
-        <div class="quick-start-body">
-          <span class="muted small">Skip voice &amp; image — load a scripted scenario in one click:</span>
-          <div class="quick-btns">
-            <button type="button" class="btn-chip" data-demo="tinea">Tinea / দাদ (Routine)</button>
-            <button type="button" class="btn-chip" data-demo="cellulitis">Urgent Infection + Fever (Tier 3)</button>
-            <button type="button" class="btn-chip" data-demo="eczema">Eczema / একজিমা (Non-urgent)</button>
+      <!-- 3-Step Progress Header -->
+      <div class="wizard-header">
+        <div class="wizard-steps">
+          <div class="w-step active" data-wstep="1"><span class="w-num">1</span> Patient Information</div>
+          <div class="w-line"></div>
+          <div class="w-step" data-wstep="2"><span class="w-num">2</span> Skin Photo</div>
+          <div class="w-line"></div>
+          <div class="w-step" data-wstep="3"><span class="w-num">3</span> AI Screening</div>
+        </div>
+        <button type="button" class="btn-exit" data-tab="home">Exit</button>
+      </div>
+
+      <!-- STEP 1: Patient Information -->
+      <div id="wiz-step-1" class="wiz-panel active">
+        <div class="sk-card wiz-card">
+          <h2 class="wiz-title">Patient Information</h2>
+          <p class="muted small">Please provide details about your skin problem</p>
+
+          <div class="grid-2 mt">
+            <!-- Left -->
+            <div class="col-stack">
+              <label class="field">
+                <span>What is your main problem?</span>
+                <select id="pComplaint">
+                  <option value="">e.g. Itching, Rash, Redness</option>
+                  <option value="Itching">Itching / চুলকানি</option>
+                  <option value="Rash">Rash / র‍্যাশ</option>
+                  <option value="Redness">Redness / লালচে ভাব</option>
+                  <option value="Painful lesion">Painful lesion / ব্যথাযুক্ত দাগ</option>
+                  <option value="Dry scaly patch">Dry scaly patch / শুষ্ক ও আঁশযুক্ত দাগ</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>How long has it been?</span>
+                <input id="pDur" type="text" placeholder="e.g. 5 days" />
+              </label>
+
+              <div>
+                <div class="field-label">Affected area <span class="muted">(Select all that apply)</span></div>
+                <div class="chip-group" id="areaChips">
+                  <button type="button" class="sel-chip" data-val="Face">Face</button>
+                  <button type="button" class="sel-chip" data-val="Scalp">Scalp</button>
+                  <button type="button" class="sel-chip" data-val="Neck">Neck</button>
+                  <button type="button" class="sel-chip" data-val="Chest">Chest</button>
+                  <button type="button" class="sel-chip" data-val="Back">Back</button>
+                  <button type="button" class="sel-chip" data-val="Arms">Arms</button>
+                  <button type="button" class="sel-chip" data-val="Hands">Hands</button>
+                  <button type="button" class="sel-chip" data-val="Legs">Legs</button>
+                  <button type="button" class="sel-chip" data-val="Feet">Feet</button>
+                  <button type="button" class="sel-chip" data-val="Others">Others</button>
+                </div>
+              </div>
+
+              <div>
+                <div class="field-label">Symptoms <span class="muted">(Select all that apply)</span></div>
+                <div class="chip-group" id="symptomChips">
+                  <button type="button" class="sel-chip" data-val="Itching">Itching</button>
+                  <button type="button" class="sel-chip" data-val="Redness">Redness</button>
+                  <button type="button" class="sel-chip" data-val="Pain" data-flag="pain">Pain</button>
+                  <button type="button" class="sel-chip" data-val="Swelling">Swelling</button>
+                  <button type="button" class="sel-chip" data-val="Dry skin">Dry skin</button>
+                  <button type="button" class="sel-chip" data-val="Burning">Burning</button>
+                  <button type="button" class="sel-chip" data-val="Rash">Rash</button>
+                  <button type="button" class="sel-chip" data-val="Blisters">Blisters</button>
+                  <button type="button" class="sel-chip" data-val="Fever" data-flag="fever">Fever</button>
+                  <button type="button" class="sel-chip" data-val="Bleeding" data-flag="bleeding">Bleeding</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right -->
+            <div class="col-stack">
+              <div>
+                <div class="field-label">Progression</div>
+                <div class="chip-group" id="progChips">
+                  <button type="button" class="sel-chip" data-val="Getting better">Getting better</button>
+                  <button type="button" class="sel-chip active" data-val="Same">Same</button>
+                  <button type="button" class="sel-chip" data-val="Getting worse" data-flag="spreading">Getting worse</button>
+                </div>
+              </div>
+
+              <label class="field">
+                <span>Previous treatment <span class="muted">(Optional)</span></span>
+                <input id="pPrev" type="text" placeholder="e.g. Cream, Tablet, Home remedy" />
+              </label>
+
+              <label class="field">
+                <span>Any other details <span class="muted">(Optional)</span></span>
+                <textarea id="symptomsText" rows="3" placeholder="Tell us more about your condition…"></textarea>
+              </label>
+
+              <div class="voice-card">
+                <div><strong>Use voice input</strong> <span class="muted small">(Bangla or English)</span></div>
+                <div class="muted small">Tap the microphone and describe your problem</div>
+                <div class="voice-row">
+                  <button type="button" id="micBtn" class="mic-circle" title="Tap to speak">🎙️</button>
+                  <div class="waveform" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+                <div id="micStatus" class="muted small">Your speech will be converted to text</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wiz-footer">
+            <div class="wiz-sec">🛡️ Your information is secure and used only for screening.</div>
+            <button type="button" id="toStep2Btn" class="btn-teal">Continue to Photo →</button>
           </div>
         </div>
-      </details>
+      </div>
 
-      <div class="grid-2">
-        <div class="col-stack">
-          <div class="sk-card">
-            <div class="sk-card-head">
-              <div class="sk-step-badge">1</div>
-              <div class="sk-card-title">
-                <strong>🎙️ Voice Input</strong>
-                <span>ভয়েস ইনপুট</span>
-              </div>
-              <span class="badge-opt">OPTIONAL</span>
-            </div>
-            <p class="muted small">Speak in Bengali or English. Or select warning signs &amp; type symptoms below.</p>
-            <label class="field">
-              <span>AUDIO LANGUAGE</span>
-              <select id="audioLang">
-                <option value="bn">Bengali (বাংলা)</option>
-                <option value="en">English</option>
-              </select>
-            </label>
-            <button type="button" id="micBtn" class="btn-outline mt">🎙️ Start recording</button>
-            <p id="micStatus" class="muted small"></p>
-            <div class="flags-grid mt">
-              <label class="flag-item"><input type="checkbox" name="flag" value="fever" /> <span>জ্বর · Fever</span></label>
-              <label class="flag-item"><input type="checkbox" name="flag" value="spreading" /> <span>ছড়াচ্ছে · Spreading</span></label>
-              <label class="flag-item"><input type="checkbox" name="flag" value="pain" /> <span>তীব্র ব্যথা · Pain</span></label>
-              <label class="flag-item"><input type="checkbox" name="flag" value="bleeding" /> <span>রক্তপাত · Bleeding</span></label>
-            </div>
+      <!-- STEP 2: Capture Skin Image -->
+      <div id="wiz-step-2" class="wiz-panel">
+        <div class="sk-card wiz-card">
+          <h2 class="wiz-title">Capture Skin Image</h2>
+          <p class="muted small">A clear photo helps AI analyze better and give accurate screening.</p>
+
+          <div class="photo-mode-tabs mt">
+            <button type="button" class="pm-tab active" data-pm="camera">Take Photo</button>
+            <button type="button" class="pm-tab" data-pm="gallery">Upload from Gallery</button>
           </div>
 
-          <div class="sk-card">
-            <div class="sk-card-head">
-              <div class="sk-step-badge">2</div>
-              <div class="sk-card-title">
-                <strong>👤 Patient Data</strong>
-                <span>রোগীর তথ্য · auto-filled or manual</span>
+          <div class="photo-grid-3 mt">
+            <!-- Left: Capture / Upload -->
+            <label id="dropzone" class="capture-box">
+              <input id="photoInput" type="file" accept="image/*" capture="environment" />
+              <div class="cam-circle">📷</div>
+              <strong id="camTitle">Camera is ready</strong>
+              <span id="camSub" class="muted small">Position the affected area in the frame</span>
+              <span class="btn-teal-sm mt" id="camBtnLabel">📷 Capture Photo</span>
+            </label>
+
+            <!-- Middle: Preview -->
+            <div class="preview-box">
+              <div class="field-label">Photo Preview</div>
+              <div class="preview-frame">
+                <img id="photoPreview" class="preview-img hidden" alt="Selected skin lesion preview" />
+                <div id="previewPlaceholder" class="muted small">No photo selected yet</div>
               </div>
+              <button type="button" id="retakeBtn" class="btn-retake hidden">↻ Retake</button>
+              <p id="photoMeta" class="muted small"></p>
             </div>
-            <div class="form-grid-2">
-              <label class="field"><span>PATIENT NAME</span><input id="pName" type="text" placeholder="e.g. Rahim" /></label>
-              <label class="field"><span>PATIENT AGE</span><input id="pAge" type="text" placeholder="e.g. 32" /></label>
-              <label class="field"><span>CHIEF COMPLAINT</span><input id="pComplaint" type="text" placeholder="e.g. Itching rash" /></label>
-              <label class="field"><span>SYMPTOMS (COMMA-SEPARATED)</span><input id="symptomsText" type="text" placeholder="e.g. itching, redness, fever" /></label>
-              <label class="field"><span>AFFECTED AREA</span><input id="pArea" type="text" placeholder="e.g. Arm, abdomen" /></label>
-              <label class="field"><span>PROGRESSION</span><input id="pProg" type="text" placeholder="e.g. spreading" /></label>
-              <label class="field"><span>DURATION</span><input id="pDur" type="text" placeholder="e.g. 5 days" /></label>
-              <label class="field">
-                <span>DISTRICT / জেলা</span>
+
+            <!-- Right: Photo Tips & Encryption -->
+            <div class="tips-col">
+              <div class="field-label">Photo Tips</div>
+              <ul class="photo-tips-list">
+                <li>Use natural lighting</li>
+                <li>Focus on the affected area</li>
+                <li>Avoid filters and heavy makeup</li>
+                <li>Keep the camera steady and close</li>
+                <li>Make sure the area is clear</li>
+                <li>Do not include other people</li>
+              </ul>
+              <div class="encrypt-note mt">
+                🛡️ Your images are encrypted and never shared without your consent.
+              </div>
+              <label class="field mt">
+                <span>District / জেলা</span>
                 <select id="districtSelect">
                   <option value="Dhaka">Dhaka (ঢাকা)</option>
                   <option value="Chattogram">Chattogram (চট্টগ্রাম)</option>
@@ -275,92 +377,59 @@
                   <option value="Mymensingh">Mymensingh (ময়মনসিংহ)</option>
                 </select>
               </label>
+              <label class="consent-box mt">
+                <input id="consentCheck" type="checkbox" />
+                <span>Share anonymously for doctor second opinion (7-day retention)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="wiz-footer">
+            <div class="muted small">Supported formats: JPG, JPEG, PNG · Max size: 5MB</div>
+            <div class="wiz-actions">
+              <button type="button" id="backToStep1Btn" class="btn-white">← Back</button>
+              <button type="button" id="analyzeBtn" class="btn-teal" disabled>Analyze Skin Image →</button>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-stack">
-          <div class="sk-card">
-            <div class="sk-card-head">
-              <div class="sk-step-badge green">📷</div>
-              <div class="sk-card-title">
-                <strong>Skin Photo</strong>
-                <span>ছবি আপলোড করুন</span>
-              </div>
-              <span class="badge-req">* REQUIRED</span>
-            </div>
-            <p class="muted small">Upload a clear, well-lit close-up of the affected area. BD-SkinNet (Swin+CBAM, INT8) analyses the image on the server CPU.</p>
-
-            <div class="privacy-box">
-              <div class="privacy-head">
-                🔒 <strong>Privacy by design —</strong>
-                <span class="p-pill">NOT SAVED BY DEFAULT</span>
-                <span class="p-pill">NO TRACKING</span>
-                <span class="p-pill">NO ACCOUNT</span>
-              </div>
-              <p class="small">Your photo is analysed for this session and never saved — unless you choose to share it with a doctor (a small copy, no name or phone, deleted after 7 days).</p>
-              <p class="small bn-muted">আপনার ছবি শুধু এই বিশ্লেষণের জন্য ব্যবহৃত হয়, সংরক্ষণ করা হয় না — যদি না আপনি ডাক্তারকে দেখাতে সম্মতি দেন।</p>
-            </div>
-
-            <label class="consent-box mt">
-              <input id="consentCheck" type="checkbox" />
-              <span>👩‍⚕️ <strong>Clinician mode</strong> — doctor's second opinion (anonymous, 7-day retention)</span>
-            </label>
-
-            <label id="dropzone" class="dropzone-bar mt">
-              <input id="photoInput" type="file" accept="image/*" capture="environment" />
-              <span>☁️ <strong>Drag and drop file here</strong> <small class="muted">Limit 5MB · JPG, JPEG, PNG, WEBP</small></span>
-              <span class="browse-btn">Browse files</span>
-            </label>
-            <img id="photoPreview" class="preview hidden" alt="Selected skin lesion preview" />
-            <p id="photoMeta" class="muted small"></p>
-
-            <button id="analyzeBtn" class="btn-teal mt" style="width:100%;" disabled>🔬 Analyze Skin · বিশ্লেষণ করুন</button>
+      <!-- STEP 3: AI Screening Result -->
+      <div id="wiz-step-3" class="wiz-panel">
+        <div id="resultWrap" class="sk-card wiz-card">
+          <div id="resultLoading" class="empty-state hidden">
+            <div class="spinner"></div>
+            <p>BD-SkinNet &amp; Triage Engine চলছে… · Analyzing skin image on Hugging Face…</p>
           </div>
-
-          <div id="waitingCard" class="waiting-card">
-            <div class="waiting-icon">🖼️</div>
-            <strong>Waiting for a skin photo</strong>
-            <span class="muted small">Upload a clear photo above to run AI screening</span>
-            <div class="waiting-pills">
-              <span>• Good lighting</span><span>• Close-up</span><span>• JPG / PNG / WEBP</span>
-            </div>
-          </div>
-
-          <div id="resultWrap" class="sk-card hidden">
-            <div id="resultLoading" class="empty-state hidden">
-              <div class="spinner"></div>
-              <p>BD-SkinNet &amp; Triage Engine চলছে… · Running analysis…</p>
-            </div>
-            <div id="resultError" class="alert error hidden"></div>
-            <div id="resultBody" class="hidden">
-              <div id="tierBanner" class="tier-banner"></div>
-              <div class="diagnosis-box">
-                <div>
-                  <div class="muted small">সম্ভাব্য রোগ · Predicted Condition</div>
-                  <div id="diseaseName" class="disease-title"></div>
-                  <div id="diseaseBn" class="disease-bn"></div>
-                </div>
-                <div class="conf-box">
-                  <div class="muted small">Confidence</div>
-                  <div id="confidenceVal" class="conf-num"></div>
-                </div>
+          <div id="resultError" class="alert error hidden"></div>
+          <div id="resultBody" class="hidden">
+            <div id="tierBanner" class="tier-banner"></div>
+            <div class="diagnosis-box">
+              <div>
+                <div class="muted small">সম্ভাব্য রোগ · Predicted Condition</div>
+                <div id="diseaseName" class="disease-title"></div>
+                <div id="diseaseBn" class="disease-bn"></div>
               </div>
-              <div id="top2Wrap" class="top2-wrap"></div>
-              <div class="action-box">
-                <strong>পরামর্শ · Recommended Action</strong>
-                <p id="actionBn"></p>
-                <p id="actionEn" class="muted"></p>
-                <p id="facilityText" class="small muted"></p>
+              <div class="conf-box">
+                <div class="muted small">Confidence</div>
+                <div id="confidenceVal" class="conf-num"></div>
               </div>
-              <ul id="reasonsList" class="reasons-list"></ul>
-              <div class="row mt">
-                <button id="downloadPdfBtn" class="btn-secondary">📄 Referral PDF</button>
-                <button id="askAboutBtn" class="btn-secondary">💬 Ask AI</button>
-                <button id="goDoctimeBtn" class="btn-secondary">🩺 DocTime</button>
-              </div>
-              <p id="caseIdNote" class="muted small mt"></p>
             </div>
+            <div id="top2Wrap" class="top2-wrap"></div>
+            <div class="action-box">
+              <strong>পরামর্শ · Recommended Action</strong>
+              <p id="actionBn"></p>
+              <p id="actionEn" class="muted"></p>
+              <p id="facilityText" class="small muted"></p>
+            </div>
+            <ul id="reasonsList" class="reasons-list"></ul>
+            <div class="row mt">
+              <button type="button" id="downloadPdfBtn" class="btn-secondary">📄 Referral PDF</button>
+              <button type="button" id="askAboutBtn" class="btn-secondary">💬 Ask AI</button>
+              <button type="button" id="goDoctimeBtn" class="btn-secondary">🩺 DocTime</button>
+              <button type="button" id="newScreeningBtn" class="btn-white">← New Screening</button>
+            </div>
+            <p id="caseIdNote" class="muted small mt"></p>
           </div>
         </div>
       </div>

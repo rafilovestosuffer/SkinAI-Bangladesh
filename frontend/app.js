@@ -185,15 +185,57 @@ async function checkBackend() {
   }
 }
 
+/* ---------- 3-Step Screening Wizard ---------- */
+function setWizardStep(step) {
+  [1, 2, 3].forEach((n) => {
+    const panel = $("wiz-step-" + n);
+    if (panel) panel.classList.toggle("active", n === step);
+    const pill = document.querySelector(`.w-step[data-wstep="${n}"]`);
+    if (pill) {
+      pill.classList.toggle("active", n === step);
+      pill.classList.toggle("done", n < step);
+    }
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("#areaChips .sel-chip, #symptomChips .sel-chip").forEach((chip) => {
+  chip.addEventListener("click", () => chip.classList.toggle("active"));
+});
+document.querySelectorAll("#progChips .sel-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll("#progChips .sel-chip").forEach((c) => c.classList.remove("active"));
+    chip.classList.add("active");
+  });
+});
+
+document.querySelectorAll(".pm-tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".pm-tab").forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    const isCam = tab.dataset.pm === "camera";
+    if (isCam) $("photoInput").setAttribute("capture", "environment");
+    else $("photoInput").removeAttribute("capture");
+    $("camTitle").textContent = isCam ? "Camera is ready" : "Choose from gallery";
+    $("camSub").textContent = isCam ? "Position the affected area in the frame" : "Select a clear skin photo from your device";
+    $("camBtnLabel").textContent = isCam ? "📷 Capture Photo" : "📁 Browse Files";
+  });
+});
+
+$("toStep2Btn").addEventListener("click", () => setWizardStep(2));
+$("backToStep1Btn").addEventListener("click", () => setWizardStep(1));
+$("newScreeningBtn").addEventListener("click", () => setWizardStep(1));
+$("retakeBtn").addEventListener("click", () => $("photoInput").click());
+
 /* ---------- Voice / Mic ---------- */
 $("micBtn").addEventListener("click", () => {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    $("micStatus").textContent = "Browser speech recognition not supported — type symptoms below.";
+    $("micStatus").textContent = "Browser speech recognition not supported — type details above.";
     return;
   }
   const rec = new SR();
-  rec.lang = $("audioLang").value === "bn" ? "bn-BD" : "en-US";
+  rec.lang = "bn-BD";
   $("micStatus").textContent = "🎙️ Listening… speak now";
   rec.onresult = (ev) => {
     const text = ev.results[0][0].transcript;
@@ -202,20 +244,6 @@ $("micBtn").addEventListener("click", () => {
   };
   rec.onerror = (ev) => { $("micStatus").textContent = "Mic error: " + ev.error; };
   rec.start();
-});
-
-/* ---------- Quick Start Demos ---------- */
-document.querySelectorAll("[data-demo]").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const demo = DEMO_CASES[btn.dataset.demo];
-    if (!demo) return;
-    lastResult = demo;
-    $("waitingCard").classList.add("hidden");
-    $("resultWrap").classList.remove("hidden");
-    $("resultError").classList.add("hidden");
-    $("resultLoading").classList.add("hidden");
-    renderResult(demo);
-  });
 });
 
 /* ---------- Image resize & preview ---------- */
@@ -246,6 +274,8 @@ $("photoInput").addEventListener("change", async (e) => {
     selectedBlob = await shrinkImage(file);
     $("photoPreview").src = URL.createObjectURL(selectedBlob);
     $("photoPreview").classList.remove("hidden");
+    $("previewPlaceholder").classList.add("hidden");
+    $("retakeBtn").classList.remove("hidden");
     $("photoMeta").textContent = `Prepared: ${(selectedBlob.size / 1024).toFixed(0)} KB JPEG`;
     $("analyzeBtn").disabled = false;
   } catch (err) {
@@ -256,18 +286,30 @@ $("photoInput").addEventListener("change", async (e) => {
 /* ---------- Analyze Skin ---------- */
 $("analyzeBtn").addEventListener("click", async () => {
   if (!selectedBlob) return;
-  $("waitingCard").classList.add("hidden");
-  $("resultWrap").classList.remove("hidden");
+  setWizardStep(3);
   $("resultBody").classList.add("hidden");
   $("resultError").classList.add("hidden");
   $("resultLoading").classList.remove("hidden");
   $("analyzeBtn").disabled = true;
 
-  const flags = Array.from(document.querySelectorAll('input[name="flag"]:checked')).map((el) => el.value);
+  const flags = Array.from(document.querySelectorAll(".sel-chip.active[data-flag]")).map((el) => el.dataset.flag);
+  const areas = Array.from(document.querySelectorAll("#areaChips .sel-chip.active")).map((el) => el.dataset.val);
+  const syms = Array.from(document.querySelectorAll("#symptomChips .sel-chip.active")).map((el) => el.dataset.val);
+  const prog = document.querySelector("#progChips .sel-chip.active")?.dataset.val || "";
+  const extra = [
+    $("pComplaint").value,
+    $("pDur").value ? `duration: ${$("pDur").value}` : "",
+    areas.length ? `areas: ${areas.join(", ")}` : "",
+    syms.length ? `symptoms: ${syms.join(", ")}` : "",
+    prog ? `progression: ${prog}` : "",
+    $("pPrev").value ? `previous: ${$("pPrev").value}` : "",
+    $("symptomsText").value,
+  ].filter(Boolean).join("; ");
+
   const form = new FormData();
   form.append("image", selectedBlob, "skin.jpg");
   flags.forEach((f) => form.append("red_flags", f));
-  form.append("symptoms_text", $("symptomsText").value || "");
+  form.append("symptoms_text", extra);
   form.append("district", $("districtSelect").value);
   form.append("consent", $("consentCheck").checked ? "true" : "false");
 
@@ -347,10 +389,10 @@ async function downloadReferralPdf(useSample = false) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        patient_name: $("pName").value || "Sample Patient",
-        age: $("pAge").value || "30",
+        patient_name: ($("pName") && $("pName").value) || "Patient",
+        age: ($("pAge") && $("pAge").value) || "30",
         district: $("districtSelect").value,
-        symptoms: Array.from(document.querySelectorAll('input[name="flag"]:checked')).map((el) => el.value),
+        symptoms: Array.from(document.querySelectorAll("#symptomChips .sel-chip.active")).map((el) => el.dataset.val),
         disease: data.disease || "",
         confidence: data.confidence || 0,
         tier: data.tier ?? 1,
