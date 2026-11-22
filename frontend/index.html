@@ -423,7 +423,7 @@
                 <li>Do not include other people</li>
               </ul>
               <div class="encrypt-note mt">
-                🛡️ Your images are encrypted and never shared without your consent.
+                <span class="material-symbols-outlined ic-sm">verified_user</span> Your images are encrypted and never shared without your consent.
               </div>
               <label class="field mt">
                 <span>District / জেলা</span>
@@ -485,9 +485,9 @@
             </div>
             <ul id="reasonsList" class="reasons-list"></ul>
             <div class="row mt">
-              <button type="button" id="downloadPdfBtn" class="btn-secondary">📄 Referral PDF</button>
-              <button type="button" id="askAboutBtn" class="btn-secondary">💬 Ask AI</button>
-              <button type="button" id="goDoctimeBtn" class="btn-secondary">🩺 DocTime</button>
+              <button type="button" id="downloadPdfBtn" class="btn-secondary"><span class="material-symbols-outlined ic-sm">description</span> Referral PDF</button>
+              <button type="button" id="askAboutBtn" class="btn-secondary"><span class="material-symbols-outlined ic-sm">forum</span> Ask AI</button>
+              <button type="button" id="goDoctimeBtn" class="btn-secondary"><span class="material-symbols-outlined ic-sm">stethoscope</span> DocTime</button>
               <button type="button" id="newScreeningBtn" class="btn-white">← New Screening</button>
             </div>
             <p id="caseIdNote" class="muted small mt"></p>
@@ -577,7 +577,7 @@
         <summary>▸ &nbsp;Download a sample referral letter (no diagnosis needed)</summary>
         <div class="quick-start-body">
           <span class="muted small">Preview the 4-section bilingual referral PDF format using a sample case.</span>
-          <button type="button" id="samplePdfBtn" class="btn-secondary" style="max-width:260px;">📄 Download Sample PDF</button>
+          <button type="button" id="samplePdfBtn" class="btn-secondary" style="max-width:260px;"><span class="material-symbols-outlined ic-sm">description</span> Download Sample PDF</button>
         </div>
       </details>
 
@@ -593,9 +593,9 @@
       </div>
 
       <div id="referralReadyBox" class="sk-card hidden">
-        <h3>📄 Ready: 4-Section Bilingual Referral Letter</h3>
+        <h3><span class="material-symbols-outlined ic-sm">description</span> Ready: 4-Section Bilingual Referral Letter</h3>
         <div id="referralSummary" class="action-box mt"></div>
-        <button type="button" id="referralTabPdfBtn" class="btn-teal mt" style="max-width:300px;">📄 Download Referral PDF</button>
+        <button type="button" id="referralTabPdfBtn" class="btn-teal mt" style="max-width:300px;"><span class="material-symbols-outlined ic-sm" style="color:#fff !important;">description</span> Download Referral PDF</button>
       </div>
     </section>
 
@@ -617,11 +617,11 @@
 
         <div class="grid-insights mt">
           <div>
-            <div class="muted small mb-1">🗺️ Geographic Distribution · ভৌগোলিক বিস্তৃতি</div>
+            <div class="muted small mb-1"><span class="material-symbols-outlined ic-sm">map</span> Geographic Distribution · ভৌগোলিক বিস্তৃতি</div>
             <div id="bdMap" class="bd-map"></div>
           </div>
           <div>
-            <div class="muted small mb-1">📊 Burden Level by Division</div>
+            <div class="muted small mb-1"><span class="material-symbols-outlined ic-sm">bar_chart</span> Burden Level by Division</div>
             <div id="districtRanks" class="rank-list"></div>
           </div>
         </div>
@@ -641,21 +641,21 @@
       </div>
 
       <div id="doctimeEmpty" class="waiting-card mt">
-        <div class="waiting-icon">🩺</div>
+        <div class="waiting-icon"><span class="material-symbols-outlined" style="font-size:34px;color:var(--teal);">stethoscope</span></div>
         <strong>Complete diagnosis first</strong>
         <span>প্রথমে Tab 1-এ রোগ নির্ণয় সম্পন্ন করুন</span>
         <span class="muted small">Run a skin + triage diagnosis in Diagnosis, then return here to hand the case off to a DocTime BMDC-registered dermatologist.</span>
       </div>
 
       <div id="doctimeReady" class="sk-card mt hidden">
-        <h3>✅ Ready for DocTime Telemedicine Handoff</h3>
+        <h3><span class="material-symbols-outlined ic-sm">check_circle</span> Ready for DocTime Telemedicine Handoff</h3>
         <div id="doctimeSummary" class="action-box mt"></div>
       </div>
 
       <div class="sk-card mt">
         <div class="hospital-toolbar">
           <div>
-            <h3>🏥 Nearest Hospitals &amp; Clinics · নিকটস্থ হাসপাতাল</h3>
+            <h3><span class="material-symbols-outlined ic-sm">local_hospital</span> Nearest Hospitals &amp; Clinics · নিকটস্থ হাসপাতাল</h3>
             <p class="muted small">Live OpenStreetMap + DGHS directory via Hugging Face backend</p>
           </div>
           <div class="row" style="max-width:420px;">
@@ -668,7 +668,7 @@
               <option value="Rangpur">Rangpur</option>
             </select>
             <button type="button" id="findHospitalsBtn" class="btn-teal" style="width:auto;">Search</button>
-            <button type="button" id="gpsBtn" class="btn-secondary" style="width:auto;">📍 GPS</button>
+            <button type="button" id="gpsBtn" class="btn-secondary" style="width:auto;"><span class="material-symbols-outlined ic-sm">my_location</span> GPS</button>
           </div>
         </div>
         <div id="hospitalsStatus" class="muted small mt"></div>
@@ -701,7 +701,7 @@
           <label class="field"><span>আপনার নাম · YOUR NAME</span><input id="bkName" type="text" placeholder="যেমন: রহিম / Rahim" /></label>
           <label class="field"><span>মোবাইল নম্বর · MOBILE NUMBER</span><input id="bkPhone" type="text" placeholder="01XXXXXXXXX" /></label>
         </div>
-        <button type="button" id="confirmBookingBtn" class="btn-teal mt" style="width:100%;">📅 অ্যাপয়েন্টমেন্ট নিশ্চিত করুন · Confirm Appointment</button>
+        <button type="button" id="confirmBookingBtn" class="btn-teal mt" style="width:100%;"><span class="material-symbols-outlined ic-sm" style="color:#fff !important;">calendar_month</span> অ্যাপয়েন্টমেন্ট নিশ্চিত করুন · Confirm Appointment</button>
         <div id="bookingConfirmMsg" class="alert ok hidden mt"></div>
       </div>
     </section>

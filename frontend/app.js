@@ -256,7 +256,7 @@ document.querySelectorAll(".pm-tab").forEach((tab) => {
     else $("photoInput").removeAttribute("capture");
     $("camTitle").textContent = isCam ? "Camera is ready" : "Choose from gallery";
     $("camSub").textContent = isCam ? "Position the affected area in the frame" : "Select a clear skin photo from your device";
-    $("camBtnLabel").textContent = isCam ? "📷 Capture Photo" : "📁 Browse Files";
+    $("camBtnLabel").textContent = isCam ? "Capture Photo" : "Browse Files";
   });
 });
 
@@ -274,7 +274,7 @@ $("micBtn").addEventListener("click", () => {
   }
   const rec = new SR();
   rec.lang = "bn-BD";
-  $("micStatus").textContent = "🎙️ Listening… speak now";
+  $("micStatus").textContent = "Listening… speak now";
   rec.onresult = (ev) => {
     const text = ev.results[0][0].transcript;
     $("symptomsText").value = ($("symptomsText").value ? $("symptomsText").value + ", " : "") + text;
@@ -627,7 +627,7 @@ async function loadHospitals(params) {
       const card = document.createElement("div");
       card.className = "hospital-card";
       const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.lat + "," + h.lon)}`;
-      card.innerHTML = `<strong>${h.name || "Hospital"}</strong><div class="muted small">${h.address || ""}</div><div class="small mt">${h.dist_km != null ? h.dist_km + " km" : ""} ${h.phone ? "· 📞 " + h.phone : ""}</div><a href="${mapUrl}" target="_blank" rel="noopener">Google Maps →</a>`;
+      card.innerHTML = `<strong>${h.name || "Hospital"}</strong><div class="muted small">${h.address || ""}</div><div class="small mt">${h.dist_km != null ? h.dist_km + " km" : ""} ${h.phone ? "· Tel: " + h.phone : ""}</div><a href="${mapUrl}" target="_blank" rel="noopener">Google Maps →</a>`;
       $("hospitalsGrid").appendChild(card);
     });
   } catch (err) {
