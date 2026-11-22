@@ -516,8 +516,44 @@ async function downloadReferralPdf(useSample = false) {
     alert(err.message);
   }
 }
-$("dxGenSampleBtn").addEventListener("click", () => {
-  window.open("/assets/sample-referral.pdf", "_blank", "noopener");
+$("dxGenSampleBtn").addEventListener("click", async () => {
+  const btn = $("dxGenSampleBtn");
+  const dl = $("dxDownloadSampleLink");
+  const loading = $("dxSampleLoading");
+  btn.disabled = true;
+  dl.classList.add("hidden");
+  loading.classList.remove("hidden");
+  try {
+    let blob = null;
+    try {
+      const res = await fetch("/api/referral-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          patient_name: "Rahim Mia",
+          age: "35",
+          district: "Rangpur",
+          symptoms: ["intense itching", "spreading rash", "fever"],
+          disease: "Scabies",
+          confidence: 0.88,
+          tier: 3,
+          action_en: "Visit the nearest health facility today for urgent evaluation.",
+          action_bn: "সতর্ক লক্ষণ থাকায় আজই নিকটস্থ স্বাস্থ্যকেন্দ্রে যান।",
+        }),
+      });
+      if (res.ok) blob = await res.blob();
+    } catch { /* fallback to static sample */ }
+    if (!blob) {
+      const res2 = await fetch("/assets/sample-referral.pdf");
+      blob = await res2.blob();
+    }
+    dl.href = URL.createObjectURL(blob);
+    dl.download = "skinai_demo_consultation.pdf";
+    dl.classList.remove("hidden");
+  } finally {
+    loading.classList.add("hidden");
+    btn.disabled = false;
+  }
 });
 
 $("downloadPdfBtn").addEventListener("click", () => downloadReferralPdf(false));

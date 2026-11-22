@@ -493,7 +493,11 @@
           <p class="muted small">Fully-populated example: Rahim · Scabies Tier 3 · with doctor booking. Generates instantly so judges can see the format.</p>
           <div class="sample-ref-btns">
             <button type="button" id="dxGenSampleBtn" class="btn-white">Generate sample PDF</button>
-            <a href="/assets/sample-referral.pdf" download="skinai_demo_consultation.pdf" class="btn-teal sample-dl-link">Download sample</a>
+            <a id="dxDownloadSampleLink" href="/assets/sample-referral.pdf" download="skinai_demo_consultation.pdf" class="btn-teal sample-dl-link hidden">Download sample</a>
+          </div>
+          <div id="dxSampleLoading" class="sample-loading hidden mt">
+            <div class="spinner" style="margin:0;width:20px;height:20px;"></div>
+            <span class="muted small">Generating 4-section bilingual referral PDF…</span>
           </div>
         </div>
       </details>
