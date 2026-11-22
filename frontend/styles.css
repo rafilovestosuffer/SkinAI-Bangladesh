@@ -587,6 +587,20 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
 .sample-dl-link { text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; }
 .sample-loading { display: flex; align-items: center; gap: 10px; }
 
+.landing-footer {
+  margin-top: 52px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 26px;
+}
+.lf-grid { display: grid; grid-template-columns: 1.1fr 1.3fr 0.7fr; gap: 28px; align-items: start; }
+@media (max-width: 860px) { .lf-grid { grid-template-columns: 1fr; } }
+.landing-footer h4 { margin: 0 0 10px; font-size: 0.96rem; font-weight: 700; color: var(--text); }
+.lf-links-col { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.lf-links-col button { border: 0; background: transparent; padding: 3px 0; font: inherit; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
+.lf-links-col button:hover { color: var(--teal); }
+
 .sk-footer { text-align: center; margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
 .footer-brand { font-size: 0.92rem; margin-bottom: 6px; }
 .footer-pills { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 0.72rem; color: var(--teal); }
