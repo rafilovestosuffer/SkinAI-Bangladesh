@@ -363,15 +363,29 @@ $("chatForm").addEventListener("submit", (e) => {
 });
 document.querySelectorAll(".chat-chip").forEach((c) => c.addEventListener("click", () => sendChat(c.dataset.q)));
 
-/* ---------- Insights Map & Ranks ---------- */
-function renderInsights() {
+/* ---------- Insights Map & Ranks (Rokkha OSM + 64-district GeoJSON) ---------- */
+const BD_BOUNDS = [[20.55, 88.0], [26.65, 92.7]];
+const MAP_COLORS = { low: "#CFD9CC", watch: "#E9B949", alert: "#B3392D", edge: "#6F7F73" };
+let districtsGeo = null;
+let geoLayer = null;
+
+async function ensureDistrictsGeo() {
+  if (districtsGeo) return districtsGeo;
+  const res = await fetch("/geo/districts.json");
+  if (res.ok) districtsGeo = await res.json();
+  return districtsGeo;
+}
+
+async function renderInsights() {
   const disease = $("insightDisease").value;
   const info = PREVALENCE[disease] || PREVALENCE.Tinea;
   $("tipsContent").innerHTML = info.tips;
 
   const ranks = $("districtRanks");
   ranks.innerHTML = "";
+  const sevMap = {};
   info.points.forEach((p) => {
+    sevMap[p.name.toLowerCase()] = p.sev;
     const row = document.createElement("div");
     row.className = "rank-item";
     row.innerHTML = `<span>${p.name}</span><span class="sev-pill ${p.sev === "High" ? "high" : "med"}">${p.sev}</span>`;
@@ -380,21 +394,55 @@ function renderInsights() {
 
   if (window.L) {
     if (!bdMap) {
-      bdMap = L.map("bdMap").setView([23.685, 90.356], 7);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-        attribution: "© OpenStreetMap © CARTO",
+      bdMap = L.map("bdMap", {
+        center: [23.75, 90.35],
+        zoom: 7,
+        minZoom: 6,
+        maxZoom: 16,
+        maxBounds: BD_BOUNDS,
+      });
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+        maxZoom: 19,
       }).addTo(bdMap);
       mapLayer = L.layerGroup().addTo(bdMap);
     }
     bdMap.invalidateSize();
     mapLayer.clearLayers();
+    if (geoLayer) {
+      bdMap.removeLayer(geoLayer);
+      geoLayer = null;
+    }
+
+    const geo = await ensureDistrictsGeo();
+    if (geo) {
+      geoLayer = L.geoJSON(geo, {
+        style: (feature) => {
+          const name = (feature.properties?.name || "").toLowerCase();
+          const sev = sevMap[name] || (name === "chittagong" ? sevMap["chattogram"] : null);
+          const fillColor = sev === "High" ? MAP_COLORS.alert : sev === "Medium" ? MAP_COLORS.watch : MAP_COLORS.low;
+          return {
+            color: MAP_COLORS.edge,
+            weight: 1,
+            fillColor,
+            fillOpacity: sev ? 0.62 : 0.35,
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          const name = feature.properties?.name || "District";
+          const sev = sevMap[name.toLowerCase()] || (name.toLowerCase() === "chittagong" ? sevMap["chattogram"] : "Low");
+          layer.bindTooltip(`<strong>${name}</strong><br>${disease}: ${sev}`, { sticky: true });
+        },
+      }).addTo(bdMap);
+    }
+
     info.points.forEach((p) => {
-      const color = p.sev === "High" ? "#DC2626" : "#D97706";
+      const color = p.sev === "High" ? MAP_COLORS.alert : MAP_COLORS.watch;
       L.circleMarker([p.lat, p.lon], {
-        radius: p.sev === "High" ? 13 : 9,
+        radius: p.sev === "High" ? 10 : 7,
         color,
         fillColor: color,
-        fillOpacity: 0.45,
+        fillOpacity: 0.7,
       }).bindPopup(`<strong>${p.name}</strong><br>${disease}: ${p.sev}`).addTo(mapLayer);
     });
   }
