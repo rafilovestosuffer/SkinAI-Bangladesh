@@ -711,6 +711,7 @@ async function renderInsights() {
           layer.bindTooltip(`<strong>${name}</strong> (${divName})<br>${disease}: ${sev}`, { sticky: true });
         },
       }).addTo(bdMap);
+      bdMap.fitBounds(geoLayer.getBounds(), { padding: [14, 14] });
     }
   }
 }
