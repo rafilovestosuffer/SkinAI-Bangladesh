@@ -429,40 +429,80 @@
       </div>
     </section>
 
-    <!-- ==================== TAB 2: ASK AI ==================== -->
+    <!-- ==================== TAB 2: ASK AI (ChatGPT-style Sidebar + Thread) ==================== -->
     <section id="tab-ask" class="tab-panel">
-      <div class="sk-card">
-        <div class="grounded-bar">
-          <div class="grounded-pills">
-            <span class="muted small">ANSWERS GROUNDED IN</span>
-            <span class="g-pill">WHO</span><span class="g-pill">DGHS</span><span class="g-pill">BMDC</span><span class="g-pill">BSMMU Guidelines</span>
+      <div class="ask-shell">
+        <!-- Left Dark Sidebar -->
+        <aside class="ask-sidebar">
+          <button type="button" id="newChatBtn" class="new-chat-btn">+ New Chat</button>
+          <div id="chatHistoryList" class="chat-history-list">
+            <button type="button" class="hist-item active" data-hist="0">
+              <span class="material-symbols-outlined ic-hist">chat_bubble_outline</span>
+              <span>Skin prevention &amp; care</span>
+            </button>
+            <button type="button" class="hist-item" data-hist="1">
+              <span class="material-symbols-outlined ic-hist">chat_bubble_outline</span>
+              <span>Rash on arm (হাত ও পায়ের চুলকানি)</span>
+            </button>
+            <button type="button" class="hist-item" data-hist="2">
+              <span class="material-symbols-outlined ic-hist">chat_bubble_outline</span>
+              <span>Dry skin treatment</span>
+            </button>
+            <button type="button" class="hist-item" data-hist="3">
+              <span class="material-symbols-outlined ic-hist">chat_bubble_outline</span>
+              <span>Acne concerns (ব্রণ)</span>
+            </button>
+            <button type="button" class="hist-item" data-hist="4">
+              <span class="material-symbols-outlined ic-hist">chat_bubble_outline</span>
+              <span>Skin infection (ত্বকের সংক্রমণ)</span>
+            </button>
           </div>
-          <span class="muted small">Educational only — no medicine recommendations</span>
-        </div>
+          <div class="sidebar-foot">
+            <div class="sb-brand">🩺 <strong>SkinAI</strong> Bangladesh</div>
+            <div class="sb-pills">RIGHT PATIENT · RIGHT DOCTOR · RIGHT TIME</div>
+          </div>
+        </aside>
 
-        <div class="ask-hero">
-          <div class="ask-orb">AI</div>
-          <h2>Ask about skin conditions</h2>
-          <div class="ask-bn">ত্বকের রোগ সম্পর্কে প্রশ্ন করুন</div>
-          <p class="muted small">Grounded in WHO · NIH · BMDC · DGHS Bangladesh — ask in Bengali or English</p>
-          <span id="chatContextBadge" class="context-badge hidden"></span>
-        </div>
+        <!-- Right Chat Workspace -->
+        <div class="ask-main">
+          <div class="ask-top-card">
+            <div class="grounded-bar">
+              <div class="grounded-pills">
+                <span class="muted small">ANSWERS GROUNDED IN</span>
+                <span class="g-pill">WHO</span><span class="g-pill">DGHS</span><span class="g-pill">BMDC</span><span class="g-pill">BSMMU Guidelines</span>
+              </div>
+              <span class="muted small">Educational only — no medicine recommendations</span>
+            </div>
 
-        <div class="suggested-label">SUGGESTED QUESTIONS</div>
-        <div class="suggested-grid">
-          <button type="button" class="btn-chip chat-chip" data-q="চিকিৎসা করণীয় কী?">চিকিৎসা করণীয় কী?</button>
-          <button type="button" class="btn-chip chat-chip" data-q="প্রতিরোধের উপায় কী?">প্রতিরোধের উপায় কী?</button>
-          <button type="button" class="btn-chip chat-chip" data-q="কখন ডাক্তার দেখাবো?">কখন ডাক্তার দেখাবো?</button>
-        </div>
+            <div class="ask-hero">
+              <div class="ask-orb">AI</div>
+              <h2>Ask about skin conditions</h2>
+              <div class="ask-bn">ত্বকের রোগ সম্পর্কে প্রশ্ন করুন</div>
+              <p class="muted small">Grounded in WHO · NIH · BMDC · DGHS Bangladesh — ask in Bengali or English</p>
+              <span id="chatContextBadge" class="context-badge hidden"></span>
+            </div>
 
-        <div id="chatLog" class="chat-log mt">
-          <div class="msg bot">নমস্কার / আসসালামু আলাইকুম! ত্বকের যেকোনো সমস্যা সম্পর্কে বাংলা বা ইংরেজিতে প্রশ্ন করতে পারেন।</div>
-        </div>
+            <div class="suggested-label">SUGGESTED QUESTIONS</div>
+            <div class="suggested-grid">
+              <button type="button" class="btn-chip chat-chip" data-q="চিকিৎসা করণীয় কী?">চিকিৎসা করণীয় কী?</button>
+              <button type="button" class="btn-chip chat-chip" data-q="প্রতিরোধের উপায় কী?">প্রতিরোধের উপায় কী?</button>
+              <button type="button" class="btn-chip chat-chip" data-q="কখন ডাক্তার দেখাবো?">কখন ডাক্তার দেখাবো?</button>
+            </div>
+          </div>
 
-        <form id="chatForm" class="chat-input-row mt">
-          <input id="chatInput" type="text" placeholder="বাংলায় প্রশ্ন লিখুন বা Type your question... (Bengali or English)" required />
-          <button type="submit" class="btn-teal" style="width:auto;">↑</button>
-        </form>
+          <div id="chatLog" class="chat-thread"></div>
+
+          <div class="ask-composer-wrap">
+            <form id="chatForm" class="chat-input-row">
+              <button type="button" class="attach-btn" data-tab="diagnosis" title="Upload skin photo in Diagnosis">
+                <span class="material-symbols-outlined">add_photo_alternate</span>
+              </button>
+              <input id="chatInput" type="text" placeholder="বাংলায় প্রশ্ন লিখুন বা Type your question... (Bengali or English)" required />
+              <button type="submit" class="send-up-btn" title="Send">↑</button>
+            </form>
+            <div class="chat-disclaimer">SkinAI may provide educational info. Consult a doctor for medical decisions.</div>
+          </div>
+        </div>
       </div>
     </section>
 

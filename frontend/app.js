@@ -460,14 +460,29 @@ $("askAboutBtn").addEventListener("click", () => {
 });
 $("goDoctimeBtn").addEventListener("click", () => switchTab("doctime"));
 
-/* ---------- Ask AI ---------- */
+/* ---------- Ask AI (ChatGPT-style Thread + Local Clinical Fallback) ---------- */
+const LOCAL_QA = {
+  "প্রতিরোধের উপায় কী?": "ত্বকের বিভিন্ন সমস্যা প্রতিরোধে কিছু সাধারণ নিয়ম মেনে চলা উচিত:\n1. নিয়মিত ত্বক পরিষ্কার ও আর্দ্র (moisturized) রাখুন।\n2. রোদে বের হওয়ার আগে সানস্ক্রিন বা ছাতা ব্যবহার করুন।\n3. তোয়ালে ও পোশাক আলাদা রাখুন এবং সুতি কাপড় পরুন।\n4. কোনো সংক্রমণ বা অস্বাভাবিক পরিবর্তন দেখলে দ্রুত চিকিৎসকের পরামর্শ নিন।",
+  "কখন ডাক্তার দেখাবো?": "যদি আপনার ত্বকে নিচের লক্ষণগুলো দেখা যায়, তবে অবিলম্বে একজন চর্মরোগ বিশেষজ্ঞ বা ডাক্তারের পরামর্শ নেওয়া উচিত:\n• ত্বক হঠাৎ লাল হয়ে যাওয়া, ফুলে যাওয়া বা তীব্র চুলকানি হলে।\n• জ্বর বা পুঁজ বের হলে এবং দাগ দ্রুত ছড়িয়ে পড়লে।\n• কোনো ক্ষত বা ঘা স্বাভাবিক সময়ের মধ্যে না শুকালে।",
+  "চিকিৎসা করণীয় কী?": "সঠিক চিকিৎসার জন্য আক্রান্ত স্থানের ছবি তুলে Diagnosis ট্যাবে পরীক্ষা করুন। ত্বক পরিষ্কার ও শুষ্ক রাখুন, নিজে থেকে স্টেরয়েড ক্রিম ব্যবহার করবেন না এবং প্রয়োজনে চিকিৎসকের পরামর্শ নিন।",
+};
+
 function appendMsg(role, text) {
-  const div = document.createElement("div");
-  div.className = "msg " + role;
-  div.textContent = text;
-  $("chatLog").appendChild(div);
+  const row = document.createElement("div");
+  row.className = "msg-row " + role;
+  if (role === "bot") {
+    const av = document.createElement("div");
+    av.className = "bot-avatar";
+    av.textContent = "AI";
+    row.appendChild(av);
+  }
+  const bubble = document.createElement("div");
+  bubble.className = "msg-bubble";
+  bubble.textContent = text;
+  row.appendChild(bubble);
+  $("chatLog").appendChild(row);
   $("chatLog").scrollTop = $("chatLog").scrollHeight;
-  return div;
+  return bubble;
 }
 
 async function sendChat(question) {
@@ -480,15 +495,30 @@ async function sendChat(question) {
       body: JSON.stringify({ question, disease_context: lastResult ? lastResult.disease : null }),
     });
     if (res.status === 404) {
-      pending.textContent = "Backend /api/chat not yet deployed on Hugging Face Space. Push webhook/api.py to HF Space to enable RAG chat.";
+      pending.textContent = LOCAL_QA[question] || "আপনার প্রশ্নটি গ্রহণ করা হয়েছে। বিস্তারিত উত্তর পেতে অনুগ্রহ করে SkinAI Diagnosis ট্যাবে ছবি আপলোড করুন অথবা নিকটস্থ চিকিৎসকের পরামর্শ নিন। (লাইভ RAG চালু করতে webhook/api.py Hugging Face-এ আপডেট করুন।)";
       return;
     }
     const data = await res.json();
     pending.textContent = data.answer || data.error || "No response";
   } catch (err) {
-    pending.textContent = "Error: " + err.message;
+    pending.textContent = LOCAL_QA[question] || ("Error: " + err.message);
   }
 }
+
+$("newChatBtn").addEventListener("click", () => {
+  $("chatLog").innerHTML = "";
+  appendMsg("bot", "নমস্কার / আসসালামু আলাইকুম! ত্বকের যেকোনো সমস্যা সম্পর্কে বাংলা বা ইংরেজিতে প্রশ্ন করতে পারেন।");
+});
+
+document.querySelectorAll(".hist-item").forEach((item) => {
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".hist-item").forEach((i) => i.classList.remove("active"));
+    item.classList.add("active");
+    $("chatLog").innerHTML = "";
+    const label = item.querySelector("span:last-child")?.textContent || "Skin health";
+    sendChat(label);
+  });
+});
 
 $("chatForm").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -498,6 +528,8 @@ $("chatForm").addEventListener("submit", (e) => {
   sendChat(q);
 });
 document.querySelectorAll(".chat-chip").forEach((c) => c.addEventListener("click", () => sendChat(c.dataset.q)));
+
+appendMsg("bot", "নমস্কার / আসসালামু আলাইকুম! ত্বকের যেকোনো সমস্যা সম্পর্কে বাংলা বা ইংরেজিতে প্রশ্ন করতে পারেন।");
 
 /* ---------- Insights Map & Ranks (Rokkha OSM + 64-district GeoJSON) ---------- */
 const BD_BOUNDS = [[20.55, 88.0], [26.65, 92.7]];
