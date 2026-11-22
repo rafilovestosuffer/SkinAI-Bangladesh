@@ -203,8 +203,7 @@ body {
   align-items: center; text-align: center; justify-content: space-between; padding: 18px 18px 16px;
 }
 .bento-featured .bento-pill { position: absolute; top: 12px; right: 12px; background: #fff; }
-.bento-icon-lg { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-top: 2px; }
-.bento-icon-lg .material-symbols-outlined { font-size: 32px !important; }
+.bento-microscope-img { width: 76px; height: 76px; object-fit: contain; display: block; margin-top: 2px; }
 .bento-thumb-wrap { position: relative; width: 100%; height: 180px; border-radius: 14px; overflow: hidden; border: 2px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.12); margin-top: 8px; }
 .bento-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
 .bento-thumb-badge { position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.95); color: var(--teal-dark); font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
