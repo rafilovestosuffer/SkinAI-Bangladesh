@@ -346,15 +346,16 @@
           <p class="muted small">Review and edit the patient history before continuing. All fields flow into the referral letter.</p>
 
           <div class="form-grid-2 mt">
-            <label class="field"><span>PATIENT NAME</span><input id="pName" type="text" placeholder="e.g. Rahim" /></label>
-            <label class="field"><span>PATIENT AGE</span><input id="pAge" type="text" placeholder="e.g. 35" /></label>
-            <label class="field"><span>CHIEF COMPLAINT</span><input id="pComplaint" type="text" placeholder="e.g. Itching rash" /></label>
-            <label class="field"><span>SYMPTOMS (COMMA-SEPARATED)</span><input id="pSymptoms" type="text" placeholder="e.g. itching, redness, fever" /></label>
+            <label class="field"><span>PATIENT NAME <em class="req-star">*</em></span><input id="pName" type="text" placeholder="e.g. Rahim" required /></label>
+            <label class="field"><span>PATIENT AGE <em class="req-star">*</em></span><input id="pAge" type="text" placeholder="e.g. 35" required /></label>
+            <label class="field"><span>CHIEF COMPLAINT <em class="req-star">*</em></span><input id="pComplaint" type="text" placeholder="e.g. Itching rash" required /></label>
+            <label class="field"><span>SYMPTOMS (COMMA-SEPARATED) <em class="req-star">*</em></span><input id="pSymptoms" type="text" placeholder="e.g. itching, redness, fever" required /></label>
             <label class="field"><span>AFFECTED AREA</span><input id="pArea" type="text" placeholder="e.g. Arm, abdomen" /></label>
             <label class="field"><span>PROGRESSION</span><input id="pProg" type="text" placeholder="e.g. spreading" /></label>
-            <label class="field"><span>DURATION</span><input id="pDur" type="text" placeholder="e.g. 5 days" /></label>
+            <label class="field"><span>DURATION <em class="req-star">*</em></span><input id="pDur" type="text" placeholder="e.g. 5 days" required /></label>
             <label class="field"><span>PREVIOUS TREATMENT</span><input id="pPrev" type="text" placeholder="e.g. None" /></label>
           </div>
+          <div id="step2Err" class="alert error hidden mt">Please fill in all required fields marked with * before continuing.</div>
 
           <div class="mt">
             <div class="field-label">Warning Signs (Safety Floor)</div>

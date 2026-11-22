@@ -558,6 +558,13 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
 .alt-input-box summary { font-size: 0.88rem; font-weight: 600; cursor: pointer; color: var(--text); }
 .browse-btn { display: inline-flex; align-items: center; gap: 6px; }
 
+.req-star { color: var(--red); font-style: normal; }
+.input-error {
+  border: 1.5px solid #DC2626 !important;
+  background: #FEF2F2 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
 .sk-footer { text-align: center; margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); }
 .footer-brand { font-size: 0.92rem; margin-bottom: 6px; }
 .footer-pills { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 0.72rem; color: var(--teal); }

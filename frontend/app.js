@@ -269,9 +269,35 @@ $("audioFileInput").addEventListener("change", (e) => {
   if (f) $("audioFileStatus").textContent = `Selected audio: ${f.name}`;
 });
 
+const REQUIRED_STEP2 = ["pName", "pAge", "pComplaint", "pSymptoms", "pDur"];
+REQUIRED_STEP2.forEach((id) => {
+  const el = $(id);
+  if (el) {
+    el.addEventListener("input", () => {
+      if (el.value.trim()) el.classList.remove("input-error");
+      if (REQUIRED_STEP2.every((k) => $(k).value.trim())) $("step2Err").classList.add("hidden");
+    });
+  }
+});
+
 $("toStep2Btn").addEventListener("click", () => setWizardStep(2));
 $("backToStep1Btn").addEventListener("click", () => setWizardStep(1));
-$("toStep3Btn").addEventListener("click", () => setWizardStep(3));
+$("toStep3Btn").addEventListener("click", () => {
+  let firstInvalid = null;
+  REQUIRED_STEP2.forEach((id) => {
+    const el = $(id);
+    const blank = !el.value.trim();
+    el.classList.toggle("input-error", blank);
+    if (blank && !firstInvalid) firstInvalid = el;
+  });
+  if (firstInvalid) {
+    $("step2Err").classList.remove("hidden");
+    firstInvalid.focus();
+    return;
+  }
+  $("step2Err").classList.add("hidden");
+  setWizardStep(3);
+});
 $("backToStep2Btn").addEventListener("click", () => setWizardStep(2));
 $("newScreeningBtn").addEventListener("click", () => setWizardStep(1));
 $("retakeBtn").addEventListener("click", () => $("photoInput").click());
