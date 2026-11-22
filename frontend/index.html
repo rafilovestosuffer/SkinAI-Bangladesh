@@ -394,40 +394,39 @@
           <div class="sk-card-head">
             <div class="sk-step-badge green"><span class="material-symbols-outlined" style="font-size:18px;">photo_camera</span></div>
             <div class="sk-card-title">
-              <strong>Skin Photo</strong>
-              <span>ছবি আপলোড করুন</span>
+              <strong data-i18n="s3_title">Skin Photo</strong>
+              <span data-i18n="s3_sub">Upload a clear close-up photo</span>
             </div>
-            <span class="badge-req">* REQUIRED</span>
+            <span class="badge-req" data-i18n="req_badge">* REQUIRED</span>
           </div>
-          <p class="muted small">Upload a clear, well-lit close-up of the affected area. BD-SkinNet (Swin+CBAM, INT8) analyses the image on the server CPU.</p>
+          <p class="muted small" data-i18n="s3_desc">Upload a clear, well-lit close-up of the affected area. BD-SkinNet (Swin+CBAM, INT8) analyses the image on the server CPU.</p>
 
           <div class="privacy-box">
             <div class="privacy-head">
               <span class="material-symbols-outlined ic-sm">verified_user</span>
-              <strong>Privacy by design —</strong>
-              <span class="p-pill">NOT SAVED BY DEFAULT</span>
-              <span class="p-pill">NO TRACKING</span>
-              <span class="p-pill">NO ACCOUNT</span>
+              <strong data-i18n="priv_title">Privacy by design —</strong>
+              <span class="p-pill" data-i18n="priv_p1">NOT SAVED BY DEFAULT</span>
+              <span class="p-pill" data-i18n="priv_p2">NO TRACKING</span>
+              <span class="p-pill" data-i18n="priv_p3">NO ACCOUNT</span>
             </div>
-            <p class="small">Your photo is analysed for this session and never saved — unless you choose to share it with a doctor (a small copy, no name or phone, deleted after 7 days).</p>
-            <p class="small bn-muted">আপনার ছবি শুধু এই বিশ্লেষণের জন্য ব্যবহৃত হয়, সংরক্ষণ করা হয় না — যদি না আপনি ডাক্তারকে দেখাতে সম্মতি দেন।</p>
+            <p class="small" data-i18n="priv_body">Your photo is analysed for this session and never saved — unless you choose to share it with a doctor (a small copy, no name or phone, deleted after 7 days).</p>
           </div>
 
           <label class="consent-box mt">
             <input id="consentCheck" type="checkbox" />
-            <span><span class="material-symbols-outlined ic-sm">clinical_notes</span> <strong>Clinician mode</strong> — doctor's second opinion (anonymous, 7-day retention)</span>
+            <span data-i18n="clinician_mode"><span class="material-symbols-outlined ic-sm">clinical_notes</span> <strong>Clinician mode</strong> — doctor's second opinion (anonymous, 7-day retention)</span>
           </label>
 
           <label id="dropzone" class="dropzone-bar mt">
             <input id="photoInput" type="file" accept="image/*" capture="environment" />
-            <span><span class="material-symbols-outlined ic-sm">cloud_upload</span> <strong>Drag and drop file here</strong> <small class="muted">Limit 5MB · JPG, JPEG, PNG, WEBP</small></span>
-            <span class="browse-btn"><span class="material-symbols-outlined ic-btn">folder_open</span> Browse files</span>
+            <span><span class="material-symbols-outlined ic-sm">cloud_upload</span> <strong data-i18n="drag_drop">Drag and drop file here</strong> <small class="muted">Limit 5MB · JPG, JPEG, PNG, WEBP</small></span>
+            <span class="browse-btn"><span class="material-symbols-outlined ic-btn">folder_open</span> <span data-i18n="browse_btn">Browse files</span></span>
           </label>
 
           <div id="waitingCard" class="waiting-card mt">
             <div class="cam-circle"><span class="material-symbols-outlined">photo_camera</span></div>
-            <strong>Waiting for a skin photo</strong>
-            <span class="muted small">আক্রান্ত ত্বকের একটি স্পষ্ট ছবি আপলোড করুন</span>
+            <strong data-i18n="wait_title">Waiting for a skin photo</strong>
+            <span class="muted small" data-i18n="wait_sub">Upload a clear photo of the affected skin</span>
             <div class="waiting-pills">
               <span>Good lighting</span><span>Close-up</span><span>JPG · PNG · WEBP</span>
             </div>
