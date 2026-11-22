@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
@@ -16,7 +17,7 @@
   <header class="site-nav">
     <div class="nav-inner">
       <a href="#home" class="nav-brand" data-go="home">
-        <span class="nav-logo" aria-hidden="true">🩺</span>
+        <span class="nav-logo material-symbols-outlined" aria-hidden="true">medical_services</span>
         <span><strong>SkinAI</strong> Bangladesh</span>
       </a>
       <nav class="nav-links" aria-label="Main navigation">
@@ -53,10 +54,10 @@
             <button type="button" class="btn-white" data-tab="insights">Explore Skin Guide</button>
           </div>
           <div class="hero-trust-row">
-            <span>🕒 Works offline</span>
-            <span>🌐 Bangla &amp; English</span>
-            <span>👩‍⚕️ Doctor referral</span>
-            <span>🔒 Secure &amp; Private</span>
+            <span><span class="material-symbols-outlined ic-sm">offline_pin</span> Works offline</span>
+            <span><span class="material-symbols-outlined ic-sm">translate</span> Bangla &amp; English</span>
+            <span><span class="material-symbols-outlined ic-sm">clinical_notes</span> Doctor referral</span>
+            <span><span class="material-symbols-outlined ic-sm">verified_user</span> Secure &amp; Private</span>
           </div>
         </div>
 
@@ -83,32 +84,32 @@
         <h2 class="section-h2">Everything you need in one place</h2>
         <div class="features-6">
           <button type="button" class="feat-card" data-tab="diagnosis">
-            <div class="feat-icon">🔬</div>
+            <div class="feat-icon"><span class="material-symbols-outlined">biotech</span></div>
             <strong>AI Skin Screening</strong>
             <span>Upload or capture skin image and get AI-powered results instantly.</span>
           </button>
           <button type="button" class="feat-card" data-tab="diagnosis">
-            <div class="feat-icon">🎙️</div>
+            <div class="feat-icon"><span class="material-symbols-outlined">mic</span></div>
             <strong>Voice Input</strong>
             <span>Speak in Bangla or English. Our AI understands and transcribes for you.</span>
           </button>
           <button type="button" class="feat-card" data-tab="referral">
-            <div class="feat-icon">📋</div>
+            <div class="feat-icon"><span class="material-symbols-outlined">assignment</span></div>
             <strong>Doctor Referral</strong>
             <span>Get referred to verified doctors for online or in-person consultation.</span>
           </button>
           <button type="button" class="feat-card" data-tab="insights">
-            <div class="feat-icon">📊</div>
+            <div class="feat-icon"><span class="material-symbols-outlined">monitoring</span></div>
             <strong>Health Insights</strong>
             <span>Explore prevalence across Bangladesh and understand your skin better.</span>
           </button>
           <a href="https://rafilovestosuffer-skinai-bd.hf.space/lite/" target="_blank" rel="noopener" class="feat-card">
-            <div class="feat-icon">📶</div>
+            <div class="feat-icon"><span class="material-symbols-outlined">cloud_off</span></div>
             <strong>Offline Support</strong>
             <span>Works in low-connectivity areas. Data syncs when you're online.</span>
           </a>
           <button type="button" class="feat-card" data-tab="ask">
-            <div class="feat-icon">💬</div>
+            <div class="feat-icon"><span class="material-symbols-outlined">forum</span></div>
             <strong>Ask AI Assistant</strong>
             <span>Ask questions and get answers about skin health and care.</span>
           </button>
@@ -121,25 +122,25 @@
           <h2 class="section-h2">How it works</h2>
           <div class="steps-4">
             <div class="hiw-step">
-              <div class="hiw-icon">☁️</div>
+              <div class="hiw-icon"><span class="material-symbols-outlined">cloud_upload</span></div>
               <strong>Patient Information</strong>
               <span>Share your symptoms and skin history</span>
             </div>
             <div class="hiw-arrow">→</div>
             <div class="hiw-step">
-              <div class="hiw-icon">📷</div>
+              <div class="hiw-icon"><span class="material-symbols-outlined">photo_camera</span></div>
               <strong>Skin Photo</strong>
               <span>Take or upload a clear photo of the affected area</span>
             </div>
             <div class="hiw-arrow">→</div>
             <div class="hiw-step">
-              <div class="hiw-icon">🔍</div>
+              <div class="hiw-icon"><span class="material-symbols-outlined">document_scanner</span></div>
               <strong>AI Screening</strong>
               <span>Our AI analyzes and screens the image</span>
             </div>
             <div class="hiw-arrow">→</div>
             <div class="hiw-step">
-              <div class="hiw-icon">🩺</div>
+              <div class="hiw-icon"><span class="material-symbols-outlined">stethoscope</span></div>
               <strong>Guidance / Referral</strong>
               <span>Get results and next steps or doctor referral</span>
             </div>
@@ -154,7 +155,8 @@
             <li>Built with privacy, safety and transparency</li>
           </ul>
           <div class="encrypt-note">
-            🛡️ Your data is encrypted and never shared without consent.
+            <span class="material-symbols-outlined ic-sm">verified_user</span>
+            Your data is encrypted and never shared without consent.
           </div>
         </div>
       </div>
@@ -301,7 +303,7 @@
                 <div><strong>Use voice input</strong> <span class="muted small">(Bangla or English)</span></div>
                 <div class="muted small">Tap the microphone and describe your problem</div>
                 <div class="voice-row">
-                  <button type="button" id="micBtn" class="mic-circle" title="Tap to speak">🎙️</button>
+                  <button type="button" id="micBtn" class="mic-circle" title="Tap to speak"><span class="material-symbols-outlined">mic</span></button>
                   <div class="waveform" aria-hidden="true">
                     <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
                   </div>
@@ -312,7 +314,7 @@
           </div>
 
           <div class="wiz-footer">
-            <div class="wiz-sec">🛡️ Your information is secure and used only for screening.</div>
+            <div class="wiz-sec"><span class="material-symbols-outlined ic-sm">verified_user</span> Your information is secure and used only for screening.</div>
             <button type="button" id="toStep2Btn" class="btn-teal">Continue to Photo →</button>
           </div>
         </div>
@@ -333,10 +335,10 @@
             <!-- Left: Capture / Upload -->
             <label id="dropzone" class="capture-box">
               <input id="photoInput" type="file" accept="image/*" capture="environment" />
-              <div class="cam-circle">📷</div>
+              <div class="cam-circle"><span class="material-symbols-outlined">photo_camera</span></div>
               <strong id="camTitle">Camera is ready</strong>
               <span id="camSub" class="muted small">Position the affected area in the frame</span>
-              <span class="btn-teal-sm mt" id="camBtnLabel">📷 Capture Photo</span>
+              <span class="btn-teal-sm mt" id="camBtnLabel">Capture Photo</span>
             </label>
 
             <!-- Middle: Preview -->
