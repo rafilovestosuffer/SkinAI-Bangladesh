@@ -290,17 +290,18 @@
             <span class="badge-opt">OPTIONAL</span>
           </div>
 
-          <label class="field mt">
-            <span>AUDIO LANGUAGE</span>
-            <select id="audioLang">
-              <option value="bn">Bengali (বাংলা)</option>
-              <option value="en">English</option>
-            </select>
-          </label>
-
-          <button type="button" id="micBtn" class="btn-record mt">
-            <span class="material-symbols-outlined ic-sm">mic</span> Start recording
-          </button>
+          <div class="voice-controls-row mt">
+            <label class="field voice-lang-field">
+              <span>AUDIO LANGUAGE</span>
+              <select id="audioLang">
+                <option value="bn">Bengali (বাংলা)</option>
+                <option value="en">English</option>
+              </select>
+            </label>
+            <button type="button" id="micBtn" class="btn-record">
+              <span class="material-symbols-outlined ic-sm">mic</span> Start recording
+            </button>
+          </div>
           <p id="micStatus" class="muted small">Speak a full sentence (name, age, symptoms, duration) for at least 3 seconds.</p>
 
           <details class="alt-input-box mt" open>
