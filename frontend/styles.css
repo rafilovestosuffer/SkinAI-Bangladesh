@@ -528,8 +528,24 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
   flex-wrap: wrap;
 }
 .voice-lang-field {
-  flex: 0 0 210px;
+  flex: 0 0 185px;
 }
+.btn-lang-switch {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-lang-switch:hover { border-color: var(--teal); color: var(--teal-dark); }
 .btn-record {
   flex: 1;
   min-width: 200px;

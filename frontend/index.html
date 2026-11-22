@@ -291,13 +291,13 @@
           </div>
 
           <div class="voice-controls-row mt">
-            <label class="field voice-lang-field">
+            <div class="field voice-lang-field">
               <span>AUDIO LANGUAGE</span>
-              <select id="audioLang">
-                <option value="bn">Bengali (বাংলা)</option>
-                <option value="en">English</option>
-              </select>
-            </label>
+              <button type="button" id="audioLangBtn" class="btn-lang-switch" data-lang="bn">
+                <span class="material-symbols-outlined ic-sm">translate</span>
+                <span id="audioLangLabel">Bengali (বাংলা)</span>
+              </button>
+            </div>
             <button type="button" id="micBtn" class="btn-record">
               <span class="material-symbols-outlined ic-sm">mic</span> Start recording
             </button>

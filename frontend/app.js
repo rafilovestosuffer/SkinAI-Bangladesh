@@ -277,6 +277,12 @@ $("newScreeningBtn").addEventListener("click", () => setWizardStep(1));
 $("retakeBtn").addEventListener("click", () => $("photoInput").click());
 
 /* ---------- Voice / Mic ---------- */
+$("audioLangBtn").addEventListener("click", () => {
+  const next = $("audioLangBtn").dataset.lang === "bn" ? "en" : "bn";
+  $("audioLangBtn").dataset.lang = next;
+  $("audioLangLabel").textContent = next === "bn" ? "Bengali (বাংলা)" : "English";
+});
+
 $("micBtn").addEventListener("click", () => {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
@@ -284,7 +290,7 @@ $("micBtn").addEventListener("click", () => {
     return;
   }
   const rec = new SR();
-  rec.lang = $("audioLang").value === "bn" ? "bn-BD" : "en-US";
+  rec.lang = $("audioLangBtn").dataset.lang === "bn" ? "bn-BD" : "en-US";
   $("micStatus").textContent = "Listening… speak now";
   rec.onresult = (ev) => {
     const text = ev.results[0][0].transcript;
