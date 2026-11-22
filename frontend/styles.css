@@ -331,9 +331,9 @@ select, input[type="text"], textarea { font: inherit; font-size: 0.88rem; font-w
 }
 .hist-item:hover, .hist-item.active { background: rgba(255,255,255,0.1); color: #fff; }
 .ic-hist { font-size: 16px !important; opacity: 0.8; flex: none; }
-.sidebar-foot { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 12px; font-size: 0.78rem; }
-.sb-brand { margin-bottom: 4px; }
-.sb-pills { font-size: 0.65rem; color: #6EE7B7; letter-spacing: 0.02em; }
+.sidebar-foot { border-top: 1px solid rgba(255,255,255,0.12); padding-top: 12px; font-size: 0.78rem; text-align: center; }
+.sb-brand { margin-bottom: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.sb-pills { font-size: 0.63rem; color: #6EE7B7; letter-spacing: 0.02em; }
 
 .ask-main { display: flex; flex-direction: column; background: #F8FAFC; }
 .ask-top-card { background: #fff; border-bottom: 1px solid var(--line); padding: 14px 20px 16px; }
