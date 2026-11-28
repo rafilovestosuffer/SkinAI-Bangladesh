@@ -107,41 +107,31 @@ body {
 
 .page-shell { max-width: 1380px; margin: 0 auto; padding: 20px 24px 40px; }
 
-/* Landing Hero (matches skinAi-Bangladesh-app home_screen.dart) */
+/* Landing Hero (matches SkinAi-app home_screen.dart — full-bleed hero_skin.jpg, no gradient overlay) */
 .landing-hero {
-  background-image:
-    linear-gradient(90deg, #F3F6F5 0%, rgba(243, 246, 245, 0.94) 44%, rgba(243, 246, 245, 0.22) 78%, rgba(243, 246, 245, 0.04) 100%),
-    url('/assets/hero-skin.jpg');
+  background-color: #EDF7F2;
+  background-image: url('/assets/hero-skin.jpg');
   background-size: cover;
   background-position: right center;
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 44px 40px;
-  min-height: 360px;
-  display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap: 28px;
+  padding: 48px 44px;
+  min-height: 400px;
+  display: flex;
   align-items: center;
   box-shadow: 0 6px 24px rgba(14, 124, 107, 0.06);
 }
+.hero-left { max-width: 560px; }
 @media (max-width: 860px) {
-  .landing-hero { grid-template-columns: 1fr; padding: 26px; min-height: auto; background-position: center; }
-  .hero-right { display: none; }
-}
-.hero-right { display: flex; align-items: center; justify-content: center; }
-.hero-reticle-box {
-  width: 140px;
-  height: 140px;
-  border-radius: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 0 1px rgba(14, 124, 107, 0.25);
+  .landing-hero { padding: 28px 24px; min-height: 300px; background-position: 75% center; }
 }
 .hero-pill {
-  display: inline-block;
-  font-size: 0.78rem; font-weight: 600; color: var(--teal);
-  background: #FFFFFF; border: 1px solid #CBE7E1;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.78rem; font-weight: 700; color: var(--teal);
+  background: var(--teal-soft); border: 1px solid rgba(14, 124, 107, 0.22);
   padding: 5px 12px; border-radius: 999px; margin-bottom: 14px;
 }
+.ic-spark { font-size: 14px !important; color: var(--teal); }
 .landing-h1 {
   font-size: 2.8rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin: 0 0 14px;
 }
