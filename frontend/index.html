@@ -40,14 +40,13 @@
   <div class="page-shell">
     <!-- ==================== LANDING / HOME VIEW ==================== -->
     <section id="tab-home" class="tab-panel active">
-      <!-- Hero Card -->
+      <!-- Hero Card (matches skinAi-Bangladesh-app home_screen.dart) -->
       <div class="landing-hero">
         <div class="hero-left">
-          <span class="hero-pill" data-i18n="hero_pill">AI-Powered Skin Screening &amp; Smart Triage</span>
+          <span class="hero-pill" data-i18n="hero_pill">AI Screening &amp; Triage</span>
           <h1 class="landing-h1" data-i18n="hero_h1">AI Skin Screening.<br />Find the <span class="teal-text">Right Care</span></h1>
           <p class="landing-lead" data-i18n="hero_lead">
-            AI-powered dermatological screening and smart triage for rural Bangladesh.
-            Identify potential skin conditions early, get clinical guidance, and know when to see a doctor.
+            Early screening &amp; guidance. AI-powered dermatological triage for rural Bangladesh.
           </p>
           <div class="hero-ctas">
             <button type="button" class="btn-teal" data-tab="diagnosis" data-i18n="hero_cta1">Start Skin Screening →</button>
@@ -62,20 +61,7 @@
         </div>
 
         <div class="hero-right">
-          <div class="hero-photo-frame">
-            <img src="/assets/hero-skin.jpg" alt="AI Skin Screening analysis preview" class="hero-photo" />
-            <div class="scan-reticle" aria-hidden="true">
-              <span class="scan-dot"></span>
-            </div>
-            <div class="scan-card">
-              <div class="scan-card-title">AI Screening</div>
-              <div class="scan-card-sub">Analyzing skin image…</div>
-              <div class="scan-bar-row">
-                <div class="scan-bar"><div class="scan-bar-fill"></div></div>
-                <span class="scan-pct">92%</span>
-              </div>
-            </div>
-          </div>
+          <div class="hero-reticle-box" aria-hidden="true"></div>
         </div>
       </div>
 
@@ -215,33 +201,44 @@
         </div>
       </div>
 
-      <!-- Learn about common skin conditions -->
+      <!-- Learn about common skin conditions (7 conditions from ConditionCatalog) -->
       <div class="landing-section">
-        <h2 class="section-h2">Learn about common skin conditions</h2>
-        <div class="conditions-6">
+        <h2 class="section-h2">Common Skin Conditions</h2>
+        <div class="conditions-7">
+          <button type="button" class="cond-card" data-insight="Eczema">
+            <img src="/assets/psoriasis.jpg" alt="Atopic Dermatitis" class="cond-img" />
+            <strong>Atopic Dermatitis</strong>
+            <span class="cond-bn">অ্যাটোপিক ডার্মাটাইটিস</span>
+          </button>
           <button type="button" class="cond-card" data-insight="Bacterial">
-            <img src="/assets/acne.jpg" alt="Acne and Bacterial" class="cond-img" />
-            <span>Acne / Bacterial</span>
+            <img src="/assets/acne.jpg" alt="Contact Dermatitis" class="cond-img" />
+            <strong>Contact Dermatitis</strong>
+            <span class="cond-bn">কন্টাক্ট ডার্মাটাইটিস</span>
           </button>
           <button type="button" class="cond-card" data-insight="Eczema">
             <img src="/assets/eczema.jpg" alt="Eczema" class="cond-img" />
-            <span>Eczema</span>
-          </button>
-          <button type="button" class="cond-card" data-insight="Tinea">
-            <img src="/assets/tinea.jpg" alt="Fungal Infection" class="cond-img" />
-            <span>Fungal Infection</span>
+            <strong>Eczema</strong>
+            <span class="cond-bn">একজিমা</span>
           </button>
           <button type="button" class="cond-card" data-insight="Scabies">
-            <img src="/assets/scabies.jpg" alt="Rash and Scabies" class="cond-img" />
-            <span>Rash / Scabies</span>
+            <img src="/assets/scabies.jpg" alt="Scabies" class="cond-img" />
+            <strong>Scabies</strong>
+            <span class="cond-bn">খোস-পাঁচড়া</span>
           </button>
           <button type="button" class="cond-card" data-insight="Psoriasis">
-            <img src="/assets/psoriasis.jpg" alt="Psoriasis" class="cond-img" />
-            <span>Psoriasis</span>
+            <img src="/assets/seborrheic.jpg" alt="Seborrheic Dermatitis" class="cond-img" />
+            <strong>Seborrheic Dermatitis</strong>
+            <span class="cond-bn">সেবোরিক ডার্মাটাইটিস</span>
           </button>
-          <button type="button" class="cond-card cond-more" data-tab="insights">
-            <div class="more-plus">+</div>
-            <span>More</span>
+          <button type="button" class="cond-card" data-insight="Tinea">
+            <img src="/assets/tinea.jpg" alt="Tinea (Ringworm)" class="cond-img" />
+            <strong>Tinea (Ringworm)</strong>
+            <span class="cond-bn">দাদ (টিনিয়া)</span>
+          </button>
+          <button type="button" class="cond-card" data-insight="Psoriasis">
+            <img src="/assets/vitiligo.jpg" alt="Vitiligo" class="cond-img" />
+            <strong>Vitiligo</strong>
+            <span class="cond-bn">শ্বেতী রোগ</span>
           </button>
         </div>
       </div>

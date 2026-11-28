@@ -107,19 +107,35 @@ body {
 
 .page-shell { max-width: 1380px; margin: 0 auto; padding: 20px 24px 40px; }
 
-/* Landing Hero */
+/* Landing Hero (matches skinAi-Bangladesh-app home_screen.dart) */
 .landing-hero {
-  background: radial-gradient(circle at 15% 20%, #E7F6F2 0%, #F4FAF8 50%, #FFFFFF 100%);
+  background-image:
+    linear-gradient(90deg, #F3F6F5 0%, rgba(243, 246, 245, 0.94) 44%, rgba(243, 246, 245, 0.22) 78%, rgba(243, 246, 245, 0.04) 100%),
+    url('/assets/hero-skin.jpg');
+  background-size: cover;
+  background-position: right center;
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 36px;
+  padding: 44px 40px;
+  min-height: 360px;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1.25fr 0.75fr;
   gap: 28px;
   align-items: center;
   box-shadow: 0 6px 24px rgba(14, 124, 107, 0.06);
 }
-@media (max-width: 860px) { .landing-hero { grid-template-columns: 1fr; padding: 24px; } }
+@media (max-width: 860px) {
+  .landing-hero { grid-template-columns: 1fr; padding: 26px; min-height: auto; background-position: center; }
+  .hero-right { display: none; }
+}
+.hero-right { display: flex; align-items: center; justify-content: center; }
+.hero-reticle-box {
+  width: 140px;
+  height: 140px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 1px rgba(14, 124, 107, 0.25);
+}
 .hero-pill {
   display: inline-block;
   font-size: 0.78rem; font-weight: 600; color: var(--teal);
@@ -285,21 +301,19 @@ body {
 .trust-list { margin: 0 0 14px 18px; padding: 0; font-size: 0.85rem; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
 .encrypt-note { background: var(--teal-soft); color: var(--teal-dark); border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; font-weight: 500; }
 
-/* Conditions 6 */
-.conditions-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
-@media (max-width: 1024px) { .conditions-6 { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 580px) { .conditions-6 { grid-template-columns: repeat(2, 1fr); } }
+/* Conditions 7 (from ConditionCatalog) */
+.conditions-7 { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+@media (max-width: 1120px) { .conditions-7 { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 640px) { .conditions-7 { grid-template-columns: repeat(2, 1fr); } }
 .cond-card {
   background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-  padding: 8px; cursor: pointer; text-align: center; display: flex; flex-direction: column; gap: 8px;
+  padding: 8px; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 6px;
+  transition: transform .15s, border-color .15s;
 }
-.cond-card:hover { border-color: var(--teal); }
-.cond-img { width: 100%; height: 92px; object-fit: cover; border-radius: 10px; display: block; }
-.cond-acne { background: radial-gradient(circle at 40% 45%, #E79C85, #D9826C 60%, #C66D58); }
-.cond-psoriasis { background: radial-gradient(circle at 50% 50%, #F1B3A4, #DC8674 65%, #C96F5D); }
-.cond-card span { font-size: 0.84rem; font-weight: 600; color: var(--text); padding-bottom: 4px; }
-.cond-more { justify-content: center; align-items: center; border-style: dashed; min-height: 134px; }
-.more-plus { width: 38px; height: 38px; border-radius: 50%; background: var(--surface-alt); display: grid; place-items: center; font-size: 1.3rem; color: var(--muted); }
+.cond-card:hover { transform: translateY(-2px); border-color: var(--teal); }
+.cond-img { width: 100%; height: 96px; object-fit: cover; border-radius: 10px; display: block; }
+.cond-card strong { font-size: 0.82rem; color: var(--text); padding: 2px 4px 0; line-height: 1.25; }
+.cond-bn { font-size: 0.74rem; color: var(--muted); padding: 0 4px 4px; }
 
 /* Workspace bar when inside tool tabs */
 .workspace-bar {
